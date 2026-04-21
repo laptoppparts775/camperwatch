@@ -56,3 +56,43 @@ body {
 .badge-blue {
   @apply badge bg-blue-100 text-blue-800;
 }
+
+/* ── CamperWatch Homepage ─────────────────────────── */
+@keyframes hero-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes search-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.7; }
+  50%       { opacity: 0.2; }
+}
+.animate-hero   { animation: hero-in    0.8s cubic-bezier(0.22,1,0.36,1) both; }
+.animate-search { animation: search-in  0.8s 0.25s cubic-bezier(0.22,1,0.36,1) both; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+.stars-field {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 15% 12%, rgba(255,255,255,.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 28%  8%, rgba(255,255,255,.5) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 42% 18%, rgba(255,255,255,.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 58%  5%, rgba(255,255,255,.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 71% 14%, rgba(255,255,255,.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 85%  9%, rgba(255,255,255,.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 93% 22%, rgba(255,255,255,.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at  7% 28%, rgba(255,255,255,.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 35% 32%, rgba(255,255,255,.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 62% 25%, rgba(255,255,255,.5) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 78% 30%, rgba(255,255,255,.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 22% 40%, rgba(255,255,255,.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 38%, rgba(255,255,255,.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 88% 42%, rgba(255,255,255,.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at  5% 50%, rgba(255,255,255,.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 45% 55%, rgba(255,255,255,.4) 0%, transparent 100%);
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
