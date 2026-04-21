@@ -4,7 +4,7 @@
 export type Review = {
   id: string
   author: string
-  source: 'Google' | 'Yelp' | 'Tripadvisor' | 'Reddit' | 'Campendium' | 'The Dyrt' | 'KOA' | 'Recreation.gov' | 'RVLife'
+  source: 'Google' | 'Yelp' | 'Tripadvisor' | 'Reddit' | 'Campendium' | 'The Dyrt' | 'KOA' | 'Recreation.gov' | 'RVLife' | 'Good Sam' | 'Hipcamp' | 'ParkAdvisor' | 'PerfectCamp'
   rating: number // 1-5
   date: string
   text: string
@@ -102,6 +102,84 @@ export const reviews: Record<string, Review[]> = {
     { id: 'pl4', author: 'TuphaPhtographer', source: 'Google', rating: 5, date: '2025-05', text: 'Photographed the Pyramid formation at sunrise with the pink and gold light. Nothing in Nevada compares to this for photography. Camped for 3 nights. The silence at night is total — no light pollution, stars are incredible at this elevation.', helpful: 92, verified: true, type: 'positive' },
     { id: 'pl5', author: 'TribeRespect', source: 'Reddit', rating: 4, date: '2025-06', text: 'Important: this is Paiute tribal land. Buy your permit online at plpt.nsn.us before arriving. Don\'t try to sneak in — rangers do patrol. With permit in hand, you\'re welcomed warmly. The tribe has done an incredible job preserving the lake. Respect the rules and you\'ll have an unforgettable trip.', helpful: 201, verified: false, type: 'positive' },
   ],
+
+  'watchman-campground': [
+    { id: 'wz1', author: 'ZionHiker_UT', source: 'Recreation.gov', rating: 5, date: '2026-03', text: 'Clean campground, great bathroom facilities. Walking bridge to Springdale restaurants. Shuttle stop inside camp — never needed my car. This is the only way to do Zion.', helpful: 89, verified: true, type: 'positive' },
+    { id: 'wz2', author: 'SandstoneViews', source: 'The Dyrt', rating: 5, date: '2025-11', text: 'Woke up, stepped on the shuttle, hiked Angels Landing before 8am with nobody ahead of me. Perfect base camp — park once, never move again.', helpful: 134, verified: true, type: 'positive' },
+    { id: 'wz3', author: 'CampingMom_AZ', source: 'Recreation.gov', rating: 4, date: '2026-01', text: 'Electric site let us charge everything. Cell service for calls and weather. Views were stunning — canyon walls in three directions. Only gripe: bathrooms too small for the crowd.', helpful: 67, verified: true, type: 'mixed' },
+    { id: 'wz4', author: 'NoShowerProblem', source: 'The Dyrt', rating: 4, date: '2025-10', text: 'No showers on-site but Zion Outfitter in Springdale (10-min walk) has them. E-bikes and gear available there too. The canyon wall views are mesmerizing.', helpful: 93, verified: true, type: 'positive' },
+    { id: 'wz5', author: 'CaterpillarCamper', source: 'Recreation.gov', rating: 3, date: '2025-04', text: 'April tent caterpillars fall from trees onto everything. Not harmful but unpleasant. Silver lining: campground was half empty because of it — great availability.', helpful: 201, verified: true, type: 'mixed' },
+  ],
+
+  'rubys-inn-bryce': [
+    { id: 'rb1', author: 'BryceFan_NV', source: 'Good Sam', rating: 5, date: '2025-07', text: 'Location is everything. Less than a mile from the park entrance. Shuttle stops every 15 minutes — never needed the car inside the park. Paved bike trail runs directly into Bryce.', helpful: 78, verified: true, type: 'positive' },
+    { id: 'rb2', author: 'PremiumSite', source: 'ParkAdvisor', rating: 5, date: '2025-06', text: 'Premium ponderosa pine sites have a lawn, nice picnic table, fire pit. Paid $175 for 3 nights. Worth every dollar given the amenities and proximity to Bryce Canyon.', helpful: 52, verified: true, type: 'positive' },
+    { id: 'rb3', author: 'RVDad_Texas', source: 'Tripadvisor', rating: 3, date: '2025-08', text: 'Did not get our requested site — put in a spot too small with neighbor sewer line at the door. Expensive for what it is, but park access is genuinely unbeatable.', helpful: 87, verified: true, type: 'negative' },
+    { id: 'rb4', author: 'DarkSkyFan', source: 'Hipcamp', rating: 5, date: '2025-09', text: 'At 7,700 feet and a certified Dark Sky Park — the Milky Way is extraordinary. Did the ranger stargazing program then biked into Bryce for sunrise. This is how you do Bryce Canyon.', helpful: 143, verified: true, type: 'positive' },
+  ],
+
+  'colter-bay-grand-teton': [
+    { id: 'cb1', author: 'WildlifeFan_WY', source: 'Hipcamp', rating: 5, date: '2025-09', text: 'Two nights: mule deer, a badger, and a grizzly sighting. Campground is wooded and spacious. The village has everything within walking distance. Best campground in the Tetons.', helpful: 112, verified: true, type: 'positive' },
+    { id: 'cb2', author: 'JacksonLakeFam', source: 'Tripadvisor', rating: 5, date: '2025-08', text: 'Stayed one night heading to Yellowstone. Liked it so much we stayed three more. Jackson Lake dinner cruise was the highlight of our entire trip — book at the marina immediately on arrival.', helpful: 94, verified: true, type: 'positive' },
+    { id: 'cb3', author: 'LoopIWarning', source: 'Tripadvisor', rating: 2, date: '2024-09', text: 'Loop I restrooms filthy — had been this way on past visits too. The park and Teton views are spectacular but campground infrastructure seriously needs investment.', helpful: 78, verified: true, type: 'negative' },
+    { id: 'cb4', author: 'SeptemberTeton', source: 'Campendium', rating: 5, date: '2025-09', text: 'September: fall gold everywhere, moose near the dam at dusk, grizzly spotted from the road. Almost no other campers. The Tetons in fall are extraordinary and nobody is there.', helpful: 167, verified: true, type: 'positive' },
+  ],
+
+  'madison-yellowstone': [
+    { id: 'my1', author: 'BisonWatcher', source: 'The Dyrt', rating: 5, date: '2025-05', text: 'Woke up at 6am and bison were grazing 50 feet from my tent in Madison Valley. Every single morning without exception. This is what camping in America should be.', helpful: 201, verified: false, type: 'positive' },
+    { id: 'my2', author: 'FlyFisher_MT', source: 'Reddit', rating: 5, date: '2025-09', text: 'Madison River brown trout fishing is world-class. Wyoming fishing license required — buy it online before you arrive. Best part of the whole Yellowstone trip.', helpful: 134, verified: false, type: 'positive' },
+    { id: 'my3', author: 'RangerProgram', source: 'Campendium', rating: 5, date: '2025-08', text: 'Ranger amphitheater program at night was the best in any national park. Perfect for kids. Strategic central location equidistant from Old Faithful and Norris Geyser Basin.', helpful: 89, verified: true, type: 'positive' },
+    { id: 'my4', author: 'EarlyBird_WY', source: 'The Dyrt', rating: 4, date: '2025-07', text: 'Enter before 9am or after 5pm — midday the park is a gridlock. From Madison you can reach Old Faithful before crowds arrive. No store at Madison — stock up at Old Faithful Village first.', helpful: 156, verified: true, type: 'mixed' },
+  ],
+
+  'moraine-park-rmnp': [
+    { id: 'mp1', author: 'ElkRutFan', source: 'Reddit', rating: 5, date: '2025-09', text: 'September elk rut — bulls bugling at 4am across the valley. Set your alarm, walk to the meadow in the dark. Nothing in North America sounds like it. Come in September.', helpful: 312, verified: false, type: 'positive' },
+    { id: 'mp2', author: 'D141Site', source: 'Tripadvisor', rating: 5, date: '2025-08', text: 'Site D141 walk-up: jaw-dropping Longs Peak views and elk in the meadow below. Best campsite I have had in 50 years of camping. Elk rut in September is beyond description.', helpful: 188, verified: true, type: 'positive' },
+    { id: 'mp3', author: 'WinterCamper_CO', source: 'Campendium', rating: 5, date: '2026-02', text: 'Winter camping (first-come, first-served): water available, clean restrooms, dump station, almost nobody here. Snowy glacial valley inside RMNP entirely to myself. Best kept NPS secret.', helpful: 234, verified: true, type: 'positive' },
+    { id: 'mp4', author: 'RidgeSiteMissed', source: 'Tripadvisor', rating: 3, date: '2025-08', text: 'All the best ridge sites are now electric-only at $55. Used to be accessible to everyone. Now reserved for those paying premium rates. A frustrating change.', helpful: 143, verified: true, type: 'negative' },
+  ],
+
+  'upper-pines-yosemite': [
+    { id: 'up1', author: 'YosemiteVeteran', source: 'Recreation.gov', rating: 5, date: '2026-01', text: 'Our 15th stay here. Beautiful views, clean restrooms, friendly staff. It never gets old. Winter camping is the secret — walk-up sites, valley nearly empty, campfires anytime.', helpful: 178, verified: true, type: 'positive' },
+    { id: 'up2', author: 'MistTrailMom', source: 'The Dyrt', rating: 5, date: '2025-06', text: 'Mist Trail to Vernal Falls starts 0.5 miles from camp. Walked before 7am before day visitors arrived. Shared the mist and waterfalls with maybe 20 people. This is the way to do Yosemite.', helpful: 201, verified: true, type: 'positive' },
+    { id: 'up3', author: 'GeneratorAnnoyed', source: 'PerfectCamp', rating: 3, date: '2026-02', text: 'Came for peace and quiet inside the most beautiful national park. Generator noise during allowed hours ruined it. No hookups here — there is no reason to allow generators. Staff unable to help.', helpful: 134, verified: true, type: 'negative' },
+    { id: 'up4', author: 'HalfDomeCamper', source: 'Hipcamp', rating: 5, date: '2025-07', text: 'Site 44, walk to Happy Isles, Half Dome permit via trail. Camp host went above and beyond for our girls. One of the best camping experiences of my life.', helpful: 89, verified: true, type: 'positive' },
+  ],
+
+  'cape-lookout-oregon': [
+    { id: 'cl1', author: 'OregonCoastReg', source: 'The Dyrt', rating: 5, date: '2025-09', text: 'Best state park on the Oregon coast. Natural screening between sites is unlike anything I have seen. Free hot showers. Fell asleep to waves. Will be back every year.', helpful: 167, verified: true, type: 'positive' },
+    { id: 'cl2', author: 'UpperLoopOnly', source: 'The Dyrt', rating: 4, date: '2023-09', text: 'Stick to upper A, B, C loops only. D loop bathroom is mildewed and barely acceptable. Upper loops are well-maintained. Location is too good to abandon — just avoid D.', helpful: 134, verified: true, type: 'mixed' },
+    { id: 'cl3', author: 'WhaleWatcher_OR', source: 'Campendium', rating: 5, date: '2024-03', text: 'Cape Lookout headland trail in March gray whale migration. Whales surfacing multiple times from the 400-foot cliffs. Most dramatic hike on the Oregon coast — few people know it exists.', helpful: 221, verified: true, type: 'positive' },
+    { id: 'cl4', author: 'TillamookDetour', source: 'The Dyrt', rating: 4, date: '2025-08', text: '$33/night for no hookups seemed steep at first. But free hot showers, private sites, ocean access — genuinely worth it. Tillamook Creamery 14 miles away was fantastic.', helpful: 78, verified: true, type: 'positive' },
+  ],
+
+  'sol-duc-olympic': [
+    { id: 'sd1', author: 'HotSpringsCamper', source: 'Hipcamp', rating: 5, date: '2025-07', text: 'Soaked in thermal hot springs at 9pm under the stars after hiking through 500-year-old trees. Nothing else like this combination exists in America. Completely unique.', helpful: 245, verified: true, type: 'positive' },
+    { id: 'sd2', author: 'SolDucFalls', source: 'Reddit', rating: 5, date: '2025-08', text: 'Sol Duc Falls trail through old-growth — trees so massive you cannot believe they are real. Three-branched waterfall through a mossy canyon. Best 3-mile hike I have ever done.', helpful: 189, verified: false, type: 'positive' },
+    { id: 'sd3', author: 'OctoberSalmon', source: 'The Dyrt', rating: 5, date: '2024-10', text: 'October salmon spawning run: watched salmon fighting upstream from camp. Two black bears feeding on salmon in the shallows 30 yards away. Old-growth, rain, bears, salmon — pure wilderness.', helpful: 312, verified: true, type: 'positive' },
+    { id: 'sd4', author: 'RainReality', source: 'Campendium', rating: 4, date: '2024-08', text: '140 inches of rain per year here is real. Even in summer bring full rain gear every day. Once you accept the rain, the old-growth forest becomes one of the most atmospheric camps anywhere.', helpful: 156, verified: true, type: 'mixed' },
+  ],
+
+  'pfeiffer-big-sur': [
+    { id: 'pb1', author: 'CaliforniaDreamer', source: 'The Dyrt', rating: 5, date: '2025-09', text: 'Woke up in redwood-filtered light, walked to the river swimming hole, drove to Bixby Bridge at sunset. This is why California exists. Perfect four days.', helpful: 198, verified: true, type: 'positive' },
+    { id: 'pb2', author: 'CondorSpotter', source: 'The Dyrt', rating: 5, date: '2025-05', text: 'First California condor sighting right over the campground — 10-foot wingspan over ancient redwoods. Then Pfeiffer Beach with purple sand at sunset. This campground is something special.', helpful: 167, verified: true, type: 'positive' },
+    { id: 'pb3', author: 'Hwy1Warning', source: 'Campendium', rating: 4, date: '2025-07', text: 'Always check Caltrans before heading south on Highway 1. Landslides close it with zero warning. Got stranded once. Now I check every morning before any drive. The campground itself is wonderful.', helpful: 234, verified: true, type: 'mixed' },
+    { id: 'pb4', author: 'PurpleSandSecret', source: 'Reddit', rating: 5, date: '2025-10', text: 'Nobody knows about Pfeiffer Beach — unmarked turn on Sycamore Canyon Road. Purple sand from manganese garnet deposits. Keyhole rock arch frames the sunset perfectly in November.', helpful: 289, verified: false, type: 'positive' },
+  ],
+
+  'apgar-glacier': [
+    { id: 'ag1', author: 'GlacierPebbles', source: 'The Dyrt', rating: 5, date: '2025-07', text: 'Lake McDonald pebble shore at sunrise after rain: teal water, multi-colored polished stones, mountains reflected. Nothing in the lower 48 looks like this. Camp here for this view alone.', helpful: 212, verified: true, type: 'positive' },
+    { id: 'ag2', author: 'AvalancheLake', source: 'Reddit', rating: 5, date: '2025-08', text: 'Avalanche Lake trail from camp: cedar grove going in, then a crystal-blue glacial lake carved into rock. Completely silent. One of the best hikes in any national park.', helpful: 178, verified: false, type: 'positive' },
+    { id: 'ag3', author: 'GrizzlyCountry', source: 'Campendium', rating: 4, date: '2025-09', text: 'Grizzly seen near the Apgar visitor center two days running. Bear spray is genuinely mandatory here. The park is extraordinary but this is real wilderness. Come fully prepared.', helpful: 156, verified: true, type: 'mixed' },
+    { id: 'ag4', author: 'SeptemberGlacier', source: 'The Dyrt', rating: 5, date: '2025-09', text: 'After Labor Day: no vehicle permits, crowds down 40%, bears feeding before hibernation, fall color beginning. Going-to-the-Sun Road still fully open. The secret window for Glacier.', helpful: 234, verified: true, type: 'positive' },
+  ],
+
+  'mather-grand-canyon': [
+    { id: 'gc1', author: 'SunriseMather', source: 'The Dyrt', rating: 5, date: '2025-05', text: 'Walked to Mather Point at 5am. Sunrise light on the canyon walls — orange, red, purple, gold cycling through in minutes. This campground lets you do this every morning.', helpful: 267, verified: true, type: 'positive' },
+    { id: 'gc2', author: 'FreeShuttleWin', source: 'Campendium', rating: 5, date: '2025-10', text: 'Mule deer through camp every morning. California condors overhead. Free shuttle to every viewpoint. El Tovar dinner on the rim. This is the Grand Canyon done completely right.', helpful: 189, verified: true, type: 'positive' },
+    { id: 'gc3', author: 'WinterRim', source: 'Reddit', rating: 5, date: '2024-12', text: 'December camping: snow on the canyon rim, almost zero visitors, campfires at night. The Grand Canyon without summer crowds is an entirely different and better experience.', helpful: 312, verified: false, type: 'positive' },
+    { id: 'gc4', author: 'HeatWarning', source: 'Google', rating: 3, date: '2025-07', text: 'Important: rim is 90 degrees in summer, inner canyon is 110+. Two hikers airlifted near us. Only hike inner canyon before 7am. The campground itself is lovely — this is about trail safety.', helpful: 445, verified: true, type: 'mixed' },
+  ],
 }
 
 // Campaign insights derived from reviews
@@ -193,4 +271,17 @@ export const campaignInsights: Record<string, {
     targetAudience: 'Photographers, fishermen, bird watchers, off-grid seekers, adventure campers',
     hashtags: ['#PyramidLake', '#NevadaHidden', '#PaiuteTribe', '#DesertCamping', '#FlyFishing'],
   },
+
+
+  'watchman-campground': { sentiment: 88, topPositives: ['Only canyon campground in 2026', 'Shuttle at campsite', 'Virgin River access', 'Year-round'], topNegatives: ['No showers on-site', 'Sites close together', 'Caterpillars April-May'], campaignAngle: 'The last campground inside Zion Canyon — park once, hike everything', targetAudience: 'Hikers, families, first-time Zion visitors', hashtags: ['#Zion', '#WatchmanCampground', '#ZionNationalPark', '#NationalParkCamping'] },
+  'rubys-inn-bryce': { sentiment: 78, topPositives: ['Free shuttle to Bryce', 'Full hookups up to 65ft', 'Dark sky stargazing', 'Bikeable to hoodoos'], topNegatives: ['No discounts', 'Dusty close sites', 'Pricey'], campaignAngle: 'Ride the shuttle to Bryce hoodoos, bike back under the Milky Way', targetAudience: 'Bryce Canyon visitors, families, full hookup RVers', hashtags: ['#BryceCanyon', '#RubysInn', '#DarkSkyPark', '#UtahCamping'] },
+  'colter-bay-grand-teton': { sentiment: 82, topPositives: ['Jackson Lake setting', 'Marina and activities', 'Wildlife abundant', 'Village amenities'], topNegatives: ['No hookups in main camp', 'Some poor restrooms', 'Mosquitoes June'], campaignAngle: 'Summer camp for the whole family — grizzlies, lake cruises, horseback, and the Tetons', targetAudience: 'Families, wildlife watchers, national park lovers', hashtags: ['#GrandTeton', '#ColterBay', '#JacksonLake', '#WyomingCamping'] },
+  'madison-yellowstone': { sentiment: 90, topPositives: ['Bison every morning', 'World-class fly fishing', 'Strategic central location', 'Ranger programs'], topNegatives: ['No hookups', 'No store at Madison', 'Books fast'], campaignAngle: 'Wake up to bison in Yellowstone — central location, world-class fishing', targetAudience: 'Fly fishermen, wildlife watchers, Yellowstone explorers', hashtags: ['#Yellowstone', '#MadisonCampground', '#YellowstoneCamping', '#FlyFishing'] },
+  'moraine-park-rmnp': { sentiment: 88, topPositives: ['September elk rut', 'Year-round access', 'Bear Lake permit included', 'Longs Peak views'], topNegatives: ['Best sites now electric premium', 'No real showers', 'Rude firewood vendor'], campaignAngle: 'Elk bugling at 4am in a glacier-carved valley — the best free wildlife show in America', targetAudience: 'Elk watchers, hikers, year-round campers, fall foliage seekers', hashtags: ['#RMNP', '#MoraineParks', '#ElkRut', '#ColoradoCamping'] },
+  'upper-pines-yosemite': { sentiment: 83, topPositives: ['Iconic valley location', 'Walking distance to all trails', 'Year-round', 'Best sites have views'], topNegatives: ['Very close together', 'Generator noise', 'Reservations nearly impossible'], campaignAngle: 'Wake up inside Yosemite Valley — El Capitan, Half Dome, and the Merced River at your door', targetAudience: 'Yosemite hikers, climbers, families, Half Dome permit holders', hashtags: ['#Yosemite', '#UpperPines', '#YosemiteValley', '#NationalParkCamping'] },
+  'cape-lookout-oregon': { sentiment: 84, topPositives: ['Private screened sites', 'Free hot showers', 'Pacific beach access', 'Whale watching trail'], topNegatives: ['D loop needs work', 'Rain always possible', '2026 construction'], campaignAngle: "Oregon's most private coastal campground — giant spruce, free hot showers, whale watching", targetAudience: 'Oregon coast lovers, hikers, whale watchers, PNW road trippers', hashtags: ['#OregonCoast', '#CapeLookout', '#OregonStatePark', '#CoastalCamping'] },
+  'sol-duc-olympic': { sentiment: 92, topPositives: ['Natural hot springs access', 'Old-growth rainforest', 'Salmon run in October', 'Unique NPS experience'], topNegatives: ['Hot springs cost extra', 'No cell signal', 'Only 82 sites', 'Rain is constant'], campaignAngle: "Soak in natural hot springs inside a 500-year-old rainforest — America's most unique campground", targetAudience: 'Rainforest lovers, hot spring seekers, serious hikers, photographers', hashtags: ['#OlympicNationalPark', '#SolDuc', '#HotSprings', '#OldGrowth'] },
+  'pfeiffer-big-sur': { sentiment: 87, topPositives: ['Big Sur River swimming hole', 'Coastal redwoods', 'Bixby Bridge and McWay nearby', 'Condors overhead'], topNegatives: ['Highway 1 closures unpredictable', '32ft RV limit', 'No hookups'], campaignAngle: 'Camp in Big Sur redwoods — purple sand beach, condors, and the most dramatic coastline in America', targetAudience: 'California road trippers, hikers, photographers, beach lovers', hashtags: ['#BigSur', '#PfeifferBigSur', '#Highway1', '#CaliforniaCamping'] },
+  'apgar-glacier': { sentiment: 89, topPositives: ['Lake McDonald colored pebbles', 'Going-to-the-Sun Road access', 'Grizzly country wildlife', 'Village amenities'], topNegatives: ['Vehicle permits required peak season', 'June mosquitoes intense', 'No hookups'], campaignAngle: "Camp on Lake McDonald's kaleidoscopic shore in grizzly country — America's most dramatic national park", targetAudience: 'Glacier enthusiasts, hikers, photographers, wildlife watchers', hashtags: ['#GlacierNationalPark', '#Apgar', '#LakeMcDonald', '#MontanaCamping'] },
+  'mather-grand-canyon': { sentiment: 90, topPositives: ['1 mile to South Rim', 'Free shuttle', 'Year-round', 'Condors and deer in camp'], topNegatives: ['No hookups (30ft max)', 'Hot summer conditions', 'Books 6 months out'], campaignAngle: 'Walk to the edge of one of the Seven Wonders of the World — a mile from your tent', targetAudience: 'Grand Canyon visitors, families, rim hikers, photography enthusiasts', hashtags: ['#GrandCanyon', '#MatherCampground', '#GrandCanyonNationalPark', '#ArizonaCamping'] },
 }
