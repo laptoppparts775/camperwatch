@@ -5,8 +5,8 @@ import { MapPin, Star, ExternalLink, ChevronLeft, Check, TreePine, Clock, AlertC
 import dynamic from 'next/dynamic'
 import { useState, Suspense } from 'react'
 import ShareButtons from '@/components/community/ShareButtons'
-import { siteGuides } from '@/lib/sites'
-import SiteGuideSection from '@/components/SiteGuide'
+import SiteGuide from '@/components/SiteGuide'
+import { siteGuides } from '@/lib/siteGuides'
 import { campIntelligence } from '@/lib/intelligence'
 import IntelligenceSection from '@/components/IntelligenceSection'
 import { reviews as allReviews, campaignInsights } from '@/lib/reviews'
@@ -129,11 +129,11 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
               </div>
             )}
 
-            {/* Site Guide */}
+            {/* Site Guide — loops, best sites, rules */}
             {siteGuides[camp.slug] && (
               <div>
-                <h2 className="font-semibold text-gray-900 mb-4">Site-by-Site Guide 🗺️</h2>
-                <SiteGuideSection guide={siteGuides[camp.slug]} campgroundName={camp.name} />
+                <h2 className="font-semibold text-gray-900 mb-4">Site Guide — Pick the Right Spot 🗺️</h2>
+                <SiteGuide guide={siteGuides[camp.slug]} name={camp.name} />
               </div>
             )}
 
