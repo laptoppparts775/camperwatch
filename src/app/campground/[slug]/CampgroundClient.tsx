@@ -6,6 +6,8 @@ import { MapPin, Star, ExternalLink, ChevronLeft, Check, TreePine, Clock, AlertC
 import dynamic from 'next/dynamic'
 import { useState, Suspense } from 'react'
 import ShareButtons from '@/components/community/ShareButtons'
+import { reviews as allReviews, campaignInsights } from '@/lib/reviews'
+import ReviewsSection from '@/components/reviews/ReviewsSection'
 import Link from 'next/link'
 
 const MapView = dynamic(() => import('@/components/map/MapView'), { ssr: false })
@@ -212,6 +214,20 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
               <div className="h-64 rounded-2xl overflow-hidden border border-gray-100">
                 <MapView campgrounds={[camp]} selectedId={camp.id} onSelect={() => {}} />
               </div>
+            </div>
+
+            {/* Reviews from across the web */}
+            <div>
+              <h2 className="font-semibold text-gray-900 mb-4">What Campers Are Saying 💬</h2>
+              {allReviews[camp.slug] ? (
+                <ReviewsSection
+                  campgroundId={camp.slug}
+                  reviews={allReviews[camp.slug]}
+                  sentiment={campaignInsights[camp.slug]?.sentiment || 70}
+                />
+              ) : (
+                <p className="text-sm text-gray-400">No reviews yet — be the first to share your experience!</p>
+              )}
             </div>
 
             {/* Community Feed for this campground */}
