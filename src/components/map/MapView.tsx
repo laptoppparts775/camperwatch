@@ -51,7 +51,7 @@ export default function MapView({ campgrounds, selectedId, onSelect }: MapViewPr
         >
           <Popup>
             <div className="min-w-[200px]">
-              <img src={camp.images[0]} alt={camp.name} className="w-full h-24 object-cover rounded-lg mb-2" />
+              <img src={(camp.images as any)[0]?.url || (camp.images as any)[0]} alt={camp.name} className="w-full h-24 object-cover rounded-lg mb-2" />
               <h3 className="font-semibold text-gray-900 text-sm">{camp.name}</h3>
               <p className="text-xs text-gray-500 mb-1">{camp.location}</p>
               <div className="flex items-center justify-between">

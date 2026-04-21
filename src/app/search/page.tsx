@@ -201,7 +201,7 @@ function CampgroundCard({ camp }: { camp: Campground }) {
       {/* Image */}
       <div className="md:w-64 h-48 md:h-auto flex-shrink-0 overflow-hidden">
         <img
-          src={camp.images[0]}
+          src={(camp.images as any)[0]?.url || (camp.images as any)[0]}
           alt={camp.name}
           className="w-full h-full object-cover"
         />
