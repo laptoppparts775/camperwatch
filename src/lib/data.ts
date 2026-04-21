@@ -66,7 +66,7 @@ export const campgrounds = [
       { url: 'https://images.unsplash.com/photo-1510312305653-8ed496efae75?w=1200&q=80', alt: 'Tent camping by a creek in Sierra Nevada pine forest at Lake Tahoe KOA campground', title: 'Lake Tahoe KOA Tent Sites', caption: 'Shaded tent sites alongside Echo Creek' },
       { url: 'https://images.unsplash.com/photo-1571863533956-01c88e79957e?w=1200&q=80', alt: 'Vintage silver Airstream trailer parked in pine forest glamping campground', title: 'Vintage Airstream at Lake Tahoe KOA', caption: 'Vintage Airstream lodging — books out weeks in advance' },
       { url: 'https://images.unsplash.com/photo-1533873984035-25970ab07461?w=1200&q=80', alt: 'Paved RV sites with full hookups at mountain pine forest campground California', title: 'Lake Tahoe KOA Full Hookup RV Sites', caption: 'Level asphalt RV pads with 30/50A hookups' },
-      { url: 'https://images.unsplash.com/photo-1500581276021-a4469e3a2699?w=1200&q=80', alt: 'Mountain campground swimming pool surrounded by pine trees on a sunny summer day', title: 'Heated Pool at Lake Tahoe KOA', caption: 'Heated pool open all season — rare at Tahoe campgrounds' },
+      { url: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1200&q=80', alt: 'Mountain campground swimming pool surrounded by pine trees on a sunny summer day', title: 'Heated Pool at Lake Tahoe KOA', caption: 'Heated pool open all season — rare at Tahoe campgrounds' },
     ],
     booking_url: 'https://koa.com/campgrounds/lake-tahoe/',
     cancellation_policy: 'Full refund if cancelled 7+ days before arrival. No refund within 7 days. KOA Rewards members save 10%.',
@@ -149,7 +149,7 @@ export const campgrounds = [
     rating: 4.4,
     review_count: 621,
     images: [
-      { url: 'https://images.unsplash.com/photo-1500581276021-a4469e3a2699?w=1200&q=80', alt: 'Pine forest campsite steps from Lake Tahoe blue water at Camp Richardson historic resort', title: 'Camp Richardson — Directly on Lake Tahoe Shore', caption: 'Walk from your site to the beach in minutes' },
+      { url: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1200&q=80', alt: 'Pine forest campsite steps from Lake Tahoe blue water at Camp Richardson historic resort', title: 'Camp Richardson — Directly on Lake Tahoe Shore', caption: 'Walk from your site to the beach in minutes' },
       { url: 'https://images.unsplash.com/photo-1476041800959-2f6bb412c8ce?w=1200&q=80', alt: 'Flat paved bicycle path through pine forest along Lake Tahoe shoreline California', title: 'Paved Lakeside Bike Path at Camp Richardson', caption: 'Flat bike paths connect multiple beaches along the south shore' },
       { url: 'https://images.unsplash.com/photo-1496080174650-637e3f22fa03?w=1200&q=80', alt: 'Spacious tent campsite in tall Sierra Nevada pine forest at California state park', title: 'Camp Richardson Tent Sites', caption: 'Spacious tent sites steps from the beach' },
       { url: 'https://images.unsplash.com/photo-1533873984035-25970ab07461?w=1200&q=80', alt: 'Historic wooden resort building surrounded by pine trees at South Lake Tahoe California', title: 'Camp Richardson Historic Resort', caption: 'Historic resort dating back decades — unique character' },
