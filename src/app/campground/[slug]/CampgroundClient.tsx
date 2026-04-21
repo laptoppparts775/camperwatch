@@ -1,11 +1,12 @@
 'use client'
-
 import { Campground } from '@/lib/data'
 import { useRouter } from 'next/navigation'
 import { MapPin, Star, ExternalLink, ChevronLeft, Check, TreePine, Clock, AlertCircle, Mountain, Users, Calendar, ChevronRight } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useState, Suspense } from 'react'
 import ShareButtons from '@/components/community/ShareButtons'
+import { campIntelligence } from '@/lib/intelligence'
+import IntelligenceSection from '@/components/IntelligenceSection'
 import { reviews as allReviews, campaignInsights } from '@/lib/reviews'
 import ReviewsSection from '@/components/reviews/ReviewsSection'
 import Link from 'next/link'
@@ -17,19 +18,20 @@ const CommunityFeed = dynamic(() => import('@/components/community/CommunityFeed
 export default function CampgroundClient({ camp }: { camp: Campground }) {
   const router = useRouter()
   const [activeImg, setActiveImg] = useState(0)
-  const images = camp.images as Array<{url: string, alt: string, title: string, caption: string}>
+  const images = camp.images as Array<{url: string; alt: string; title: string; caption: string}>
   const proTips = (camp as any).pro_tips as string[] || []
+  const intel = campIntelligence[camp.slug]
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-24 md:pb-0">
       {/* Header */}
       <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-3">
           <button onClick={() => router.back()} className="flex items-center gap-1 text-gray-500 hover:text-gray-900 text-sm">
-            <ChevronLeft size={16} /> Back
+            <ChevronLeft size={16}/> Back
           </button>
           <Link href="/" className="flex items-center gap-2 ml-2">
-            <TreePine size={18} className="text-green-700" />
+            <TreePine size={18} className="text-green-700"/>
             <span className="font-display font-semibold text-gray-900 hidden sm:block">CamperWatch</span>
           </Link>
           <nav className="ml-auto flex gap-4 text-sm">
@@ -43,34 +45,26 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
         {/* Image Gallery */}
         <div className="mb-6">
           <div className="relative h-72 md:h-[420px] rounded-2xl overflow-hidden mb-2">
-            <img src={images[activeImg]?.url} alt={images[activeImg]?.alt} title={images[activeImg]?.title}
-              className="w-full h-full object-cover" />
+            <img src={images[activeImg]?.url} alt={images[activeImg]?.alt} title={images[activeImg]?.title} className="w-full h-full object-cover"/>
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
               <p className="text-white text-sm">{images[activeImg]?.caption}</p>
             </div>
             {images.length > 1 && <>
-              <button onClick={() => setActiveImg(i => (i - 1 + images.length) % images.length)}
-                className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow">
-                <ChevronLeft size={16} />
-              </button>
-              <button onClick={() => setActiveImg(i => (i + 1) % images.length)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow">
-                <ChevronRight size={16} />
-              </button>
+              <button onClick={() => setActiveImg(i => (i - 1 + images.length) % images.length)} className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow"><ChevronLeft size={16}/></button>
+              <button onClick={() => setActiveImg(i => (i + 1) % images.length)} className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white rounded-full p-2 shadow"><ChevronRight size={16}/></button>
             </>}
           </div>
           <div className="flex gap-2">
             {images.map((img, i) => (
-              <button key={i} onClick={() => setActiveImg(i)}
-                className={`flex-1 h-14 md:h-20 rounded-lg overflow-hidden border-2 transition-all ${activeImg === i ? 'border-green-600' : 'border-transparent opacity-70'}`}>
-                <img src={img.url} alt={img.alt} title={img.title} className="w-full h-full object-cover" />
+              <button key={i} onClick={() => setActiveImg(i)} className={`flex-1 h-14 md:h-20 rounded-lg overflow-hidden border-2 transition-all ${activeImg === i ? 'border-green-600' : 'border-transparent opacity-70'}`}>
+                <img src={img.url} alt={img.alt} title={img.title} className="w-full h-full object-cover"/>
               </button>
             ))}
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Left — main */}
+          {/* Left */}
           <div className="md:col-span-2 space-y-6">
             {/* Title */}
             <div>
@@ -82,18 +76,14 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
               </div>
               {(camp as any).tagline && <p className="text-green-700 font-medium text-sm mb-2" data-speakable="true">{(camp as any).tagline}</p>}
               <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-3">
-                <span className="flex items-center gap-1"><MapPin size={13} />{camp.location}</span>
-                <span className="flex items-center gap-1"><Star size={13} className="text-yellow-400 fill-yellow-400" />{camp.rating} ({camp.review_count})</span>
-                {(camp as any).elevation && <span className="flex items-center gap-1"><Mountain size={13} />{(camp as any).elevation}</span>}
+                <span className="flex items-center gap-1"><MapPin size={13}/>{camp.location}</span>
+                <span className="flex items-center gap-1"><Star size={13} className="text-yellow-400 fill-yellow-400"/>{camp.rating} ({camp.review_count})</span>
+                {(camp as any).elevation && <span className="flex items-center gap-1"><Mountain size={13}/>{(camp as any).elevation}</span>}
               </div>
-              <ShareButtons
-                title={camp.name}
-                url={`https://camperwatch.org/campground/${camp.slug}`}
-                description={(camp as any).tagline || camp.description?.slice(0, 120) || ''}
-              />
+              <ShareButtons title={camp.name} url={`https://camperwatch.org/campground/${camp.slug}`} description={(camp as any).tagline || camp.description?.slice(0,120) || ''}/>
             </div>
 
-            {/* About — speakable */}
+            {/* About */}
             <div>
               <h2 className="font-semibold text-gray-900 mb-2">About</h2>
               <p className="text-gray-600 leading-relaxed text-sm" data-speakable="true">{camp.description}</p>
@@ -105,18 +95,14 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
                 <div>
                   <h3 className="font-semibold text-gray-900 mb-2 text-sm">Best For</h3>
                   <div className="flex flex-wrap gap-1.5">
-                    {(camp as any).best_for.map((b: string) => (
-                      <span key={b} className="bg-green-50 text-green-800 text-xs px-2.5 py-1 rounded-full font-medium">{b}</span>
-                    ))}
+                    {(camp as any).best_for.map((b: string) => <span key={b} className="bg-green-50 text-green-800 text-xs px-2.5 py-1 rounded-full font-medium">{b}</span>)}
                   </div>
                 </div>
               )}
               <div>
                 <h3 className="font-semibold text-gray-900 mb-2 text-sm">Site Types</h3>
                 <div className="flex flex-wrap gap-1.5">
-                  {camp.site_types.map(t => (
-                    <span key={t} className="bg-blue-50 text-blue-800 text-xs px-2.5 py-1 rounded-full font-medium">{t}</span>
-                  ))}
+                  {camp.site_types.map(t => <span key={t} className="bg-blue-50 text-blue-800 text-xs px-2.5 py-1 rounded-full font-medium">{t}</span>)}
                 </div>
               </div>
             </div>
@@ -127,22 +113,26 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
               <div className="grid grid-cols-2 gap-1.5">
                 {camp.amenities.map(a => (
                   <div key={a} className="flex items-start gap-2 text-sm text-gray-700">
-                    <Check size={13} className="text-green-600 flex-shrink-0 mt-0.5" />{a}
+                    <Check size={13} className="text-green-600 flex-shrink-0 mt-0.5"/>{a}
                   </div>
                 ))}
               </div>
             </div>
 
+            {/* Intelligence Guide */}
+            {intel && (
+              <div>
+                <h2 className="font-semibold text-gray-900 mb-4">Complete Campground Guide 🧠</h2>
+                <IntelligenceSection intel={intel} name={camp.name}/>
+              </div>
+            )}
+
             {/* Pro Tips */}
             {proTips.length > 0 && (
               <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
-                <h2 className="font-semibold text-amber-900 mb-3 flex items-center gap-2">
-                  💡 Pro Tips from Real Campers
-                </h2>
+                <h2 className="font-semibold text-amber-900 mb-3">💡 Pro Tips from Real Campers</h2>
                 <ul className="space-y-2">
-                  {proTips.map((tip: string, i: number) => (
-                    <li key={i} className="text-sm text-amber-800 leading-relaxed">{tip}</li>
-                  ))}
+                  {proTips.map((tip: string, i: number) => <li key={i} className="text-sm text-amber-800 leading-relaxed">{tip}</li>)}
                 </ul>
               </div>
             )}
@@ -150,14 +140,22 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
             {/* Community Tips */}
             <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
               <Suspense fallback={<p className="text-xs text-gray-400">Loading tips...</p>}>
-                <TipsList campgroundId={camp.slug} />
+                <TipsList campgroundId={camp.slug}/>
               </Suspense>
             </div>
+
+            {/* Reviews */}
+            {allReviews[camp.slug] && (
+              <div>
+                <h2 className="font-semibold text-gray-900 mb-4">What Campers Are Saying 💬</h2>
+                <ReviewsSection campgroundId={camp.slug} reviews={allReviews[camp.slug]} sentiment={campaignInsights[camp.slug]?.sentiment || 70}/>
+              </div>
+            )}
 
             {/* Known Issues */}
             <div className="bg-red-50 border border-red-200 rounded-xl p-4">
               <div className="flex items-start gap-2">
-                <AlertCircle size={15} className="text-red-500 mt-0.5 flex-shrink-0" />
+                <AlertCircle size={15} className="text-red-500 mt-0.5 flex-shrink-0"/>
                 <div>
                   <h3 className="font-semibold text-red-800 mb-1 text-sm">Known Issues</h3>
                   <p className="text-sm text-red-700">{camp.known_issues}</p>
@@ -172,7 +170,7 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
                 <div className="grid grid-cols-2 gap-2">
                   {(camp as any).nearby.map((n: string) => (
                     <div key={n} className="flex items-center gap-2 text-sm text-gray-600 bg-white border border-gray-100 rounded-lg px-3 py-2">
-                      <MapPin size={12} className="text-green-600 flex-shrink-0" />{n}
+                      <MapPin size={12} className="text-green-600 flex-shrink-0"/>{n}
                     </div>
                   ))}
                 </div>
@@ -182,7 +180,7 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
             {/* Cancellation */}
             <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
               <div className="flex items-start gap-2">
-                <Calendar size={15} className="text-blue-600 mt-0.5 flex-shrink-0" />
+                <Calendar size={15} className="text-blue-600 mt-0.5 flex-shrink-0"/>
                 <div>
                   <h3 className="font-semibold text-blue-800 mb-1 text-sm">Cancellation Policy</h3>
                   <p className="text-sm text-blue-700">{camp.cancellation_policy}</p>
@@ -199,10 +197,7 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
                 { icon: Users, label: 'Max/site', value: '6 people' },
               ].map(({ icon: Icon, label, value }) => (
                 <div key={label} className="bg-white rounded-xl border border-gray-100 p-3">
-                  <div className="flex items-center gap-1.5 mb-1">
-                    <Icon size={12} className="text-green-700" />
-                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{label}</span>
-                  </div>
+                  <div className="flex items-center gap-1.5 mb-1"><Icon size={12} className="text-green-700"/><span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{label}</span></div>
                   <p className="font-semibold text-gray-900 text-sm">{value}</p>
                 </div>
               ))}
@@ -212,29 +207,15 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
             <div>
               <h2 className="font-semibold text-gray-900 mb-3">Location</h2>
               <div className="h-64 rounded-2xl overflow-hidden border border-gray-100">
-                <MapView campgrounds={[camp]} selectedId={camp.id} onSelect={() => {}} />
+                <MapView campgrounds={[camp]} selectedId={camp.id} onSelect={() => {}}/>
               </div>
             </div>
 
-            {/* Reviews from across the web */}
-            <div>
-              <h2 className="font-semibold text-gray-900 mb-4">What Campers Are Saying 💬</h2>
-              {allReviews[camp.slug] ? (
-                <ReviewsSection
-                  campgroundId={camp.slug}
-                  reviews={allReviews[camp.slug]}
-                  sentiment={campaignInsights[camp.slug]?.sentiment || 70}
-                />
-              ) : (
-                <p className="text-sm text-gray-400">No reviews yet — be the first to share your experience!</p>
-              )}
-            </div>
-
-            {/* Community Feed for this campground */}
+            {/* Community Feed */}
             <div>
               <h2 className="font-semibold text-gray-900 mb-4">Camper Posts 🏕️</h2>
-              <Suspense fallback={<p className="text-xs text-gray-400">Loading community...</p>}>
-                <CommunityFeed campgroundId={camp.slug} />
+              <Suspense fallback={<p className="text-xs text-gray-400">Loading...</p>}>
+                <CommunityFeed campgroundId={camp.slug}/>
               </Suspense>
             </div>
           </div>
@@ -244,22 +225,19 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
             <div className="bg-white rounded-2xl border border-gray-200 p-5 sticky top-20 shadow-sm">
               <div className="mb-1">
                 <span className="text-3xl font-bold text-gray-900">${camp.price_per_night}</span>
-                {(camp as any).price_high && (camp as any).price_high !== camp.price_per_night && (
-                  <span className="text-gray-400 text-sm"> – ${(camp as any).price_high}</span>
-                )}
+                {(camp as any).price_high && (camp as any).price_high !== camp.price_per_night && <span className="text-gray-400 text-sm"> – ${(camp as any).price_high}</span>}
                 <span className="text-gray-400 text-sm">/night</span>
               </div>
               <div className="flex items-center gap-1 mb-4 text-sm">
-                <Star size={13} className="text-yellow-400 fill-yellow-400" />
+                <Star size={13} className="text-yellow-400 fill-yellow-400"/>
                 <span className="font-semibold">{camp.rating}</span>
                 <span className="text-gray-400">· {camp.review_count} reviews</span>
               </div>
-
               <div className="space-y-2 mb-5 text-sm divide-y divide-gray-50">
                 {[
                   ['Season', camp.season],
                   ['Max RV', camp.max_rig_length ? `${camp.max_rig_length} ft` : 'No hookups'],
-                  ['Hookups', ((camp as any).hookups || 'None')?.split('.')[0]],
+                  ['Hookups', ((camp as any).hookups || 'None').split('.')[0]],
                   ['Beach', (camp as any).nearest_beach || '—'],
                   ['Grocery', (camp as any).nearest_grocery || '—'],
                   ['Phone', camp.phone || '—'],
@@ -270,16 +248,11 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
                   </div>
                 ))}
               </div>
-
               <a href={camp.booking_url} target="_blank" rel="noopener noreferrer"
-                className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm transition-colors ${
-                  camp.available ? 'bg-green-700 hover:bg-green-800 text-white' : 'bg-gray-100 text-gray-400 cursor-not-allowed pointer-events-none'
-                }`}>
-                {camp.available ? <><ExternalLink size={15} /> Book Official Site</> : 'Currently Fully Booked'}
+                className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm transition-colors ${camp.available ? 'bg-green-700 hover:bg-green-800 text-white' : 'bg-gray-100 text-gray-400 cursor-not-allowed pointer-events-none'}`}>
+                {camp.available ? <><ExternalLink size={15}/> Book Official Site</> : 'Currently Fully Booked'}
               </a>
-              {!camp.available && (
-                <p className="text-xs text-center text-amber-600 mt-2 font-medium">⚡ Check daily for cancellations</p>
-              )}
+              {!camp.available && <p className="text-xs text-center text-amber-600 mt-2 font-medium">⚡ Check daily for cancellations</p>}
               <p className="text-xs text-center text-gray-400 mt-2">No fees added by CamperWatch.</p>
             </div>
           </div>
@@ -289,15 +262,10 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
       {/* Mobile sticky CTA */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-3 z-40 shadow-lg">
         <div className="flex items-center gap-3">
-          <div>
-            <span className="font-bold text-gray-900">${camp.price_per_night}</span>
-            <span className="text-gray-400 text-xs">/night</span>
-          </div>
+          <div><span className="font-bold text-gray-900">${camp.price_per_night}</span><span className="text-gray-400 text-xs">/night</span></div>
           <a href={camp.booking_url} target="_blank" rel="noopener noreferrer"
-            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm transition-colors ${
-              camp.available ? 'bg-green-700 text-white' : 'bg-gray-100 text-gray-400 pointer-events-none'
-            }`}>
-            {camp.available ? <><ExternalLink size={14} /> Book Now</> : 'Fully Booked'}
+            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm ${camp.available ? 'bg-green-700 text-white' : 'bg-gray-100 text-gray-400 pointer-events-none'}`}>
+            {camp.available ? <><ExternalLink size={14}/> Book Now</> : 'Fully Booked'}
           </a>
         </div>
       </div>
