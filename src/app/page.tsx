@@ -63,7 +63,7 @@ export default function HomePage() {
       </nav>
 
       {/* HERO — inline SVG silhouette = zero LCP fetch */}
-      <section className="relative flex flex-col justify-end" style={{ minHeight: '100svh', overflow: 'hidden' }}>
+      <section className="relative flex flex-col justify-end" style={{ minHeight: '100vh', minHeight: '100svh', overflow: 'hidden' }}>
 
         {/* Sky */}
         <div className="absolute inset-0" style={{
@@ -97,7 +97,7 @@ export default function HomePage() {
 
         {/* Hero content — centered, fully constrained */}
         <div className="relative z-10 flex flex-col items-center text-center w-full animate-hero"
-          style={{ paddingLeft: '1.25rem', paddingRight: '1.25rem', paddingTop: '7rem', paddingBottom: '11rem' }}>
+          style={{ paddingLeft: '1.25rem', paddingRight: '1.25rem', paddingTop: '5rem', paddingBottom: '8rem' }}>
 
           {/* Eyebrow pill */}
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-5 sm:mb-7 max-w-full"
@@ -200,8 +200,8 @@ export default function HomePage() {
           </div>
 
           {/* Mobile: scroll — constrained with clip */}
-          <div className="sm:hidden" style={{ overflow: 'hidden', margin: '0 -1rem' }}>
-            <div className="flex gap-3 overflow-x-auto pb-3 snap-x snap-mandatory scrollbar-hide" style={{ padding: '0 1rem' }}>
+          <div className="sm:hidden overflow-x-auto">
+            <div className="flex gap-3 pb-3 snap-x snap-mandatory scrollbar-hide" style={{ paddingBottom: '0.75rem' }}>
               {FEATURED.map(c => <CampCard key={c.slug} camp={c} />)}
             </div>
           </div>
@@ -318,8 +318,8 @@ function CampCard({ camp }: { camp: typeof campgrounds[0] }) {
   const src = `${img.url.split('?')[0]}?w=480&q=70&auto=format&fit=crop`
   return (
     <Link href={`/campground/${camp.slug}`}
-      className="group flex-shrink-0 snap-start rounded-xl overflow-hidden block relative"
-      style={{ width: '16rem', flex: '0 0 16rem', border: '1px solid rgba(255,255,255,0.06)' }}
+      className="group flex-shrink-0 sm:flex-shrink snap-start rounded-xl overflow-hidden block relative w-56 sm:w-auto"
+      style={{ border: '1px solid rgba(255,255,255,0.06)' }}
       // Desktop overrides via parent sm:grid — flex-shrink-0 + fixed w only active on mobile
     >
       <div className="h-36 sm:h-44 relative overflow-hidden bg-stone-900">

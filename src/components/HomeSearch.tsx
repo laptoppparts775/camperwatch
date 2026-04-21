@@ -18,7 +18,7 @@ export default function HomeSearch() {
   return (
     <div className="w-full">
       {/* Mobile: stacked single-column */}
-      <div className="flex flex-col gap-3 md:hidden">
+      <div className="flex flex-col gap-3 sm:hidden">
         <div className="relative">
           <MapPin size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 pointer-events-none" />
           <select
@@ -63,7 +63,7 @@ export default function HomeSearch() {
       </div>
 
       {/* Desktop: horizontal pill */}
-      <div className="hidden md:flex items-stretch bg-white rounded-2xl shadow-xl shadow-stone-950/10 overflow-hidden p-1.5 gap-1.5 max-w-2xl mx-auto">
+      <div className="hidden sm:flex items-stretch bg-white rounded-2xl shadow-xl shadow-stone-950/10 overflow-hidden p-1.5 gap-1.5 max-w-2xl mx-auto">
         <div className="flex items-center gap-2 flex-1 px-4 py-3">
           <MapPin size={15} className="text-stone-400 flex-shrink-0" />
           <div className="flex flex-col flex-1">
