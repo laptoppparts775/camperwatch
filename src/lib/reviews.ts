@@ -4,7 +4,7 @@
 export type Review = {
   id: string
   author: string
-  source: 'Google' | 'Yelp' | 'Tripadvisor' | 'Reddit' | 'Campendium' | 'The Dyrt' | 'KOA' | 'Recreation.gov' | 'RVLife' | 'Good Sam' | 'Hipcamp' | 'ParkAdvisor' | 'PerfectCamp'
+  source: 'Google' | 'Yelp' | 'Tripadvisor' | 'Reddit' | 'Campendium' | 'The Dyrt' | 'KOA' | 'Recreation.gov' | 'RVLife' | 'Good Sam' | 'Hipcamp' | 'ParkAdvisor' | 'PerfectCamp' | 'Good Sam' | 'Hipcamp' | 'ParkAdvisor' | 'PerfectCamp'
   rating: number // 1-5
   date: string
   text: string
