@@ -17,6 +17,7 @@ function SearchResults() {
   const [view, setView] = useState<'list' | 'map'>('list')
   const [filters, setFilters] = useState({
     siteType: searchParams.get('siteType') || 'all',
+    state: searchParams.get('state') || 'all',
     maxPrice: 200,
     availableOnly: false,
     petFriendly: false,
@@ -25,6 +26,9 @@ function SearchResults() {
   useEffect(() => {
     let filtered = [...campgrounds]
 
+    if (filters.state !== 'all') {
+      filtered = filtered.filter(c => c.state === filters.state)
+    }
     if (filters.siteType !== 'all') {
       filtered = filtered.filter(c => c.site_types.includes(filters.siteType))
     }
@@ -87,6 +91,27 @@ function SearchResults() {
             <div className="flex items-center gap-2 mb-4">
               <SlidersHorizontal size={16} className="text-green-700" />
               <h3 className="font-semibold text-gray-900">Filters</h3>
+            </div>
+
+            {/* State */}
+            <div className="mb-5">
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 block">State</label>
+              <select
+                value={filters.state}
+                onChange={e => setFilters(f => ({ ...f, state: e.target.value }))}
+                className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-600 bg-white text-gray-700"
+              >
+                <option value="all">All States</option>
+                <option value="CA">California</option>
+                <option value="NV">Nevada</option>
+                <option value="UT">Utah</option>
+                <option value="WY">Wyoming</option>
+                <option value="CO">Colorado</option>
+                <option value="WA">Washington</option>
+                <option value="OR">Oregon</option>
+                <option value="MT">Montana</option>
+                <option value="AZ">Arizona</option>
+              </select>
             </div>
 
             {/* Site Type */}

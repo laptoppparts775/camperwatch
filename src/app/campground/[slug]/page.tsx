@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   if (!camp) return {}
   const images = camp.images as Array<{url: string}>
   return {
-    title: `${camp.name} — Camping Near Lake Tahoe`,
+    title: `${camp.name} — Camping in ${(camp as any).region || camp.location}`,
     description: `${camp.description?.slice(0, 155)}...`,
     openGraph: {
       title: camp.name,

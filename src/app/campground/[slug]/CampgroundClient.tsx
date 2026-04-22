@@ -16,6 +16,7 @@ import Link from 'next/link'
 const MapView = dynamic(() => import('@/components/map/MapView'), { ssr: false })
 const TipsList = dynamic(() => import('@/components/community/TipsList'), { ssr: false })
 const CommunityFeed = dynamic(() => import('@/components/community/CommunityFeed'), { ssr: false })
+const PhotoUpload = dynamic(() => import('@/components/community/PhotoUpload'), { ssr: false })
 
 export default function CampgroundClient({ camp }: { camp: Campground }) {
   const router = useRouter()
@@ -151,6 +152,13 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
             <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
               <Suspense fallback={<p className="text-xs text-gray-400">Loading tips...</p>}>
                 <TipsList campgroundId={camp.slug}/>
+              </Suspense>
+            </div>
+
+            {/* Camper Photos */}
+            <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+              <Suspense fallback={<p className="text-xs text-gray-400">Loading photos...</p>}>
+                <PhotoUpload campgroundId={camp.slug}/>
               </Suspense>
             </div>
 
