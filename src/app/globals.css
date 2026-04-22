@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
-
 :root {
   --forest-green: #166534;
   --tahoe-blue: #1e40af;
@@ -95,4 +93,8 @@ body {
     radial-gradient(1px 1px at  5% 50%, rgba(255,255,255,.3) 0%, transparent 100%),
     radial-gradient(1px 1px at 45% 55%, rgba(255,255,255,.4) 0%, transparent 100%);
   animation: twinkle 4s ease-in-out infinite alternate;
+}
+@media (prefers-reduced-motion: reduce) {
+  .stars-field { animation: none; }
+  .animate-hero, .animate-search { animation: none; }
 }

@@ -8,7 +8,6 @@ import ShareButtons from '@/components/community/ShareButtons'
 import SiteGuide from '@/components/SiteGuide'
 import { siteGuides } from '@/lib/siteGuides'
 import { campIntelligence } from '@/lib/intelligence'
-import IntelligenceSection from '@/components/IntelligenceSection'
 import { reviews as allReviews, campaignInsights } from '@/lib/reviews'
 import ReviewsSection from '@/components/reviews/ReviewsSection'
 import Link from 'next/link'
@@ -17,6 +16,7 @@ const MapView = dynamic(() => import('@/components/map/MapView'), { ssr: false }
 const TipsList = dynamic(() => import('@/components/community/TipsList'), { ssr: false })
 const CommunityFeed = dynamic(() => import('@/components/community/CommunityFeed'), { ssr: false })
 const PhotoUpload = dynamic(() => import('@/components/community/PhotoUpload'), { ssr: false })
+const IntelligenceSection = dynamic(() => import('@/components/IntelligenceSection'), { ssr: false })
 
 export default function CampgroundClient({ camp }: { camp: Campground }) {
   const router = useRouter()
@@ -48,7 +48,16 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
         {/* Image Gallery */}
         <div className="mb-6">
           <div className="relative h-72 md:h-[420px] rounded-2xl overflow-hidden mb-2">
-            <img src={images[activeImg]?.url} alt={images[activeImg]?.alt} title={images[activeImg]?.title} className="w-full h-full object-cover"/>
+            <img
+              src={images[activeImg]?.url}
+              alt={images[activeImg]?.alt}
+              title={images[activeImg]?.title}
+              width={1200} height={420}
+              fetchPriority="high"
+              loading="eager"
+              decoding="sync"
+              className="w-full h-full object-cover"
+            />
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
               <p className="text-white text-sm">{images[activeImg]?.caption}</p>
             </div>
@@ -60,7 +69,15 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
           <div className="flex gap-2">
             {images.map((img, i) => (
               <button key={i} onClick={() => setActiveImg(i)} className={`flex-1 h-14 md:h-20 rounded-lg overflow-hidden border-2 transition-all ${activeImg === i ? 'border-green-600' : 'border-transparent opacity-70'}`}>
-                <img src={img.url} alt={img.alt} title={img.title} className="w-full h-full object-cover"/>
+                <img
+                  src={img.url}
+                  alt={img.alt}
+                  title={img.title}
+                  width={300} height={80}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full h-full object-cover"
+                />
               </button>
             ))}
           </div>

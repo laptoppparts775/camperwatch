@@ -202,13 +202,13 @@ export default function HomePage() {
           {/* Mobile: scroll — constrained with clip */}
           <div className="sm:hidden overflow-x-auto">
             <div className="flex gap-3 pb-3 snap-x snap-mandatory scrollbar-hide" style={{ paddingBottom: '0.75rem' }}>
-              {FEATURED.map(c => <CampCard key={c.slug} camp={c} />)}
+              {FEATURED.map((c, i) => <CampCard key={c.slug} camp={c} priority={i === 0} />)}
             </div>
           </div>
 
           {/* Desktop: grid */}
           <div className="hidden sm:grid grid-cols-3 gap-4">
-            {FEATURED.map(c => <CampCard key={c.slug} camp={c} />)}
+            {FEATURED.map((c, i) => <CampCard key={c.slug} camp={c} priority={i === 0} />)}
           </div>
 
           <div className="mt-7 text-center sm:hidden">
@@ -313,22 +313,22 @@ export default function HomePage() {
 }
 
 // Server-rendered card — no client JS
-function CampCard({ camp }: { camp: typeof campgrounds[0] }) {
+function CampCard({ camp, priority = false }: { camp: typeof campgrounds[0], priority?: boolean }) {
   const img = (camp.images as any[])[0]
   const src = `${img.url.split('?')[0]}?w=480&q=70&auto=format&fit=crop`
   return (
     <Link href={`/campground/${camp.slug}`}
       className="group flex-shrink-0 sm:flex-shrink snap-start rounded-xl overflow-hidden block relative w-56 sm:w-auto"
       style={{ border: '1px solid rgba(255,255,255,0.06)' }}
-      // Desktop overrides via parent sm:grid — flex-shrink-0 + fixed w only active on mobile
     >
       <div className="h-36 sm:h-44 relative overflow-hidden bg-stone-900">
         <img
           src={src}
           alt={img.alt}
           width={480} height={200}
-          loading="lazy"
-          decoding="async"
+          loading={priority ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : 'low'}
+          decoding={priority ? 'sync' : 'async'}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           style={{ display: 'block' }}
         />

@@ -189,8 +189,8 @@ function SearchResults() {
 
           {view === 'list' ? (
             <div className="space-y-4">
-              {results.map(camp => (
-                <CampgroundCard key={camp.id} camp={camp} />
+              {results.map((camp, i) => (
+                <CampgroundCard key={camp.id} camp={camp} priority={i === 0} />
               ))}
               {results.length === 0 && (
                 <div className="text-center py-16 text-gray-400">
@@ -215,7 +215,7 @@ function SearchResults() {
   )
 }
 
-function CampgroundCard({ camp }: { camp: Campground }) {
+function CampgroundCard({ camp, priority = false }: { camp: Campground, priority?: boolean }) {
   const router = useRouter()
 
   return (
@@ -228,6 +228,10 @@ function CampgroundCard({ camp }: { camp: Campground }) {
         <img
           src={(camp.images as any)[0]?.url || (camp.images as any)[0]}
           alt={camp.name}
+          width={256} height={192}
+          loading={priority ? 'eager' : 'lazy'}
+          fetchPriority={priority ? 'high' : 'low'}
+          decoding={priority ? 'sync' : 'async'}
           className="w-full h-full object-cover"
         />
       </div>
