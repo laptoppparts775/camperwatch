@@ -63,7 +63,7 @@ export default function HomePage() {
       </nav>
 
       {/* HERO — inline SVG silhouette = zero LCP fetch */}
-      <section className="relative flex flex-col justify-end" style={{ minHeight: '100vh', minHeight: '100svh', overflow: 'hidden' }}>
+      <section className="relative flex flex-col justify-end" style={{ minHeight: '100svh', overflow: 'hidden' }}>
 
         {/* Sky */}
         <div className="absolute inset-0" style={{

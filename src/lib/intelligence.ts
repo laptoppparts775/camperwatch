@@ -707,4 +707,61 @@ export const campIntelligence: Record<string, CampIntelligence> = {
     cell_signal: 'Decent on the South Rim near the visitor center and village. Weakens in the campground. No signal in the canyon — download emergency contacts and maps before descending.',
     fire_rules: 'Fire rings at sites. No fires during periods of high fire danger — check nps.gov/grca. Fire grates elevated for comfort. Extinguish completely before sleeping.',
   },
+
+  'washoe-lake-state-park': {
+    why_its_good: 'Washoe Lake State Park delivers something almost no campground near Reno can match: genuine wildness without a long drive. Free-roaming wild mustangs visit the lakeside at dawn, bald eagles fish the shallows, and white pelicans cruise overhead in formation. The 49-site campground frames three mountain ranges — Sierra Nevada to the west, Carson Range to the south, Virginia Mountains to the east. Loop A has water and electric hookups for RVs up to 45ft. Loop B is spacious dry camping with real privacy between sites. It sits exactly between Reno and Carson City, so you get wilderness mornings and town dinners without effort.',
+    real_issues: [
+      { issue: 'Washoe Lake water quality varies significantly by year', solution: 'In drought years the lake can drop to a shallow mudflat and develop algae blooms. Check Nevada State Parks for current swim/paddle advisories before planning water activities.' },
+      { issue: 'Loop B showers are push-button timed with low pressure', solution: 'Bring quarters and lower expectations. The showers work but require pushing the button every 15–20 seconds. They\'re better than nothing after a dusty day of birding.' },
+      { issue: 'Horse manure on trails is an ongoing complaint', solution: 'The equestrian facilities are heavily used. Stick to the non-equestrian hiking trails and wear closed-toe shoes on all park paths.' },
+      { issue: 'No reservations for some sites — fills on summer holiday weekends', solution: 'Arrive Thursday by noon for a weekend stay. Mid-week in summer is reliably open. Loop A reservable sites book out faster than walk-in sites.' },
+    ],
+    what_people_say: [
+      { quote: 'Woke up to three wild mustangs grazing 50 feet from our tent at sunrise. Best morning of the whole road trip.', source: 'Campendium 2025', sentiment: 'love' },
+      { quote: 'Bald eagles fishing the lake, white pelicans landing in formation, osprey diving. Did not expect this level of birding 30 minutes from Reno.', source: 'The Dyrt 2025', sentiment: 'love' },
+      { quote: 'Site 7 Loop A — pull-through with water and electric for $32.50. Clean bathrooms, great views, friendly host. Way better than any RV park in Reno proper.', source: 'Campendium 2025', sentiment: 'love' },
+      { quote: 'The showers are push-button style and kind of annoying. Worth dealing with for everything else this park offers.', source: 'Tripadvisor 2025', sentiment: 'warn' },
+      { quote: 'Dead Man\'s Trail leads up to a gazebo with a view of the entire valley. Worth the 45-minute climb. You can see Reno, Carson City, and Lake Tahoe on a clear day.', source: 'The Dyrt 2024', sentiment: 'tip' },
+    ],
+    rare_gem: 'Little Washoe Lake — the smaller lake at the southern end of the park — is almost always empty of other visitors and has the best mountain reflections in the entire park at sunrise. The main campground crowds go to Big Washoe, but Little Washoe offers ice skating in winter (when the lake freezes), exceptional photography, and a completely different mood. The ice is thin and unpredictable — local knowledge only, never alone.',
+    not_to_miss: ['Wild horse dawn viewing — walk to the lake edge before 7am', 'Dead Man\'s Trail to the gazebo overlook — views of three mountain ranges and both cities', 'Bowers Mansion (5 mi) — Nevada\'s most impressive 1860s Victorian estate, free grounds', 'Virginia City (20 mi) — America\'s best-preserved mining boomtown, free self-guided walking', '18-hole disc golf course — free, accessible from the Maze parking lot'],
+    whats_new: 'Washoe Lake levels were healthy in 2025–2026 following above-average Sierra snowpack. Loop A hookup sites upgraded with improved electrical pedestals. Equestrian group area now reservable through Reserve Nevada online platform.',
+    best_season: [
+      { season: 'Apr & May', why: 'Wildflowers, migrating birds, mustang foals born in spring. Crowds minimal. Lake levels typically high from snowmelt.' },
+      { season: 'Sep & Oct', why: 'Best temperatures. Half sites open for first-come. Fall colors in nearby Davis Creek canyon. Bird migration peaks.' },
+    ],
+    avoid_if: ['You need full hookups in Loop B — only Loop A has utilities', 'You\'re planning water sports in a low-snow year — check lake levels first (can become an algae mudflat)', 'You need a premium shower experience — bring expectations for basic facilities'],
+    insider_hacks: ['Loop A Site 7 is a pull-through with mountain views on three sides — request it specifically', 'Arrive before 11am on summer Saturdays to snag first-come Loop B sites', 'Download offline maps before arrival — cell signal is patchy throughout the park', 'The disc golf course is genuinely good and completely free — check the Maze parking lot access'],
+    wildlife_alert: 'Wild mustangs are habituated to people but remain wild — never approach, feed, or block their path. They can kick and bite. Keep dogs leashed at all times; the horses react defensively to dogs. Rattlesnakes active in warm months on rocky trails and sagebrush areas. Bald eagles are sensitive to disturbance near the lake — observe from distance.',
+    cell_signal: 'Verizon and AT&T have 4G/5G confirmed throughout the park. T-Mobile works in most areas. Signal stronger near the park entrance, patchier at the northern lake edge.',
+    fire_rules: 'Campfires permitted in designated fire rings only. Fire restrictions imposed during Red Flag Warnings — check nevadafireinfo.org before arrival. Firewood for sale at the park entrance station.',
+  },
+
+  'gold-ranch-rv-verdi': {
+    why_its_good: 'Gold Ranch Casino & RV Resort solves the single biggest problem with camping near Reno: there isn\'t a good full-hookup RV resort close to the city. Gold Ranch in Verdi fills that gap with 105 paved, full-hookup sites (30/50A), 68 pull-throughs handling rigs up to 75ft, and a casino complex with restaurant, Starbucks, mini-mart, and gas station steps away. The Sierra Nevada rises immediately to the west, with a genuine hiking trail leaving from the park into the foothills. Pool and hot tub on-site. Clean facilities with consistent reports of friendly staff. Twelve miles from Reno, thirty from Lake Tahoe — the ideal I-80 base camp or stopover.',
+    real_issues: [
+      { issue: 'Highway noise from I-80 on perimeter sites', solution: 'Request interior sites away from the freeway side when booking. The central sites and tree-screened back rows are significantly quieter.' },
+      { issue: 'Not a wilderness or nature-focused camping experience', solution: 'This is a casino RV resort — it\'s comfortable, convenient, and well-maintained but not rustic. Set expectations accordingly. For nature, drive 30 minutes to Lake Tahoe or Washoe Lake.' },
+      { issue: 'Sprinkler systems have surprised campers in early morning hours', solution: 'Ask at check-in whether your assigned site\'s sprinklers run on a schedule. Moving to an alternate site if needed is easy — park has 105 sites and is rarely fully booked midweek.' },
+    ],
+    what_people_say: [
+      { quote: 'Staff let us pull in at 11pm with our 43-foot fifth wheel and truck. Spotlights on, friendly face at the gate, easy pull-through. This place gets it.', source: 'Yelp 2025', sentiment: 'love' },
+      { quote: 'Casino has a Starbucks, a restaurant, a mini-mart and a gas station. After a long drive from the Bay Area, this was exactly what we needed before pushing on to Reno.', source: 'Google 2025', sentiment: 'love' },
+      { quote: 'Hiking trail from the park goes into real Sierra foothills — not just a walking path. Took the dogs and hit it every morning.', source: 'RVLife 2025', sentiment: 'love' },
+      { quote: 'I-80 noise is real if you get a perimeter site. Ask for an interior site — night and day difference.', source: 'Campendium 2024', sentiment: 'warn' },
+      { quote: 'Sign up for the casino player card at check-in — gets you food comps. Saved $20 on dinner without even gambling.', source: 'The Dyrt 2025', sentiment: 'tip' },
+    ],
+    rare_gem: 'Verdi itself — the tiny Nevada border town the resort sits in — has a local distillery (Verdi Local Distillery) and a genuine historic downtown that most I-80 travelers blow past without stopping. The Von Schmidt Monument Historic Park marks the original California-Nevada border established in 1872. It\'s a 10-minute walk from the campground and one of the most overlooked historical markers in the West.',
+    not_to_miss: ['Sierra Nevada foothills hike — trail starts from the RV park, goes into real mountains', 'Casino player card sign-up at check-in — food comps worth $15–25 for most stays', 'Von Schmidt Monument Historic Park — California-Nevada original border marker, 10 min walk', 'Verdi Local Distillery — small-batch Nevada spirits, 2 minutes from the park'],
+    whats_new: 'Gold Ranch completed restroom renovations in 2025. New pool heater installed — pool now reliably warm season-round. Expanded pull-through pad lengths to accommodate more fifth-wheel and toy-hauler combos.',
+    best_season: [
+      { season: 'Year-round', why: 'Full hookups and paved sites make this a genuine four-season resort. Summer fills faster but never truly crowded. Winter has cold nights but clear mountain views and zero competition for sites.' },
+      { season: 'Sep & Oct', why: 'Perfect shoulder season temperatures. Fall colors in the Sierra visible from the park. Tahoe day trips without summer traffic. Sites wide open midweek.' },
+    ],
+    avoid_if: ['You want a wilderness or nature-forward camping experience — this is a casino resort', 'You\'re towing a trailer under 30ft and want rustic camping — better options at Washoe Lake or Davis Creek', 'You\'re sensitive to any highway noise — I-80 is adjacent'],
+    insider_hacks: ['Call ahead to request an interior non-freeway-adjacent site — staff are accommodating', 'Gas station prices are convenient but not always the cheapest — check GasBuddy for Reno prices first', 'Pool and hot tub are open until 10pm — evening soak after a Tahoe day is the move', 'Casino comps work even on small slot plays — $5 in, $15 in food credit is common'],
+    wildlife_alert: null,
+    cell_signal: 'Excellent — all major carriers have strong 4G/5G at this location on the I-80 corridor. WiFi also included at every site. One of the best-connected campgrounds in Nevada.',
+    fire_rules: 'No open fires. Charcoal grills and propane only at sites. Nevada fire regulations apply — no wood fires on the property.',
+  },
 }
