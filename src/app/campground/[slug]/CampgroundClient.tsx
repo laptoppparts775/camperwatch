@@ -17,7 +17,6 @@ const TipsList = dynamic(() => import('@/components/community/TipsList'), { ssr:
 const CommunityFeed = dynamic(() => import('@/components/community/CommunityFeed'), { ssr: false })
 const PhotoUpload = dynamic(() => import('@/components/community/PhotoUpload'), { ssr: false })
 const IntelligenceSection = dynamic(() => import('@/components/IntelligenceSection'), { ssr: false })
-const RIDBAvailability = dynamic(() => import('@/components/RIDBAvailability'), { ssr: false })
 
 export default function CampgroundClient({ camp }: { camp: Campground }) {
   const router = useRouter()
@@ -239,13 +238,48 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
               ))}
             </div>
 
-            {/* RIDB Live Data — federal campgrounds only */}
-            {(camp as any).ridb_facility_id && (
-              <RIDBAvailability
-                facilityId={(camp as any).ridb_facility_id}
-                campgroundName={camp.name}
-                bookingUrl={camp.booking_url}
-              />
+            {/* Book Now panel — federal campgrounds with Recreation.gov */}
+            {(camp as any).ridb_facility_id && camp.booking_url?.includes('recreation.gov') && (
+              <div className="rounded-2xl border border-green-100 bg-gradient-to-br from-green-50 to-emerald-50 p-5">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="bg-green-700 text-white rounded-lg p-1.5">
+                    <TreePine size={16} />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 text-sm">Federal Campground</h3>
+                    <p className="text-xs text-gray-500">Reservations via Recreation.gov · RIDB #{(camp as any).ridb_facility_id}</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-2 mb-4">
+                  <div className="bg-white rounded-xl p-3 text-center">
+                    <div className="text-base font-bold text-green-700">{camp.total_sites?.replace(' sites','') || '—'}</div>
+                    <div className="text-xs text-gray-400 mt-0.5">Total Sites</div>
+                  </div>
+                  <div className="bg-white rounded-xl p-3 text-center">
+                    <div className="text-base font-bold text-blue-600">${camp.price_per_night}</div>
+                    <div className="text-xs text-gray-400 mt-0.5">From/night</div>
+                  </div>
+                  <div className="bg-white rounded-xl p-3 text-center">
+                    <div className="text-base font-bold text-amber-600">{camp.season?.split(' ')[0] || 'Seasonal'}</div>
+                    <div className="text-xs text-gray-400 mt-0.5">Season</div>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-1.5 mb-4">
+                  {camp.site_types.map((t: string) => (
+                    <span key={t} className="bg-white border border-green-200 text-green-800 text-xs px-2.5 py-1 rounded-full">{t}</span>
+                  ))}
+                </div>
+                <a
+                  href={camp.booking_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 w-full bg-green-700 hover:bg-green-800 text-white text-sm font-medium py-3 rounded-xl transition-colors"
+                >
+                  Check Live Availability → Recreation.gov
+                  <ExternalLink size={14} />
+                </a>
+                <p className="text-xs text-gray-400 text-center mt-2">Opens 6 months in advance · Books in minutes on peak dates</p>
+              </div>
             )}
 
             {/* Map */}
