@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { createBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { campgrounds } from '@/lib/data'
 import Link from 'next/link'
 import { ArrowLeft, Calendar, Users, CreditCard, CheckCircle, AlertCircle } from 'lucide-react'
@@ -46,6 +46,7 @@ export default function BookPage() {
   const [error, setError] = useState('')
   const [user, setUser] = useState<any>(null)
 
+  const supabase = createBrowserClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
   const today = new Date().toISOString().split('T')[0]
 
   useEffect(() => {

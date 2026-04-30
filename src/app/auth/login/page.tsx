@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { createBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { TreePine, Mail, ArrowRight, CheckCircle, Sparkles } from 'lucide-react'
@@ -9,6 +9,7 @@ import { Suspense } from 'react'
 
 function LoginPageInner() {
   const router = useRouter()
+  const supabase = createBrowserClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
   const params = useSearchParams()
   const redirect = params.get('redirect') || '/'
   const urlError = params.get('error') || ''

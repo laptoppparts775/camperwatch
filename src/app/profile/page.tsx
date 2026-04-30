@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
-import { supabase } from '@/lib/supabase'
+import { createBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { TreePine, MapPin, Users, Star, Copy, Check, Bell, LogOut, Tent, Share2, ChevronRight, Calendar, UserPlus, Heart, MessageCircle, Award } from 'lucide-react'
@@ -24,6 +24,7 @@ const TABS = [
 
 export default function ProfilePage() {
   const router = useRouter()
+  const supabase = createBrowserClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
   const [profile, setProfile] = useState<Profile | null>(null)
   const [bookings, setBookings] = useState<Booking[]>([])
   const [notifications, setNotifications] = useState<Notification[]>([])
