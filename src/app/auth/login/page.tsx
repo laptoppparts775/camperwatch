@@ -11,6 +11,17 @@ function LoginPageInner() {
   const router = useRouter()
   const params = useSearchParams()
   const redirect = params.get('redirect') || '/'
+  const urlError = params.get('error') || ''
+
+  // Handle hash-based errors from Supabase magic links
+  if (typeof window !== 'undefined' && window.location.hash.includes('error=')) {
+    const hash = window.location.hash.substring(1)
+    const hashParams = new URLSearchParams(hash)
+    const hashError = hashParams.get('error_code') || hashParams.get('error') || ''
+    if (hashError) {
+      window.history.replaceState(null, '', window.location.pathname)
+    }
+  }
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [sent, setSent] = useState(false)
@@ -75,6 +86,15 @@ function LoginPageInner() {
         <div className="p-7">
           <h1 className="text-lg font-bold text-gray-900 text-center mb-1">Welcome back</h1>
           <p className="text-gray-400 text-sm text-center mb-5">Sign in to your account</p>
+          {urlError && (
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-4 text-sm text-amber-700 text-center">
+              {urlError.includes('expired') || urlError.includes('otp_expired')
+                ? 'That link has expired. Request a new one below.'
+                : urlError.includes('access_denied')
+                ? 'Login was cancelled. Try again.'
+                : 'Something went wrong. Please try again.'}
+            </div>
+          )}
           <button onClick={handleGoogle}
             className="w-full flex items-center justify-center gap-3 border-2 border-gray-100 rounded-2xl py-3 text-sm font-medium hover:bg-gray-50 transition-colors mb-4">
             <svg width="18" height="18" viewBox="0 0 18 18">

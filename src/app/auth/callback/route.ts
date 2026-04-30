@@ -4,7 +4,15 @@ import { NextResponse } from 'next/server'
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get('code')
+  const error = requestUrl.searchParams.get('error')
   const redirect = requestUrl.searchParams.get('redirect') || '/'
+
+  // Handle error from OAuth/magic link
+  if (error) {
+    return NextResponse.redirect(
+      `${requestUrl.origin}/auth/login?error=${encodeURIComponent(error)}&redirect=${encodeURIComponent(redirect)}`
+    )
+  }
 
   if (code) {
     const supabase = createClient(
@@ -14,6 +22,5 @@ export async function GET(request: Request) {
     await supabase.auth.exchangeCodeForSession(code)
   }
 
-  // Always redirect to the live domain, never localhost
   return NextResponse.redirect(`${requestUrl.origin}${redirect}`)
 }
