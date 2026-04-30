@@ -4,6 +4,8 @@ import { NextResponse } from 'next/server'
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url)
   const code = requestUrl.searchParams.get('code')
+  const redirect = requestUrl.searchParams.get('redirect') || '/'
+
   if (code) {
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL || '',
@@ -11,5 +13,7 @@ export async function GET(request: Request) {
     )
     await supabase.auth.exchangeCodeForSession(code)
   }
-  return NextResponse.redirect(requestUrl.origin)
+
+  // Always redirect to the live domain, never localhost
+  return NextResponse.redirect(`${requestUrl.origin}${redirect}`)
 }
