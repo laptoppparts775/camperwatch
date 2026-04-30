@@ -17,6 +17,7 @@ const TipsList = dynamic(() => import('@/components/community/TipsList'), { ssr:
 const CommunityFeed = dynamic(() => import('@/components/community/CommunityFeed'), { ssr: false })
 const PhotoUpload = dynamic(() => import('@/components/community/PhotoUpload'), { ssr: false })
 const IntelligenceSection = dynamic(() => import('@/components/IntelligenceSection'), { ssr: false })
+const RIDBAvailability = dynamic(() => import('@/components/RIDBAvailability'), { ssr: false })
 
 export default function CampgroundClient({ camp }: { camp: Campground }) {
   const router = useRouter()
@@ -237,6 +238,15 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
                 </div>
               ))}
             </div>
+
+            {/* RIDB Live Data — federal campgrounds only */}
+            {(camp as any).ridb_facility_id && (
+              <RIDBAvailability
+                facilityId={(camp as any).ridb_facility_id}
+                campgroundName={camp.name}
+                bookingUrl={camp.booking_url}
+              />
+            )}
 
             {/* Map */}
             <div>

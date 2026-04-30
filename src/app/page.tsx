@@ -58,6 +58,7 @@ export default function HomePage() {
         <div className="flex items-center gap-3 sm:gap-6 flex-shrink-0">
           <Link href="/search" className="text-sm text-stone-300 hover:text-white transition-colors hidden sm:block">Browse</Link>
           <Link href="/community" className="text-sm text-stone-300 hover:text-white transition-colors hidden md:block">Community</Link>
+          <Link href="/contact" className="text-sm text-stone-300 hover:text-white transition-colors hidden md:block">Contact</Link>
           <Link href="/auth/login" className="text-xs sm:text-sm font-semibold text-stone-950 bg-amber-400 hover:bg-amber-300 px-3 sm:px-4 py-1.5 rounded-full transition-colors whitespace-nowrap">Sign in</Link>
         </div>
       </nav>
@@ -304,6 +305,7 @@ export default function HomePage() {
           <div className="flex gap-5 text-xs text-stone-500 flex-shrink-0">
             <Link href="/community" className="hover:text-white transition-colors">Community</Link>
             <Link href="/add-campsite" className="hover:text-white transition-colors">Add campsite</Link>
+            <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
             <Link href="/auth/signup" className="hover:text-white transition-colors">Sign up</Link>
           </div>
         </div>

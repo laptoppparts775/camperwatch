@@ -13,6 +13,10 @@ export default function CampgroundSchema({ camp }: { camp: Campground }) {
         '@id': `${baseUrl}/campground/${camp.slug}#campground`,
         name: camp.name,
         description: camp.description,
+        speakable: {
+          '@type': 'SpeakableSpecification',
+          cssSelector: ['[data-speakable="true"]'],
+        },
         url: `${baseUrl}/campground/${camp.slug}`,
         telephone: camp.phone,
         address: {
