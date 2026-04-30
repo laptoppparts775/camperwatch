@@ -41,8 +41,9 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
           </Link>
           <nav className="ml-auto flex gap-4 text-sm">
             <Link href="/community" className="text-gray-500 hover:text-gray-900 hidden sm:block">Community</Link>
-            <Link href="/owner-dashboard" className="text-gray-500 hover:text-gray-900 hidden sm:block text-sm">Owner Portal</Link>
-            <Link href="/auth/login" className="text-green-700 font-medium">Sign In</Link>
+            <Link href="/owner-dashboard" className="text-gray-500 hover:text-gray-900 hidden sm:block text-sm">For Owners</Link>
+            <Link href="/profile" className="text-gray-500 hover:text-gray-900 hidden sm:block text-sm">My Profile</Link>
+            <Link href="/auth/login" className="bg-green-600 text-white px-4 py-1.5 rounded-xl font-medium text-sm hover:bg-green-700 transition-colors">Sign In</Link>
           </nav>
         </div>
       </header>
