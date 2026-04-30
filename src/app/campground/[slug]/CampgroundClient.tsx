@@ -4,7 +4,8 @@ import { ridbData } from '@/lib/ridbData'
 import { useRouter } from 'next/navigation'
 import { MapPin, Star, ExternalLink, ChevronLeft, Check, TreePine, Clock, AlertCircle, Mountain, Users, Calendar, ChevronRight } from 'lucide-react'
 import dynamic from 'next/dynamic'
-import { useState, Suspense } from 'react'
+import { useState, useEffect, Suspense } from 'react'
+import { createBrowserClient } from '@supabase/auth-helpers-nextjs'
 import ShareButtons from '@/components/community/ShareButtons'
 import SiteGuide from '@/components/SiteGuide'
 import { siteGuides } from '@/lib/siteGuides'
@@ -23,6 +24,19 @@ const AvailabilityCalendar = dynamic(() => import('@/components/AvailabilityCale
 export default function CampgroundClient({ camp }: { camp: Campground }) {
   const router = useRouter()
   const [activeImg, setActiveImg] = useState(0)
+  const [user, setUser] = useState<any>(null)
+
+  useEffect(() => {
+    const supabase = createBrowserClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+    supabase.auth.getSession().then(({ data }) => setUser(data.session?.user || null))
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+      setUser(session?.user || null)
+    })
+    return () => subscription.unsubscribe()
+  }, [])
   const images = camp.images as Array<{url: string; alt: string; title: string; caption: string}>
   const proTips = (camp as any).pro_tips as string[] || []
   const intel = campIntelligence[camp.slug]
@@ -43,7 +57,16 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
             <Link href="/community" className="text-gray-500 hover:text-gray-900 hidden sm:block">Community</Link>
             <Link href="/owner-dashboard" className="text-gray-500 hover:text-gray-900 hidden sm:block text-sm">For Owners</Link>
             <Link href="/profile" className="text-gray-500 hover:text-gray-900 hidden sm:block text-sm">My Profile</Link>
-            <Link href="/auth/login" className="bg-green-600 text-white px-4 py-1.5 rounded-xl font-medium text-sm hover:bg-green-700 transition-colors">Sign In</Link>
+            {user ? (
+              <Link href="/profile" className="flex items-center gap-2 bg-green-600 text-white px-4 py-1.5 rounded-xl font-medium text-sm hover:bg-green-700 transition-colors">
+                <div className="w-5 h-5 rounded-full bg-green-400 flex items-center justify-center text-xs font-bold text-green-900">
+                  {(user.user_metadata?.full_name || user.email || 'U')[0].toUpperCase()}
+                </div>
+                My Profile
+              </Link>
+            ) : (
+              <Link href="/auth/login" className="bg-green-600 text-white px-4 py-1.5 rounded-xl font-medium text-sm hover:bg-green-700 transition-colors">Sign In</Link>
+            )}
           </nav>
         </div>
       </header>
