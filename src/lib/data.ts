@@ -598,7 +598,7 @@ export const campgrounds = [
     id: '14',
     name: 'Madison Campground',
     slug: 'madison-yellowstone',
-    ridb_facility_id: '232493',
+    ridb_facility_id: '259305',
     tagline: 'Dead center in Yellowstone — geysers, wildlife, and the Madison River at your door',
     description: 'The most strategically located campground in Yellowstone National Park. Madison sits at the confluence of the Firehole and Gibbon rivers where they form the Madison River — world-class fly fishing steps from your tent. Positioned exactly halfway between Old Faithful and Norris Geyser Basin, it\'s the only campground with ranger programs and an amphitheater in the park interior. Bison and elk graze through the Madison Valley every morning. Open May–October.',
     location: 'Yellowstone National Park, WY',

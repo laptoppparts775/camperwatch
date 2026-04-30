@@ -1,5 +1,6 @@
 'use client'
 import { Campground } from '@/lib/data'
+import { ridbData } from '@/lib/ridbData'
 import { useRouter } from 'next/navigation'
 import { MapPin, Star, ExternalLink, ChevronLeft, Check, TreePine, Clock, AlertCircle, Mountain, Users, Calendar, ChevronRight } from 'lucide-react'
 import dynamic from 'next/dynamic'
@@ -17,7 +18,6 @@ const TipsList = dynamic(() => import('@/components/community/TipsList'), { ssr:
 const CommunityFeed = dynamic(() => import('@/components/community/CommunityFeed'), { ssr: false })
 const PhotoUpload = dynamic(() => import('@/components/community/PhotoUpload'), { ssr: false })
 const IntelligenceSection = dynamic(() => import('@/components/IntelligenceSection'), { ssr: false })
-const AvailabilityWidget = dynamic(() => import('@/components/AvailabilityWidget'), { ssr: false })
 
 export default function CampgroundClient({ camp }: { camp: Campground }) {
   const router = useRouter()
@@ -239,14 +239,65 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
               ))}
             </div>
 
-            {/* Live availability — federal campgrounds on Recreation.gov */}
-            {(camp as any).ridb_facility_id && camp.booking_url?.includes('recreation.gov') && (
-              <AvailabilityWidget
-                facilityId={(camp as any).ridb_facility_id}
-                campgroundName={camp.name}
-                bookingUrl={camp.booking_url}
-              />
-            )}
+            {/* RIDB Data — federal campgrounds, sourced from official RIDB export */}
+            {(camp as any).ridb_facility_id && camp.booking_url?.includes('recreation.gov') && (() => {
+              const rd = ridbData[camp.slug]
+              if (!rd) return null
+              return (
+                <div className="rounded-2xl border border-green-100 bg-gradient-to-br from-green-50 to-emerald-50 p-5">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="bg-green-700 text-white rounded-lg p-1.5">
+                      <TreePine size={16} />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-gray-900 text-sm">Federal Campground</h3>
+                      <p className="text-xs text-gray-500">Official data via Recreation.gov · RIDB #{rd.facilityId}</p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 mb-4">
+                    <div className="bg-white rounded-xl p-3 text-center">
+                      <div className="text-base font-bold text-green-700">{rd.totalSites}</div>
+                      <div className="text-xs text-gray-400 mt-0.5">Total Sites</div>
+                    </div>
+                    <div className="bg-white rounded-xl p-3 text-center">
+                      <div className="text-base font-bold text-purple-600">{rd.accessibleSites}</div>
+                      <div className="text-xs text-gray-400 mt-0.5">ADA Sites</div>
+                    </div>
+                    <div className="bg-white rounded-xl p-3 text-center">
+                      <div className="text-base font-bold text-blue-600">{rd.loops.length || '—'}</div>
+                      <div className="text-xs text-gray-400 mt-0.5">Loops</div>
+                    </div>
+                  </div>
+                  {rd.siteTypes.length > 0 && (
+                    <div className="space-y-1.5 mb-4">
+                      {rd.siteTypes.map(st => (
+                        <div key={st.type} className="flex items-center justify-between bg-white rounded-lg px-3 py-2">
+                          <span className="text-sm text-gray-700">{st.type}</span>
+                          <span className="text-sm font-semibold text-gray-900">{st.count}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {rd.loops.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+                      {rd.loops.map(l => (
+                        <span key={l} className="bg-white border border-gray-200 text-xs text-gray-600 px-2.5 py-1 rounded-full">{l}</span>
+                      ))}
+                    </div>
+                  )}
+                  <a
+                    href={camp.booking_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2 w-full bg-green-700 hover:bg-green-800 text-white text-sm font-medium py-3 rounded-xl transition-colors"
+                  >
+                    Check Live Availability → Recreation.gov
+                    <ExternalLink size={14} />
+                  </a>
+                  <p className="text-xs text-gray-400 text-center mt-2">Opens 6 months in advance · Books fast on peak dates</p>
+                </div>
+              )
+            })()}
 
             {/* Map */}
             <div>
