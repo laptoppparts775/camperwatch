@@ -4,6 +4,7 @@ const REC_GOV = 'https://www.recreation.gov/api/camps/availability/campground'
 
 /**
  * GET /api/availability?facilityId=232768&month=2026-06-01
+ * Returns per-day available site counts for the calendar UI.
  * Uses Recreation.gov public availability API — no API key required.
  */
 export async function GET(req: NextRequest) {
@@ -34,8 +35,9 @@ export async function GET(req: NextRequest) {
     const data = await res.json()
     const campsites: Record<string, any> = data.campsites ?? {}
 
-    let available = 0
-    let reserved = 0
+    // Per-day available site count: { "2026-06-01": 12, "2026-06-02": 8, ... }
+    const dailyAvailable: Record<string, number> = {}
+    const dailyTotal: Record<string, number> = {}
     const siteTypes: Record<string, number> = {}
     const loopSet = new Set<string>()
 
@@ -44,9 +46,14 @@ export async function GET(req: NextRequest) {
       const type = s.campsite_type || 'Unknown'
       siteTypes[type] = (siteTypes[type] || 0) + 1
       if (s.loop) loopSet.add(s.loop)
-      for (const status of Object.values(s.availabilities || {})) {
-        if (status === 'Available') available++
-        else if (status === 'Reserved') reserved++
+
+      for (const [dateKey, status] of Object.entries(s.availabilities || {})) {
+        // dateKey looks like "2026-06-01T00:00:00Z" — normalize to YYYY-MM-DD
+        const day = (dateKey as string).slice(0, 10)
+        dailyTotal[day] = (dailyTotal[day] || 0) + 1
+        if (status === 'Available') {
+          dailyAvailable[day] = (dailyAvailable[day] || 0) + 1
+        }
       }
     }
 
@@ -54,10 +61,10 @@ export async function GET(req: NextRequest) {
       facilityId,
       month,
       totalSites: Object.keys(campsites).length,
-      available,
-      reserved,
+      dailyAvailable,  // per-day available count
+      dailyTotal,      // per-day total reservable count
       siteTypes,
-      loops: Array.from(loopSet).filter(Boolean),
+      loops: Array.from(loopSet).filter(Boolean).sort(),
     })
   } catch (err) {
     console.error('Availability fetch error:', err)

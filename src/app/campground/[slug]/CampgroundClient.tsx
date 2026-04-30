@@ -18,6 +18,7 @@ const TipsList = dynamic(() => import('@/components/community/TipsList'), { ssr:
 const CommunityFeed = dynamic(() => import('@/components/community/CommunityFeed'), { ssr: false })
 const PhotoUpload = dynamic(() => import('@/components/community/PhotoUpload'), { ssr: false })
 const IntelligenceSection = dynamic(() => import('@/components/IntelligenceSection'), { ssr: false })
+const AvailabilityCalendar = dynamic(() => import('@/components/AvailabilityCalendar'), { ssr: false })
 
 export default function CampgroundClient({ camp }: { camp: Campground }) {
   const router = useRouter()
@@ -285,16 +286,13 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
                       ))}
                     </div>
                   )}
-                  <a
-                    href={camp.booking_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 w-full bg-green-700 hover:bg-green-800 text-white text-sm font-medium py-3 rounded-xl transition-colors"
-                  >
-                    Check Live Availability → Recreation.gov
-                    <ExternalLink size={14} />
-                  </a>
-                  <p className="text-xs text-gray-400 text-center mt-2">Opens 6 months in advance · Books fast on peak dates</p>
+                  <div className="mt-2">
+                    <AvailabilityCalendar
+                      facilityId={(camp as any).ridb_facility_id}
+                      bookingUrl={camp.booking_url}
+                      campgroundName={camp.name}
+                    />
+                  </div>
                 </div>
               )
             })()}
@@ -316,9 +314,17 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
             </div>
           </div>
 
-          {/* Right — booking card */}
+          {/* Right — booking card / availability */}
           <div>
-            <div className="bg-white rounded-2xl border border-gray-200 p-5 sticky top-20 shadow-sm">
+            <div className="sticky top-20">
+            {(camp as any).ridb_facility_id && camp.booking_url?.includes('recreation.gov') ? (
+              <AvailabilityCalendar
+                facilityId={(camp as any).ridb_facility_id}
+                bookingUrl={camp.booking_url}
+                campgroundName={camp.name}
+              />
+            ) : (
+            <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
               <div className="mb-1">
                 <span className="text-3xl font-bold text-gray-900">${camp.price_per_night}</span>
                 {(camp as any).price_high && (camp as any).price_high !== camp.price_per_night && <span className="text-gray-400 text-sm"> – ${(camp as any).price_high}</span>}
@@ -350,6 +356,8 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
               </a>
               {!camp.available && <p className="text-xs text-center text-amber-600 mt-2 font-medium">⚡ Check daily for cancellations</p>}
               <p className="text-xs text-center text-gray-400 mt-2">No fees added by CamperWatch.</p>
+            </div>
+            )}
             </div>
           </div>
         </div>
