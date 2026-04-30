@@ -43,13 +43,9 @@ function getDotColor(available: number, total: number, isPast: boolean) {
 }
 
 function buildBookingUrl(baseUrl: string, arrivalDate: string): string {
-  // Add 1 night departure by default
-  const arrival = new Date(arrivalDate + 'T12:00:00')
-  const departure = new Date(arrival)
-  departure.setDate(departure.getDate() + 1)
-  const dep = departure.toISOString().slice(0, 10)
-  // Recreation.gov accepts startDate/endDate params
-  return `${baseUrl}?startDate=${arrivalDate}&endDate=${dep}`
+  // Recreation.gov is a SPA — date params cause it to land on the wrong tab (seasons/rates).
+  // Just send to the campground page directly; the user already knows which date to pick.
+  return baseUrl
 }
 
 export default function AvailabilityCalendar({ facilityId, bookingUrl, campgroundName }: Props) {
