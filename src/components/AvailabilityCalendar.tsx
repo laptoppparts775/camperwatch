@@ -42,6 +42,16 @@ function getDotColor(available: number, total: number, isPast: boolean) {
   return 'bg-orange-500'
 }
 
+function buildBookingUrl(baseUrl: string, arrivalDate: string): string {
+  // Add 1 night departure by default
+  const arrival = new Date(arrivalDate + 'T12:00:00')
+  const departure = new Date(arrival)
+  departure.setDate(departure.getDate() + 1)
+  const dep = departure.toISOString().slice(0, 10)
+  // Recreation.gov accepts startDate/endDate params
+  return `${baseUrl}?startDate=${arrivalDate}&endDate=${dep}`
+}
+
 export default function AvailabilityCalendar({ facilityId, bookingUrl, campgroundName }: Props) {
   const today = new Date()
   const [year, setYear] = useState(today.getFullYear())
@@ -227,12 +237,12 @@ export default function AvailabilityCalendar({ facilityId, bookingUrl, campgroun
               </div>
             </div>
             <a
-              href={bookingUrl}
+              href={selectedDate ? buildBookingUrl(bookingUrl, selectedDate) : bookingUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
             >
-              Book Now →
+              Book This Date →
             </a>
           </div>
         </div>
@@ -241,15 +251,9 @@ export default function AvailabilityCalendar({ facilityId, bookingUrl, campgroun
       {/* Footer CTA when no date selected */}
       {!selectedDate && (
         <div className="px-4 pb-4">
-          <a
-            href={bookingUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block w-full text-center py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition-colors text-sm"
-          >
-            Reserve a Site on Recreation.gov →
-          </a>
-          <p className="text-center text-xs text-gray-400 mt-2">Tap a green date to see availability details</p>
+          <p className="text-center text-sm text-gray-500 mb-3 leading-snug">
+            <span className="font-medium text-gray-700">Pick a green date</span> to see open sites,<br/>then book it with one click.
+          </p>
         </div>
       )}
     </div>
