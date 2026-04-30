@@ -41,6 +41,7 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
           </Link>
           <nav className="ml-auto flex gap-4 text-sm">
             <Link href="/community" className="text-gray-500 hover:text-gray-900 hidden sm:block">Community</Link>
+            <Link href="/owner-dashboard" className="text-gray-500 hover:text-gray-900 hidden sm:block text-sm">Owner Portal</Link>
             <Link href="/auth/login" className="text-green-700 font-medium">Sign In</Link>
           </nav>
         </div>
@@ -350,11 +351,16 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
                   </div>
                 ))}
               </div>
-              <a href={camp.booking_url} target="_blank" rel="noopener noreferrer"
-                className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm transition-colors ${camp.available ? 'bg-green-700 hover:bg-green-800 text-white' : 'bg-gray-100 text-gray-400 cursor-not-allowed pointer-events-none'}`}>
-                {camp.available ? <><ExternalLink size={15}/> Book Official Site</> : 'Currently Fully Booked'}
+              <a href={`/book/${camp.slug}`}
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm bg-green-700 hover:bg-green-800 text-white transition-colors mb-2">
+                🏕 Book Directly — No Extra Fees
               </a>
-              {!camp.available && <p className="text-xs text-center text-amber-600 mt-2 font-medium">⚡ Check daily for cancellations</p>}
+              {camp.booking_url && (
+                <a href={camp.booking_url} target="_blank" rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm text-gray-500 border border-gray-200 hover:bg-gray-50 transition-colors">
+                  <ExternalLink size={13}/> Also on {camp.booking_url.includes('recreation.gov') ? 'Recreation.gov' : 'external site'}
+                </a>
+              )}
               <p className="text-xs text-center text-gray-400 mt-2">No fees added by CamperWatch.</p>
             </div>
             )}
@@ -367,9 +373,9 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
       <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-3 z-40 shadow-lg">
         <div className="flex items-center gap-3">
           <div><span className="font-bold text-gray-900">${camp.price_per_night}</span><span className="text-gray-400 text-xs">/night</span></div>
-          <a href={camp.booking_url} target="_blank" rel="noopener noreferrer"
-            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm ${camp.available ? 'bg-green-700 text-white' : 'bg-gray-100 text-gray-400 pointer-events-none'}`}>
-            {camp.available ? <><ExternalLink size={14}/> Book Now</> : 'Fully Booked'}
+          <a href={`/book/${camp.slug}`}
+            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm bg-green-700 text-white">
+            🏕 Book Now — No Fees
           </a>
         </div>
       </div>
