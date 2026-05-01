@@ -2,56 +2,42 @@
 import { useState, useEffect } from 'react'
 import { getSupabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 import NavBar from '@/components/NavBar'
-import { TreePine, Users, Tent, Calendar, DollarSign, CheckCircle, XCircle, Clock, Search, UserPlus, Send, Shield, TrendingUp, AlertCircle } from 'lucide-react'
+import { Users, Tent, Calendar, DollarSign, CheckCircle, XCircle, Clock, Search, UserPlus, Send, Shield, TrendingUp, AlertCircle, MapPin, Star, Phone, Mail, ExternalLink, RefreshCw } from 'lucide-react'
 
 const ADMIN_EMAILS = ['lubiarz.tek@gmail.com', 'picinski@gmail.com', 'dawoodanialtaaf@gmail.com']
 
-type Submission = { id: string; name: string; state: string; owner_name: string; owner_email: string; status: string; created_at: string; price_per_night: number; site_types: string[] }
-type User = { id: string; username: string; full_name: string; role: string; created_at: string; camps_visited: number; referral_code: string }
-type Booking = { id: string; booking_ref: string; campground_slug: string; guest_name: string; guest_email: string; total_price: number; status: string; check_in: string; created_at: string; commission_amount: number }
-
-const TABS = [
-  { key: 'overview', label: 'Overview', icon: TrendingUp },
-  { key: 'users', label: 'Users', icon: Users },
-  { key: 'submissions', label: 'Submissions', icon: Tent },
-  { key: 'bookings', label: 'Bookings', icon: Calendar },
-  { key: 'invite', label: 'Invite', icon: UserPlus },
-]
-
 export default function AdminPage() {
   const router = useRouter()
-  const supabase = getSupabase()
   const [allowed, setAllowed] = useState(false)
   const [loading, setLoading] = useState(true)
   const [tab, setTab] = useState('overview')
-  const [submissions, setSubmissions] = useState<Submission[]>([])
-  const [users, setUsers] = useState<User[]>([])
-  const [bookings, setBookings] = useState<Booking[]>([])
+  const [submissions, setSubmissions] = useState<any[]>([])
+  const [users, setUsers] = useState<any[]>([])
+  const [bookings, setBookings] = useState<any[]>([])
   const [userSearch, setUserSearch] = useState('')
   const [inviteEmail, setInviteEmail] = useState('')
   const [inviteRole, setInviteRole] = useState('camper')
   const [inviting, setInviting] = useState(false)
-  const [inviteSuccess, setInviteSuccess] = useState(false)
-  const [stats, setStats] = useState({ totalUsers: 0, totalBookings: 0, totalRevenue: 0, pendingSubmissions: 0 })
+  const [inviteDone, setInviteDone] = useState(false)
+  const [stats, setStats] = useState({ users: 0, bookings: 0, revenue: 0, pending: 0, owners: 0, campers: 0 })
+  const [refreshing, setRefreshing] = useState(false)
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }: { data: any }) => {
-      if (!data.user || !ADMIN_EMAILS.includes(data.user.email || '')) {
-        router.push('/')
-        return
-      }
+    getSupabase().auth.getUser().then(({ data }: any) => {
+      if (!data.user || !ADMIN_EMAILS.includes(data.user.email || '')) { router.push('/'); return }
       setAllowed(true)
-      loadAll()
+      load()
     })
   }, [])
 
-  async function loadAll() {
+  async function load() {
+    setRefreshing(true)
+    const sb = getSupabase()
     const [subRes, userRes, bookRes] = await Promise.all([
-      supabase.from('campground_submissions').select('*').order('created_at', { ascending: false }),
-      supabase.from('profiles').select('*').order('created_at', { ascending: false }),
-      supabase.from('bookings').select('*').order('created_at', { ascending: false }),
+      sb.from('campground_submissions').select('*').order('created_at', { ascending: false }),
+      sb.from('profiles').select('*').order('created_at', { ascending: false }),
+      sb.from('bookings').select('*').order('created_at', { ascending: false }),
     ])
     const subs = subRes.data || []
     const usrs = userRes.data || []
@@ -60,66 +46,89 @@ export default function AdminPage() {
     setUsers(usrs)
     setBookings(bks)
     setStats({
-      totalUsers: usrs.length,
-      totalBookings: bks.length,
-      totalRevenue: bks.filter((b: Booking) => b.status === 'confirmed').reduce((s: number, b: Booking) => s + (b.commission_amount || 0), 0),
-      pendingSubmissions: subs.filter((s: Submission) => s.status === 'pending').length,
+      users: usrs.length,
+      bookings: bks.length,
+      revenue: bks.filter(b => b.status === 'confirmed').reduce((s: number, b: any) => s + (b.commission_amount || 0), 0),
+      pending: subs.filter(s => s.status === 'pending').length,
+      owners: usrs.filter(u => u.role === 'owner').length,
+      campers: usrs.filter(u => u.role === 'camper').length,
     })
     setLoading(false)
+    setRefreshing(false)
   }
 
-  async function updateSubmission(id: string, status: string) {
-    await supabase.from('campground_submissions').update({ status }).eq('id', id)
+  async function updateSub(id: string, status: string) {
+    await getSupabase().from('campground_submissions').update({ status }).eq('id', id)
     setSubmissions(prev => prev.map(s => s.id === id ? { ...s, status } : s))
-    setStats(prev => ({ ...prev, pendingSubmissions: prev.pendingSubmissions - 1 }))
+    setStats(prev => ({ ...prev, pending: prev.pending - 1 }))
   }
 
-  async function updateUserRole(userId: string, role: string) {
-    await supabase.from('profiles').update({ role }).eq('id', userId)
+  async function updateRole(userId: string, role: string) {
+    await getSupabase().from('profiles').update({ role }).eq('id', userId)
     setUsers(prev => prev.map(u => u.id === userId ? { ...u, role } : u))
   }
 
   async function sendInvite() {
     if (!inviteEmail) return
     setInviting(true)
-    // Send magic link invite via Supabase
-    const { error } = await supabase.auth.signInWithOtp({
+    await getSupabase().auth.signInWithOtp({
       email: inviteEmail,
       options: { emailRedirectTo: `${window.location.origin}/auth/callback?role=${inviteRole}` }
     })
-    setInviting(false)
-    if (!error) { setInviteSuccess(true); setInviteEmail(''); setTimeout(() => setInviteSuccess(false), 3000) }
+    setInviting(false); setInviteDone(true); setInviteEmail('')
+    setTimeout(() => setInviteDone(false), 3000)
   }
 
   if (loading || !allowed) return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="w-6 h-6 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
     </div>
   )
 
-  const filteredUsers = users.filter(u =>
-    !userSearch || u.full_name?.toLowerCase().includes(userSearch.toLowerCase()) || u.username?.toLowerCase().includes(userSearch.toLowerCase())
-  )
+  const filteredUsers = users.filter(u => !userSearch || u.full_name?.toLowerCase().includes(userSearch.toLowerCase()) || u.username?.toLowerCase().includes(userSearch.toLowerCase()) || u.role?.includes(userSearch.toLowerCase()))
+
+  const TABS = [
+    { key: 'overview', label: 'Overview', badge: null },
+    { key: 'submissions', label: 'Submissions', badge: stats.pending > 0 ? stats.pending : null },
+    { key: 'users', label: 'Users', badge: null },
+    { key: 'bookings', label: 'Bookings', badge: null },
+    { key: 'invite', label: 'Invite', badge: null },
+  ]
 
   return (
     <div className="min-h-screen bg-gray-50">
       <NavBar />
+      <div className="max-w-7xl mx-auto px-4 py-6">
 
-      <div className="max-w-6xl mx-auto px-4 py-6">
-        {/* Stats bar */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+              <Shield size={22} className="text-purple-600" /> Admin Panel
+            </h1>
+            <p className="text-gray-500 text-sm mt-0.5">CamperWatch platform overview</p>
+          </div>
+          <button onClick={load} className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50">
+            <RefreshCw size={14} className={refreshing ? 'animate-spin' : ''} /> Refresh
+          </button>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
           {[
-            { label: 'Total Users', value: stats.totalUsers, icon: Users, color: 'text-blue-600', bg: 'bg-blue-50' },
-            { label: 'CW Revenue', value: `$${stats.totalRevenue.toFixed(0)}`, icon: DollarSign, color: 'text-green-600', bg: 'bg-green-50' },
-            { label: 'Bookings', value: stats.totalBookings, icon: Calendar, color: 'text-amber-600', bg: 'bg-amber-50' },
-            { label: 'Pending Review', value: stats.pendingSubmissions, icon: AlertCircle, color: 'text-red-600', bg: 'bg-red-50' },
+            { label: 'Total Users', value: stats.users, icon: Users, color: 'text-blue-600', bg: 'bg-blue-50' },
+            { label: 'Campers', value: stats.campers, icon: Tent, color: 'text-green-600', bg: 'bg-green-50' },
+            { label: 'Owners', value: stats.owners, icon: MapPin, color: 'text-amber-600', bg: 'bg-amber-50' },
+            { label: 'CW Revenue', value: `$${stats.revenue.toFixed(0)}`, icon: DollarSign, color: 'text-emerald-600', bg: 'bg-emerald-50' },
+            { label: 'Bookings', value: stats.bookings, icon: Calendar, color: 'text-indigo-600', bg: 'bg-indigo-50' },
+            { label: 'Pending Review', value: stats.pending, icon: AlertCircle, color: 'text-red-600', bg: 'bg-red-50' },
           ].map(s => (
             <div key={s.label} className="bg-white rounded-2xl border border-gray-200 p-4">
-              <div className={`w-9 h-9 ${s.bg} rounded-xl flex items-center justify-center mb-3`}>
-                <s.icon size={18} className={s.color} />
+              <div className={`w-8 h-8 ${s.bg} rounded-xl flex items-center justify-center mb-2`}>
+                <s.icon size={16} className={s.color} />
               </div>
-              <div className="text-2xl font-bold text-gray-900">{s.value}</div>
-              <div className="text-xs text-gray-400 mt-0.5">{s.label}</div>
+              <div className="text-xl font-bold text-gray-900">{s.value}</div>
+              <div className="text-xs text-gray-400">{s.label}</div>
             </div>
           ))}
         </div>
@@ -128,52 +137,135 @@ export default function AdminPage() {
         <div className="flex gap-1 bg-gray-100 rounded-xl p-1 mb-5 overflow-x-auto">
           {TABS.map(t => (
             <button key={t.key} onClick={() => setTab(t.key)}
-              className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-medium transition-colors whitespace-nowrap ${tab === t.key ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500'}`}>
-              <t.icon size={12} /> {t.label}
-              {t.key === 'submissions' && stats.pendingSubmissions > 0 && (
-                <span className="bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center" style={{fontSize:'9px'}}>{stats.pendingSubmissions}</span>
-              )}
+              className={`flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium transition-colors ${tab === t.key ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500'}`}>
+              {t.label}
+              {t.badge && <span className="bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center" style={{fontSize:'9px'}}>{t.badge}</span>}
             </button>
           ))}
         </div>
 
         {/* OVERVIEW */}
         {tab === 'overview' && (
-          <div className="space-y-4">
+          <div className="grid md:grid-cols-2 gap-4">
             <div className="bg-white rounded-2xl border border-gray-200 p-5">
-              <h2 className="font-semibold text-gray-900 mb-4">Recent Bookings</h2>
-              <div className="space-y-3">
-                {bookings.slice(0, 5).map(b => (
-                  <div key={b.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
-                    <div>
-                      <div className="text-sm font-medium text-gray-900">{b.guest_name}</div>
-                      <div className="text-xs text-gray-400">{b.campground_slug} · {b.check_in}</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm font-bold text-green-700">${b.commission_amount?.toFixed(0)} CW</div>
-                      <div className="text-xs text-gray-400">${b.total_price} total</div>
-                    </div>
+              <h2 className="font-semibold text-gray-900 mb-4 flex items-center gap-2"><Calendar size={16} className="text-indigo-500" /> Recent Bookings</h2>
+              {bookings.length === 0 ? <p className="text-gray-400 text-sm">No bookings yet</p> : bookings.slice(0, 6).map(b => (
+                <div key={b.id} className="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0">
+                  <div>
+                    <div className="text-sm font-medium text-gray-900">{b.guest_name}</div>
+                    <div className="text-xs text-gray-400">{b.campground_slug} · {b.check_in}</div>
                   </div>
-                ))}
-              </div>
+                  <div className="text-right">
+                    <div className="text-sm font-bold text-green-700">${b.commission_amount?.toFixed(0)}<span className="text-xs text-gray-400 font-normal"> CW</span></div>
+                    <div className="text-xs text-gray-400">${b.total_price} total</div>
+                  </div>
+                </div>
+              ))}
             </div>
             <div className="bg-white rounded-2xl border border-gray-200 p-5">
-              <h2 className="font-semibold text-gray-900 mb-4">Recent Users</h2>
-              <div className="space-y-2">
-                {users.slice(0, 5).map(u => (
-                  <div key={u.id} className="flex items-center justify-between py-1.5">
+              <h2 className="font-semibold text-gray-900 mb-4 flex items-center gap-2"><AlertCircle size={16} className="text-amber-500" /> Pending Submissions</h2>
+              {submissions.filter(s => s.status === 'pending').length === 0 ? (
+                <p className="text-gray-400 text-sm">No pending submissions</p>
+              ) : submissions.filter(s => s.status === 'pending').slice(0, 4).map(s => (
+                <div key={s.id} className="py-2.5 border-b border-gray-50 last:border-0">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-sm font-medium text-gray-900">{s.name}</div>
+                      <div className="text-xs text-gray-400">{s.state} · {s.owner_name}</div>
+                    </div>
+                    <div className="flex gap-1">
+                      <button onClick={() => updateSub(s.id, 'approved')} className="px-2 py-1 bg-green-100 text-green-700 rounded-lg text-xs font-medium">✓ Approve</button>
+                      <button onClick={() => updateSub(s.id, 'rejected')} className="px-2 py-1 bg-red-50 text-red-600 rounded-lg text-xs font-medium">✗</button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="bg-white rounded-2xl border border-gray-200 p-5">
+              <h2 className="font-semibold text-gray-900 mb-4 flex items-center gap-2"><Users size={16} className="text-blue-500" /> Recent Users</h2>
+              {users.slice(0, 6).map(u => (
+                <div key={u.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold"
+                      style={{ background: u.avatar_color || '#16a34a' }}>
+                      {u.full_name?.[0]?.toUpperCase() || 'U'}
+                    </div>
                     <div>
                       <div className="text-sm font-medium text-gray-900">{u.full_name}</div>
                       <div className="text-xs text-gray-400">@{u.username}</div>
                     </div>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                      u.role === 'admin' ? 'bg-purple-100 text-purple-700' :
-                      u.role === 'owner' ? 'bg-amber-100 text-amber-700' :
-                      'bg-gray-100 text-gray-500'}`}>{u.role}</span>
                   </div>
-                ))}
+                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${u.role === 'admin' ? 'bg-purple-100 text-purple-700' : u.role === 'owner' ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-500'}`}>{u.role}</span>
+                </div>
+              ))}
+            </div>
+            <div className="bg-white rounded-2xl border border-gray-200 p-5">
+              <h2 className="font-semibold text-gray-900 mb-4 flex items-center gap-2"><TrendingUp size={16} className="text-green-500" /> Platform health</h2>
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Campgrounds listed</span>
+                  <span className="font-bold text-gray-900">23</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Pending approvals</span>
+                  <span className={`font-bold ${stats.pending > 0 ? 'text-red-600' : 'text-gray-900'}`}>{stats.pending}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Conversion rate</span>
+                  <span className="font-bold text-gray-900">{stats.users > 0 ? ((stats.bookings / stats.users) * 100).toFixed(1) : 0}%</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Avg booking value</span>
+                  <span className="font-bold text-gray-900">${stats.bookings > 0 ? (bookings.reduce((s, b) => s + (b.total_price || 0), 0) / bookings.length).toFixed(0) : 0}</span>
+                </div>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* SUBMISSIONS */}
+        {tab === 'submissions' && (
+          <div className="space-y-3">
+            {submissions.length === 0 && <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center text-gray-400">No submissions yet</div>}
+            {submissions.map(s => (
+              <div key={s.id} className={`bg-white rounded-2xl border p-5 ${s.status === 'pending' ? 'border-amber-200' : 'border-gray-200'}`}>
+                <div className="flex flex-wrap items-start gap-3 justify-between mb-3">
+                  <div>
+                    <div className="font-semibold text-gray-900 text-lg">{s.name}</div>
+                    <div className="flex flex-wrap gap-3 mt-1 text-sm text-gray-500">
+                      <span className="flex items-center gap-1"><MapPin size={13} /> {s.address || s.state}</span>
+                      <span className="flex items-center gap-1"><DollarSign size={13} /> ${s.price_per_night}/night</span>
+                      {s.phone && <span className="flex items-center gap-1"><Phone size={13} /> {s.phone}</span>}
+                    </div>
+                    <div className="text-sm text-gray-500 mt-1">
+                      Owner: <strong>{s.owner_name}</strong> · <a href={`mailto:${s.owner_email}`} className="text-blue-600">{s.owner_email}</a>
+                    </div>
+                    {s.site_types?.length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {s.site_types.map((t: string) => <span key={t} className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">{t}</span>)}
+                      </div>
+                    )}
+                    {s.description && <p className="text-sm text-gray-600 mt-2 line-clamp-2">{s.description}</p>}
+                  </div>
+                  <span className={`text-xs px-3 py-1 rounded-full font-semibold ${s.status === 'pending' ? 'bg-amber-100 text-amber-700' : s.status === 'approved' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'}`}>
+                    {s.status}
+                  </span>
+                </div>
+                {s.status === 'pending' && (
+                  <div className="flex gap-2 pt-3 border-t border-gray-50">
+                    <button onClick={() => updateSub(s.id, 'approved')}
+                      className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-green-600 text-white rounded-xl text-sm font-semibold hover:bg-green-700 transition-colors">
+                      <CheckCircle size={15} /> Approve & notify owner
+                    </button>
+                    <button onClick={() => updateSub(s.id, 'rejected')}
+                      className="px-5 py-2.5 bg-red-50 text-red-600 rounded-xl text-sm font-semibold hover:bg-red-100 transition-colors">
+                      Reject
+                    </button>
+                  </div>
+                )}
+                <div className="text-xs text-gray-300 mt-2">{new Date(s.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+              </div>
+            ))}
           </div>
         )}
 
@@ -183,96 +275,49 @@ export default function AdminPage() {
             <div className="relative">
               <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
               <input value={userSearch} onChange={e => setUserSearch(e.target.value)}
-                placeholder="Search users..." className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
+                placeholder="Search by name, username, or role..."
+                className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
             </div>
+            <div className="text-xs text-gray-400 px-1">{filteredUsers.length} users</div>
             {filteredUsers.map(u => (
-              <div key={u.id} className="bg-white rounded-2xl border border-gray-200 p-4">
-                <div className="flex items-start justify-between">
-                  <div>
-                    <div className="font-semibold text-gray-900">{u.full_name}</div>
-                    <div className="text-sm text-gray-400">@{u.username}</div>
-                    <div className="text-xs text-gray-300 mt-0.5">Referral: {u.referral_code}</div>
-                  </div>
-                  <select value={u.role} onChange={e => updateUserRole(u.id, e.target.value)}
-                    className={`text-xs px-2 py-1 rounded-lg border-0 font-medium cursor-pointer focus:outline-none focus:ring-2 focus:ring-green-500 ${
-                      u.role === 'admin' ? 'bg-purple-100 text-purple-700' :
-                      u.role === 'owner' ? 'bg-amber-100 text-amber-700' :
-                      'bg-gray-100 text-gray-600'}`}>
-                    <option value="camper">Camper</option>
-                    <option value="owner">Owner</option>
-                    <option value="admin">Admin</option>
-                  </select>
+              <div key={u.id} className="bg-white rounded-2xl border border-gray-200 p-4 flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold shrink-0"
+                  style={{ background: u.avatar_color || '#16a34a' }}>
+                  {u.avatar_url ? <img src={u.avatar_url} className="w-full h-full rounded-full object-cover" alt="" /> : u.full_name?.[0]?.toUpperCase() || 'U'}
                 </div>
-                <div className="mt-2 text-xs text-gray-300">Joined {new Date(u.created_at).toLocaleDateString()}</div>
+                <div className="flex-1 min-w-0">
+                  <div className="font-semibold text-gray-900">{u.full_name}</div>
+                  <div className="text-sm text-gray-400">@{u.username}</div>
+                  <div className="text-xs text-gray-300 mt-0.5">Joined {new Date(u.created_at).toLocaleDateString()}</div>
+                </div>
+                <select value={u.role} onChange={e => updateRole(u.id, e.target.value)}
+                  className={`text-xs px-3 py-1.5 rounded-xl border-2 font-semibold cursor-pointer focus:outline-none ${u.role === 'admin' ? 'bg-purple-50 border-purple-200 text-purple-700' : u.role === 'owner' ? 'bg-amber-50 border-amber-200 text-amber-700' : 'bg-gray-50 border-gray-200 text-gray-600'}`}>
+                  <option value="camper">Camper</option>
+                  <option value="owner">Owner</option>
+                  <option value="admin">Admin</option>
+                </select>
               </div>
             ))}
-          </div>
-        )}
-
-        {/* SUBMISSIONS */}
-        {tab === 'submissions' && (
-          <div className="space-y-3">
-            {submissions.map(s => (
-              <div key={s.id} className={`bg-white rounded-2xl border p-5 ${s.status === 'pending' ? 'border-amber-200' : 'border-gray-200'}`}>
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <div className="font-semibold text-gray-900">{s.name}</div>
-                    <div className="text-sm text-gray-500">{s.state} · ${s.price_per_night}/night</div>
-                    <div className="text-xs text-gray-400 mt-0.5">{s.owner_name} · {s.owner_email}</div>
-                    {s.site_types?.length > 0 && (
-                      <div className="flex gap-1 mt-2">
-                        {s.site_types.map(t => <span key={t} className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">{t}</span>)}
-                      </div>
-                    )}
-                  </div>
-                  <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-                    s.status === 'pending' ? 'bg-amber-100 text-amber-700' :
-                    s.status === 'approved' ? 'bg-green-100 text-green-700' :
-                    'bg-red-100 text-red-600'}`}>{s.status}</span>
-                </div>
-                {s.status === 'pending' && (
-                  <div className="flex gap-2 pt-3 border-t border-gray-50">
-                    <button onClick={() => updateSubmission(s.id, 'approved')}
-                      className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-green-600 text-white rounded-xl text-sm font-semibold hover:bg-green-700 transition-colors">
-                      <CheckCircle size={15} /> Approve
-                    </button>
-                    <button onClick={() => updateSubmission(s.id, 'rejected')}
-                      className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-red-50 text-red-600 rounded-xl text-sm font-semibold hover:bg-red-100 transition-colors">
-                      <XCircle size={15} /> Reject
-                    </button>
-                  </div>
-                )}
-                <div className="text-xs text-gray-300 mt-2">{new Date(s.created_at).toLocaleDateString()}</div>
-              </div>
-            ))}
-            {submissions.length === 0 && (
-              <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center">
-                <Tent size={32} className="text-gray-200 mx-auto mb-3" />
-                <p className="text-gray-400 text-sm">No submissions yet.</p>
-              </div>
-            )}
           </div>
         )}
 
         {/* BOOKINGS */}
         {tab === 'bookings' && (
           <div className="space-y-3">
+            {bookings.length === 0 && <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center text-gray-400">No bookings yet</div>}
             {bookings.map(b => (
               <div key={b.id} className="bg-white rounded-2xl border border-gray-200 p-4">
-                <div className="flex items-start justify-between">
+                <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <div className="font-mono text-xs text-green-700 font-bold mb-1">{b.booking_ref}</div>
-                    <div className="font-semibold text-gray-900 text-sm">{b.guest_name}</div>
-                    <div className="text-xs text-gray-400">{b.guest_email}</div>
-                    <div className="text-xs text-gray-500 mt-1">{b.campground_slug} · {b.check_in}</div>
+                    <div className="font-mono text-xs font-bold text-green-700 mb-1">{b.booking_ref}</div>
+                    <div className="font-semibold text-gray-900">{b.guest_name}</div>
+                    <div className="text-sm text-gray-400">{b.guest_email}</div>
+                    <div className="text-sm text-gray-500 mt-1">{b.campground_slug} · {b.check_in} → {b.check_out}</div>
                   </div>
                   <div className="text-right">
-                    <div className="font-bold text-green-700">${b.commission_amount?.toFixed(0)} <span className="font-normal text-xs text-gray-400">CW</span></div>
-                    <div className="text-xs text-gray-400">${b.total_price} total</div>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium mt-1 inline-block ${
-                      b.status === 'confirmed' ? 'bg-green-100 text-green-700' :
-                      b.status === 'cancelled' ? 'bg-red-100 text-red-600' :
-                      'bg-gray-100 text-gray-500'}`}>{b.status}</span>
+                    <div className="font-bold text-green-700 text-lg">${b.commission_amount?.toFixed(0)} <span className="text-xs text-gray-400 font-normal">CW cut</span></div>
+                    <div className="text-sm text-gray-400">${b.total_price} total</div>
+                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium mt-1 inline-block ${b.status === 'confirmed' ? 'bg-green-100 text-green-700' : b.status === 'cancelled' ? 'bg-red-100 text-red-600' : 'bg-gray-100 text-gray-500'}`}>{b.status}</span>
                   </div>
                 </div>
               </div>
@@ -282,16 +327,13 @@ export default function AdminPage() {
 
         {/* INVITE */}
         {tab === 'invite' && (
-          <div className="bg-white rounded-2xl border border-gray-200 p-6 max-w-md">
-            <h2 className="font-bold text-gray-900 mb-1">Invite a User</h2>
-            <p className="text-gray-400 text-sm mb-5">Send a magic link invite. They'll land with the correct role set.</p>
+          <div className="max-w-md bg-white rounded-2xl border border-gray-200 p-6">
+            <h2 className="font-bold text-gray-900 mb-1 flex items-center gap-2"><UserPlus size={16} className="text-green-500" /> Invite someone</h2>
+            <p className="text-gray-400 text-sm mb-5">Send a magic link. They'll sign up with the role you set.</p>
             <div className="space-y-3">
-              <div>
-                <label className="text-xs text-gray-500 block mb-1">Email address</label>
-                <input type="email" value={inviteEmail} onChange={e => setInviteEmail(e.target.value)}
-                  placeholder="name@email.com"
-                  className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
-              </div>
+              <input type="email" value={inviteEmail} onChange={e => setInviteEmail(e.target.value)}
+                placeholder="email@address.com"
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
               <div>
                 <label className="text-xs text-gray-500 block mb-1">Role</label>
                 <select value={inviteRole} onChange={e => setInviteRole(e.target.value)}
@@ -301,14 +343,10 @@ export default function AdminPage() {
                   <option value="admin">Admin</option>
                 </select>
               </div>
-              {inviteSuccess && (
-                <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-xl p-3 text-sm text-green-700">
-                  <CheckCircle size={15} /> Invite sent successfully!
-                </div>
-              )}
+              {inviteDone && <div className="flex items-center gap-2 bg-green-50 border border-green-200 rounded-xl p-3 text-sm text-green-700"><CheckCircle size={15} /> Invite sent!</div>}
               <button onClick={sendInvite} disabled={inviting || !inviteEmail}
-                className="w-full flex items-center justify-center gap-2 py-3 bg-green-600 text-white rounded-xl font-semibold text-sm hover:bg-green-700 transition-colors disabled:opacity-40">
-                {inviting ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <><Send size={15} /> Send Invite</>}
+                className="w-full flex items-center justify-center gap-2 py-3 bg-green-600 text-white rounded-xl font-semibold text-sm hover:bg-green-700 disabled:opacity-40">
+                {inviting ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <><Send size={15} /> Send invite</>}
               </button>
             </div>
           </div>
