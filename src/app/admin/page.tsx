@@ -114,7 +114,7 @@ export default function AdminPage() {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
           {[
             { label: 'Total Users', value: stats.users, icon: Users, color: 'text-blue-600', bg: 'bg-blue-50' },
             { label: 'Campers', value: stats.campers, icon: Tent, color: 'text-green-600', bg: 'bg-green-50' },
@@ -134,7 +134,7 @@ export default function AdminPage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-1 bg-gray-100 rounded-xl p-1 mb-5 overflow-x-auto">
+        <div className="flex gap-1 bg-gray-100 rounded-xl p-1 mb-5 overflow-x-auto scrollbar-hide">
           {TABS.map(t => (
             <button key={t.key} onClick={() => setTab(t.key)}
               className={`flex-shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium transition-colors ${tab === t.key ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500'}`}>
@@ -146,7 +146,7 @@ export default function AdminPage() {
 
         {/* OVERVIEW */}
         {tab === 'overview' && (
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-white rounded-2xl border border-gray-200 p-5">
               <h2 className="font-semibold text-gray-900 mb-4 flex items-center gap-2"><Calendar size={16} className="text-indigo-500" /> Recent Bookings</h2>
               {bookings.length === 0 ? <p className="text-gray-400 text-sm">No bookings yet</p> : bookings.slice(0, 6).map(b => (
@@ -229,7 +229,7 @@ export default function AdminPage() {
             {submissions.length === 0 && <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center text-gray-400">No submissions yet</div>}
             {submissions.map(s => (
               <div key={s.id} className={`bg-white rounded-2xl border p-5 ${s.status === 'pending' ? 'border-amber-200' : 'border-gray-200'}`}>
-                <div className="flex flex-wrap items-start gap-3 justify-between mb-3">
+                <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:justify-between mb-3">
                   <div>
                     <div className="font-semibold text-gray-900 text-lg">{s.name}</div>
                     <div className="flex flex-wrap gap-3 mt-1 text-sm text-gray-500">
@@ -252,7 +252,7 @@ export default function AdminPage() {
                   </span>
                 </div>
                 {s.status === 'pending' && (
-                  <div className="flex gap-2 pt-3 border-t border-gray-50">
+                  <div className="flex flex-col sm:flex-row gap-2 pt-3 border-t border-gray-50">
                     <button onClick={() => updateSub(s.id, 'approved')}
                       className="flex-1 flex items-center justify-center gap-2 py-2.5 bg-green-600 text-white rounded-xl text-sm font-semibold hover:bg-green-700 transition-colors">
                       <CheckCircle size={15} /> Approve & notify owner
@@ -280,7 +280,7 @@ export default function AdminPage() {
             </div>
             <div className="text-xs text-gray-400 px-1">{filteredUsers.length} users</div>
             {filteredUsers.map(u => (
-              <div key={u.id} className="bg-white rounded-2xl border border-gray-200 p-4 flex items-center gap-4">
+              <div key={u.id} className="bg-white rounded-2xl border border-gray-200 p-4 flex items-center gap-3 min-w-0">
                 <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold shrink-0"
                   style={{ background: u.avatar_color || '#16a34a' }}>
                   {u.avatar_url ? <img src={u.avatar_url} className="w-full h-full rounded-full object-cover" alt="" /> : u.full_name?.[0]?.toUpperCase() || 'U'}
@@ -307,7 +307,7 @@ export default function AdminPage() {
             {bookings.length === 0 && <div className="bg-white rounded-2xl border border-gray-200 p-8 text-center text-gray-400">No bookings yet</div>}
             {bookings.map(b => (
               <div key={b.id} className="bg-white rounded-2xl border border-gray-200 p-4">
-                <div className="flex flex-wrap items-start justify-between gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
                   <div>
                     <div className="font-mono text-xs font-bold text-green-700 mb-1">{b.booking_ref}</div>
                     <div className="font-semibold text-gray-900">{b.guest_name}</div>

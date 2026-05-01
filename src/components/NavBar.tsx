@@ -128,7 +128,7 @@ export default function NavBar({ dark = false }: { dark?: boolean }) {
 
   return (
     <>
-      <header className={`sticky top-0 z-50 ${navBg}`}>
+      <header className={`sticky top-0 z-50 ${navBg} overflow-hidden`}>
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center h-14 gap-3">
 
@@ -149,7 +149,7 @@ export default function NavBar({ dark = false }: { dark?: boolean }) {
                 className="w-full pl-9 pr-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:bg-white transition-colors"
               />
               {searchResults.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl border border-gray-100 shadow-lg overflow-hidden z-50">
+                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl border border-gray-100 shadow-lg overflow-hidden z-50 max-w-full">
                   {searchResults.map(r => (
                     <Link key={r.slug} href={`/campground/${r.slug}`}
                       onClick={() => setSearchQ('')}
@@ -367,8 +367,8 @@ export default function NavBar({ dark = false }: { dark?: boolean }) {
 
       {/* Near Me results strip — shows below nav when location is found */}
       {nearMe.length > 0 && !megaOpen && (
-        <div className="bg-green-50 border-b border-green-100 px-4 py-2">
-          <div className="max-w-7xl mx-auto flex items-center gap-3 overflow-x-auto">
+        <div className="bg-green-50 border-b border-green-100 px-4 py-2 overflow-hidden">
+          <div className="max-w-7xl mx-auto flex items-center gap-3 overflow-x-auto scrollbar-hide">
             <span className="text-xs font-bold text-green-700 shrink-0 flex items-center gap-1">
               <Navigation size={12} /> Near you:
             </span>

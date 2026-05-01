@@ -180,7 +180,7 @@ export default function BookPage() {
             </div>
           </div>
           <p className="text-xs text-gray-400 mb-6">Confirmation sent to <strong>{guestEmail}</strong>. The campground owner will be in touch before your stay.</p>
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <Link href="/profile?tab=bookings" className="flex-1 py-3 bg-green-600 text-white rounded-xl font-semibold text-sm hover:bg-green-700 text-center">View my bookings</Link>
             <Link href={`/campground/${slug}`} className="flex-1 py-3 border border-gray-200 text-gray-700 rounded-xl font-semibold text-sm hover:bg-gray-50 text-center">Back to campground</Link>
           </div>
@@ -220,7 +220,7 @@ export default function BookPage() {
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 py-6">
+      <div className="max-w-5xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
         <div className="grid lg:grid-cols-[1fr_340px] gap-6">
 
           {/* LEFT — booking flow */}
@@ -232,7 +232,7 @@ export default function BookPage() {
                 <div className="w-7 h-7 bg-green-600 text-white rounded-full flex items-center justify-center text-xs font-bold">1</div>
                 <h2 className="font-bold text-gray-900">Choose your dates</h2>
               </div>
-              <div className="grid grid-cols-2 gap-3 mb-4">
+              <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 gap-3 mb-4">
                 <div>
                   <label className="text-xs font-semibold text-gray-500 block mb-1.5">CHECK-IN</label>
                   <input type="date" min={today} value={checkIn}
@@ -405,7 +405,7 @@ export default function BookPage() {
                   <h2 className="font-bold text-gray-900">Your details</h2>
                 </div>
                 <div className="space-y-3">
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>
                       <label className="text-xs font-semibold text-gray-500 block mb-1.5">FULL NAME *</label>
                       <input value={guestName} onChange={e => setGuestName(e.target.value)} placeholder="Jane Smith"

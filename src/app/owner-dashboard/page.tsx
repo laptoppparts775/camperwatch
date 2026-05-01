@@ -157,7 +157,7 @@ export default function OwnerDashboard() {
 
       <div className="max-w-5xl mx-auto px-4 py-6">
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
           {[
             { label: 'Total Earnings', value: `$${totalRevenue.toFixed(0)}`, icon: DollarSign, color: 'text-green-600' },
             { label: 'Bookings', value: confirmedBookings.length, icon: Calendar, color: 'text-blue-600' },
@@ -184,7 +184,7 @@ export default function OwnerDashboard() {
         )}
 
         {/* Tabs */}
-        <div className="flex gap-1 bg-gray-100 rounded-xl p-1 mb-5 w-fit">
+        <div className="flex gap-1 bg-gray-100 rounded-xl p-1 mb-5 overflow-x-auto">
           {[
             { key: 'bookings', label: 'Bookings' },
             { key: 'sites', label: 'My Sites' },
@@ -230,7 +230,7 @@ export default function OwnerDashboard() {
                       <div className="text-xs text-gray-400">your payout</div>
                     </div>
                   </div>
-                  <div className="mt-3 pt-3 border-t border-gray-50 grid grid-cols-3 gap-3 text-sm">
+                  <div className="mt-3 pt-3 border-t border-gray-50 grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
                     <div><span className="text-gray-400 block text-xs">Site</span>{booking.campground_sites?.name || '—'}</div>
                     <div><span className="text-gray-400 block text-xs">Dates</span>{booking.check_in} → {booking.check_out}</div>
                     <div><span className="text-gray-400 block text-xs">Guests</span>{booking.num_guests} · {booking.nights}n</div>
@@ -258,7 +258,7 @@ export default function OwnerDashboard() {
                 </button>
               </div>
             ) : sites.map(site => (
-              <div key={site.id} className="bg-white rounded-2xl border border-gray-200 p-4 flex items-center justify-between">
+              <div key={site.id} className="bg-white rounded-2xl border border-gray-200 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div>
                   <div className="font-semibold text-gray-900">{site.name}</div>
                   <div className="text-sm text-gray-500 capitalize">{site.site_type.replace('_', ' ')} · Up to {site.max_guests} guests · ${site.price_per_night}/night</div>
@@ -295,7 +295,7 @@ export default function OwnerDashboard() {
                   className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="e.g. Site 12, Lakeside Tent A, Cabin Bear" />
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs text-gray-500 block mb-1">Type *</label>
                   <select value={newSite.site_type} onChange={e => setNewSite(s => ({ ...s, site_type: e.target.value }))}
@@ -312,7 +312,7 @@ export default function OwnerDashboard() {
                     className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="text-xs text-gray-500 block mb-1">Price/night ($) *</label>
                   <input type="number" min={1} value={newSite.price_per_night} onChange={e => setNewSite(s => ({ ...s, price_per_night: e.target.value }))}

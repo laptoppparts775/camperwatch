@@ -33,7 +33,7 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
   const proTips = camp.pro_tips || []
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24 md:pb-0">
+    <div className="min-h-screen bg-gray-50 pb-24 md:pb-0 overflow-x-hidden">
       {/* Header */}
       <NavBar />
 

@@ -191,7 +191,7 @@ export default function CommunityPage() {
       <NavBar />
 
       <div className="max-w-4xl mx-auto px-4 py-6">
-        <div className="grid lg:grid-cols-[1fr_280px] gap-6">
+        <div className="grid lg:grid-cols-[1fr_280px] gap-6 w-full min-w-0">
 
           {/* Main feed */}
           <div className="space-y-4">
@@ -207,7 +207,7 @@ export default function CommunityPage() {
                       onChange={e => setContent(e.target.value)}
                       placeholder={cfg.placeholder}
                       rows={3}
-                      className="w-full text-sm text-gray-900 placeholder-gray-400 bg-transparent resize-none focus:outline-none"
+                      className="w-full text-sm text-gray-900 placeholder-gray-400 bg-transparent resize-none focus:outline-none min-w-0"
                     />
                     {pendingImages.length > 0 && (
                       <div className="flex gap-2 mt-2 flex-wrap">
@@ -321,7 +321,7 @@ export default function CommunityPage() {
               const shouldTruncate = post.content.length > 280 && !isExpanded
 
               return (
-                <div key={post.id} className={`bg-white rounded-2xl border overflow-hidden ${isAlert ? 'border-red-200 bg-red-50/30' : 'border-gray-200'}`}>
+                <div key={post.id} className={`bg-white rounded-2xl border overflow-hidden w-full min-w-0 ${isAlert ? 'border-red-200 bg-red-50/30' : 'border-gray-200'}`}>
                   {/* Alert banner */}
                   {isAlert && (
                     <div className="bg-red-500 px-4 py-1.5 flex items-center gap-2">
@@ -335,7 +335,7 @@ export default function CommunityPage() {
                     <div className="flex items-start gap-3 mb-3">
                       <Avatar p={post.profiles} />
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 flex-wrap">
+                        <div className="flex items-center gap-1.5 flex-wrap min-w-0">
                           <span className="font-semibold text-gray-900 text-sm">{getDisplayName(post.profiles)}</span>
                           {post.post_type !== 'general' && (
                             <span className={`flex items-center gap-1 text-xs px-2 py-0.5 rounded-full font-medium ${
@@ -394,7 +394,7 @@ export default function CommunityPage() {
 
                     {/* Tags */}
                     {post.tags?.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mt-3">
+                      <div className="flex flex-wrap gap-1 mt-3 overflow-hidden">
                         {post.tags.map(tag => (
                           <span key={tag} className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">#{tag}</span>
                         ))}

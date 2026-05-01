@@ -42,7 +42,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
         />
       </head>
-      <body>{children}</body>
+      <body style={{overflowX:"hidden"}}>{children}</body>
     </html>
   )
 }
