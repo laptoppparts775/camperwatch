@@ -191,8 +191,8 @@ export default function CommunityPage() {
     <div className="min-h-screen bg-gray-50">
       <NavBar />
 
-      <div className="max-w-4xl mx-auto px-4 py-6">
-        <div className="grid lg:grid-cols-[1fr_280px] gap-6 w-full min-w-0">
+      <div className="max-w-4xl mx-auto px-4 py-6 overflow-hidden">
+        <div className="grid lg:grid-cols-[1fr_280px] gap-6 w-full min-w-0 overflow-hidden">
 
           {/* Main feed */}
           <div className="space-y-4">
@@ -369,7 +369,7 @@ export default function CommunityPage() {
                     </div>
 
                     {/* Content */}
-                    <p className={`text-sm text-gray-800 leading-relaxed whitespace-pre-wrap ${shouldTruncate ? 'line-clamp-4' : ''}`}>
+                    <p className={`text-sm text-gray-800 leading-relaxed whitespace-pre-wrap break-words overflow-hidden ${shouldTruncate ? 'line-clamp-4' : ''}`}>
                       {post.content}
                     </p>
                     {post.content.length > 280 && (
@@ -395,7 +395,7 @@ export default function CommunityPage() {
 
                     {/* Tags */}
                     {post.tags?.length > 0 && (
-                      <div className="flex flex-wrap gap-1 mt-3 overflow-hidden">
+                      <div className="flex flex-wrap gap-1 mt-3 w-full overflow-hidden">
                         {post.tags.map(tag => (
                           <span key={tag} className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">#{tag}</span>
                         ))}
