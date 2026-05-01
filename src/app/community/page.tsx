@@ -195,7 +195,7 @@ export default function CommunityPage() {
         <div className="grid lg:grid-cols-[1fr_280px] gap-6 w-full min-w-0 overflow-hidden">
 
           {/* Main feed */}
-          <div className="space-y-4">
+          <div className="space-y-4 min-w-0 overflow-hidden w-full">
 
             {/* Compose box */}
             {user ? (
@@ -294,7 +294,7 @@ export default function CommunityPage() {
             )}
 
             {/* Filter tabs */}
-            <div className="flex gap-1 overflow-x-auto pb-1">
+            <div className="flex gap-1 overflow-x-auto pb-1 w-full" style={{scrollbarWidth:'none'}}>
               {POST_TYPES.map(t => (
                 <button key={t.key} onClick={() => setFilter(t.key)}
                   className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium whitespace-nowrap transition-colors shrink-0 ${
