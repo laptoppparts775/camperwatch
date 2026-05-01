@@ -7,7 +7,7 @@ import { campgrounds } from '@/lib/data'
 import {
   TreePine, MapPin, Search, ChevronDown, Menu, X, LogOut,
   Tent, Shield, User, Star, Zap, Map, Users, Plus,
-  Phone, Calendar, DollarSign, Bell, Navigation, Coffee
+  Phone, Calendar, DollarSign, Bell, Navigation, Coffee, MessageCircle
 } from 'lucide-react'
 
 type NavUser = { id: string; email: string; full_name: string; username: string; role: string; avatar_url: string | null; avatar_color: string }
@@ -159,6 +159,9 @@ export default function NavBar({ dark = false }: { dark?: boolean }) {
               <Link href="/community" className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${textMuted}`}>
                 Community
               </Link>
+              <Link href="/tribes" className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${textMuted}`}>
+                Tribes
+              </Link>
               {(user?.role === 'owner' || user?.role === 'admin') && (
                 <Link href="/owner-dashboard" className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors text-amber-600 hover:text-amber-700`}>
                   My Campground
@@ -204,7 +207,13 @@ export default function NavBar({ dark = false }: { dark?: boolean }) {
                       <Link href="/profile" onClick={() => setUserOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
                         <User size={14} className="text-gray-400" /> My Profile
                       </Link>
-                      <Link href="/profile?tab=bookings" onClick={() => setUserOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
+                      <Link href="/messages" onClick={() => setUserOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
+                    <MessageCircle size={14} className="text-gray-400" /> Messages
+                  </Link>
+                  <Link href="/settings/privacy" onClick={() => setUserOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
+                    <Shield size={14} className="text-gray-400" /> Privacy settings
+                  </Link>
+                  <Link href="/profile?tab=bookings" onClick={() => setUserOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50">
                         <Calendar size={14} className="text-gray-400" /> My Bookings
                       </Link>
                       {(user.role === 'owner' || user.role === 'admin') && (
