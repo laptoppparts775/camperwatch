@@ -45,8 +45,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body style={{overflowX:"hidden"}}>
         {children}
-        {/* AvantLink verification — remove after approval */}
-        <Script src="https://classic.avantlink.com/affiliate_app_confirm.php?mode=js&authResponse=708e6a85f4f902db1e70f5b47da3cf6010769e42" strategy="afterInteractive" />
       </body>
     </html>
   )
