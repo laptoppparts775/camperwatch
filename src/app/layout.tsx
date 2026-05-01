@@ -42,7 +42,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap"
         />
       </head>
-      <body style={{overflowX:"hidden"}}>{children}</body>
+      <body style={{overflowX:"hidden"}}>
+        {children}
+        {/* AvantLink verification — can be removed after approval */}
+        <script type="text/javascript" src="http://classic.avantlink.com/affiliate_app_confirm.php?mode=js&authResponse=708e6a85f4f902db1e70f5b47da3cf6010769e42"></script>
+      </body>
     </html>
   )
 }
