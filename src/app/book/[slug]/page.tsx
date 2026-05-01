@@ -54,9 +54,9 @@ export default function BookPage() {
   const [user, setUser] = useState<any>(null)
 
   const today = new Date().toISOString().split('T')[0]
-  // Default check-in to tomorrow, check-out to 3 days from now
+  // Default check-in to tomorrow, check-out to 4 days from now (3 nights)
   const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0]
-  const threeDays = new Date(Date.now() + 3 * 86400000).toISOString().split('T')[0]
+  const threeDays = new Date(Date.now() + 4 * 86400000).toISOString().split('T')[0]
 
   useEffect(() => {
     const sb = getSupabase()
@@ -258,6 +258,7 @@ export default function BookPage() {
                   <Clock size={14} /> <strong>{nights} night{nights !== 1 ? 's' : ''}</strong>
                   <span className="text-green-500">·</span>
                   {camp.check_in} check-in · {camp.check_out} check-out
+                  <span className="text-xs text-green-500 ml-auto">Adjust dates above for longer stays</span>
                 </div>
               )}
             </div>
