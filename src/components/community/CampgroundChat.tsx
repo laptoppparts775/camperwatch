@@ -43,7 +43,6 @@ export default function CampgroundChat({ slug }: { slug: string }) {
       .then(({ data }) => {
         setMessages((data || []).reverse())
         setLoading(false)
-        hasLoadedOnce.current = true
       })
 
     // Subscribe to new messages
@@ -81,13 +80,14 @@ export default function CampgroundChat({ slug }: { slug: string }) {
     return () => { sb.removeChannel(channel) }
   }, [slug, user?.id])
 
-  const hasLoadedOnce = useRef(false)
+  const prevMessageCount = useRef(0)
 
   useEffect(() => {
-    // Only auto-scroll for new incoming messages, never on initial load
-    if (!hasLoadedOnce.current) return
-    if (messages.length === 0) return
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    // Only scroll when a genuinely new message arrives (count increases)
+    if (messages.length > prevMessageCount.current && prevMessageCount.current > 0) {
+      bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }
+    prevMessageCount.current = messages.length
   }, [messages])
 
   async function send() {

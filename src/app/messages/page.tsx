@@ -98,10 +98,12 @@ function MessagesInner() {
     })
   }, [])
 
-  const isInitialLoad = useRef(true)
+  const prevMsgCount = useRef(0)
   useEffect(() => {
-    if (isInitialLoad.current) { isInitialLoad.current = false; return }
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    if (messages.length > prevMsgCount.current && prevMsgCount.current > 0) {
+      bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }
+    prevMsgCount.current = messages.length
   }, [messages])
 
   async function openThread(otherId: string, myId?: string) {
