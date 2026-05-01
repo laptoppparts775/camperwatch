@@ -98,7 +98,9 @@ function MessagesInner() {
     })
   }, [])
 
+  const isInitialLoad = useRef(true)
   useEffect(() => {
+    if (isInitialLoad.current) { isInitialLoad.current = false; return }
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 

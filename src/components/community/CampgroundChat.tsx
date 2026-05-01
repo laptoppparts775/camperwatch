@@ -72,7 +72,13 @@ export default function CampgroundChat({ slug }: { slug: string }) {
     return () => { sb.removeChannel(channel) }
   }, [slug, user?.id])
 
+  const isInitialLoad = useRef(true)
+
   useEffect(() => {
+    if (isInitialLoad.current) {
+      isInitialLoad.current = false
+      return
+    }
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 

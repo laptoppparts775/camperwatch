@@ -40,7 +40,11 @@ export default function TribesPage() {
     })
   }, [])
 
-  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }) }, [messages])
+  const isInitialLoad = useRef(true)
+  useEffect(() => {
+    if (isInitialLoad.current) { isInitialLoad.current = false; return }
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
 
   async function loadTribes(uid?: string) {
     const sb = getSupabase()
