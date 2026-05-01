@@ -31,10 +31,10 @@ export default function CampgroundChat({ slug }: { slug: string }) {
   useEffect(() => {
     const sb = getSupabase()
 
-    // Get user
+    // Get user session once
     sb.auth.getSession().then(({ data }: any) => setUser(data.session?.user || null))
 
-    // Load recent messages with profiles
+    // Load recent messages — only runs when slug changes, NOT when user loads
     sb.from('campground_chat')
       .select('*, profiles(username, full_name, avatar_color)')
       .eq('campground_slug', slug)
@@ -54,7 +54,6 @@ export default function CampgroundChat({ slug }: { slug: string }) {
         table: 'campground_chat',
         filter: `campground_slug=eq.${slug}`
       }, async (payload) => {
-        // Fetch the profile for new message
         const { data: profile } = await sb.from('profiles')
           .select('username, full_name, avatar_color')
           .eq('id', payload.new.user_id)
@@ -64,12 +63,21 @@ export default function CampgroundChat({ slug }: { slug: string }) {
       .on('presence', { event: 'sync' }, () => {
         setOnline(Object.keys(channel.presenceState()).length)
       })
-      .subscribe(async (status) => {
-        if (status === 'SUBSCRIBED' && user) {
-          await channel.track({ user_id: user.id })
-        }
-      })
+      .subscribe()
 
+    return () => { sb.removeChannel(channel) }
+  }, [slug])  // ← slug only — user session loading no longer re-runs this
+
+  // Separate effect for presence tracking when user becomes known
+  useEffect(() => {
+    if (!user?.id) return
+    const sb = getSupabase()
+    const channel = sb.channel(`presence:${slug}`)
+    channel.subscribe(async (status) => {
+      if (status === 'SUBSCRIBED') {
+        await channel.track({ user_id: user.id })
+      }
+    })
     return () => { sb.removeChannel(channel) }
   }, [slug, user?.id])
 
