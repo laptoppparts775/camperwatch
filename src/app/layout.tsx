@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from 'next'
+import Script from 'next/script'
 import './globals.css'
 
 export const viewport: Viewport = {
@@ -44,8 +45,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body style={{overflowX:"hidden"}}>
         {children}
-        {/* AvantLink verification — can be removed after approval */}
-        <script type="text/javascript" src="http://classic.avantlink.com/affiliate_app_confirm.php?mode=js&authResponse=708e6a85f4f902db1e70f5b47da3cf6010769e42"></script>
+        {/* AvantLink verification — remove after approval */}
+        <Script src="https://classic.avantlink.com/affiliate_app_confirm.php?mode=js&authResponse=708e6a85f4f902db1e70f5b47da3cf6010769e42" strategy="afterInteractive" />
       </body>
     </html>
   )
