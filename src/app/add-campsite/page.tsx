@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { getSupabase } from '@/lib/supabase'
 import { TreePine, MapPin, DollarSign, Info, Camera, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
+import NavBar from '@/components/NavBar'
 import Logo from '@/components/Logo'
 
 const STATES = ['AK','AL','AR','AZ','CA','CO','CT','DE','FL','GA','HI','IA','ID','IL','IN','KS','KY','LA','MA','MD','ME','MI','MN','MO','MS','MT','NC','ND','NE','NH','NJ','NM','NV','NY','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VA','VT','WA','WI','WV','WY']
@@ -54,15 +55,7 @@ export default function AddCampsitePage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
-        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-3">
-          <Link href="/" className="flex items-center gap-2">
-            <Logo size={28} />
-            <span className="font-display font-semibold text-gray-900">CamperWatch</span>
-          </Link>
-          <span className="ml-auto text-xs text-gray-400">Campground Owner Portal</span>
-        </div>
-      </header>
+      <NavBar />
 
       <main className="max-w-3xl mx-auto px-4 py-8">
         {/* Hero */}

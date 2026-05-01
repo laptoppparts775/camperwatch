@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react'
 import { getSupabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import NavBar from '@/components/NavBar'
 import { TreePine, MapPin, Users, Star, Copy, Check, Bell, LogOut, Tent, Share2, ChevronRight, Calendar, UserPlus, Heart, MessageCircle, Award } from 'lucide-react'
 import { campgrounds } from '@/lib/data'
 
@@ -124,22 +125,7 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Nav */}
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
-        <div className="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-1.5 text-green-700 font-bold">
-            <TreePine size={20} /> CamperWatch
-          </Link>
-          <div className="flex items-center gap-3">
-            {unread > 0 && (
-              <button onClick={() => setTab('notifications')} className="relative">
-                <Bell size={20} className="text-gray-500" />
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">{unread}</span>
-              </button>
-            )}
-            <button onClick={signOut} className="text-gray-400 hover:text-gray-600"><LogOut size={18} /></button>
-          </div>
-        </div>
-      </header>
+      <NavBar />
 
       <div className="max-w-2xl mx-auto px-4 py-5">
         {/* Profile card */}

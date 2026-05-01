@@ -4,8 +4,7 @@ import { ridbData } from '@/lib/ridbData'
 import { useRouter } from 'next/navigation'
 import { MapPin, Star, ExternalLink, ChevronLeft, Check, TreePine, Clock, AlertCircle, Mountain, Users, Calendar, ChevronRight } from 'lucide-react'
 import dynamic from 'next/dynamic'
-import { useState, useEffect, Suspense } from 'react'
-import { getSupabase } from '@/lib/supabase'
+import { useState, Suspense } from 'react'
 import ShareButtons from '@/components/community/ShareButtons'
 import SiteGuide from '@/components/SiteGuide'
 import { siteGuides } from '@/lib/siteGuides'
@@ -13,6 +12,7 @@ import { campIntelligence } from '@/lib/intelligence'
 import { reviews as allReviews, campaignInsights } from '@/lib/reviews'
 import ReviewsSection from '@/components/reviews/ReviewsSection'
 import Link from 'next/link'
+import NavBar from '@/components/NavBar'
 
 const MapView = dynamic(() => import('@/components/map/MapView'), { ssr: false })
 const TipsList = dynamic(() => import('@/components/community/TipsList'), { ssr: false })
@@ -24,49 +24,17 @@ const AvailabilityCalendar = dynamic(() => import('@/components/AvailabilityCale
 export default function CampgroundClient({ camp }: { camp: Campground }) {
   const router = useRouter()
   const [activeImg, setActiveImg] = useState(0)
-  const [user, setUser] = useState<any>(null)
-
-  useEffect(() => {
-    const supabase = getSupabase()
-    supabase.auth.getSession().then(({ data }: { data: any }) => setUser(data.session?.user || null))
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e: any, session: any) => {
-      setUser(session?.user || null)
-    })
-    return () => subscription.unsubscribe()
-  }, [])
-  const images = camp.images as Array<{url: string; alt: string; title: string; caption: string}>
-  const proTips = (camp as any).pro_tips as string[] || []
+  const images = camp.images || []
   const intel = campIntelligence[camp.slug]
+  const campReviews = (allReviews as any)[camp.slug] || []
+  const insights = campaignInsights[camp.slug]
+  const guide = siteGuides[camp.slug]
+  const proTips = camp.pro_tips || []
 
   return (
     <div className="min-h-screen bg-gray-50 pb-24 md:pb-0">
       {/* Header */}
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center gap-3">
-          <button onClick={() => router.back()} className="flex items-center gap-1 text-gray-500 hover:text-gray-900 text-sm">
-            <ChevronLeft size={16}/> Back
-          </button>
-          <Link href="/" className="flex items-center gap-2 ml-2">
-            <TreePine size={18} className="text-green-700"/>
-            <span className="font-display font-semibold text-gray-900 hidden sm:block">CamperWatch</span>
-          </Link>
-          <nav className="ml-auto flex gap-4 text-sm">
-            <Link href="/community" className="text-gray-500 hover:text-gray-900 hidden sm:block">Community</Link>
-            <Link href="/owner-dashboard" className="text-gray-500 hover:text-gray-900 hidden sm:block text-sm">For Owners</Link>
-            <Link href="/profile" className="text-gray-500 hover:text-gray-900 hidden sm:block text-sm">My Profile</Link>
-            {user ? (
-              <Link href="/profile" className="flex items-center gap-2 bg-green-600 text-white px-4 py-1.5 rounded-xl font-medium text-sm hover:bg-green-700 transition-colors">
-                <div className="w-5 h-5 rounded-full bg-green-400 flex items-center justify-center text-xs font-bold text-green-900">
-                  {(user.user_metadata?.full_name || user.email || 'U')[0].toUpperCase()}
-                </div>
-                My Profile
-              </Link>
-            ) : (
-              <Link href="/auth/login" className="bg-green-600 text-white px-4 py-1.5 rounded-xl font-medium text-sm hover:bg-green-700 transition-colors">Sign In</Link>
-            )}
-          </nav>
-        </div>
-      </header>
+      <NavBar />
 
       <main className="max-w-6xl mx-auto px-4 py-6">
         {/* Image Gallery */}

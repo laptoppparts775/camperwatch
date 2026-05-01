@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import Link from 'next/link'
+import NavBar from '@/components/NavBar'
 import { TreePine, Mail, MessageSquare, MapPin, AlertCircle, Lightbulb, Building2, CheckCircle2, ChevronDown } from 'lucide-react'
 
 const REASONS = [

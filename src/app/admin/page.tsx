@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { getSupabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import NavBar from '@/components/NavBar'
 import { TreePine, Users, Tent, Calendar, DollarSign, CheckCircle, XCircle, Clock, Search, UserPlus, Send, Shield, TrendingUp, AlertCircle } from 'lucide-react'
 
 const ADMIN_EMAILS = ['lubiarz.tek@gmail.com', 'picinski@gmail.com', 'dawoodanialtaaf@gmail.com']
@@ -102,19 +103,7 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
-        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <Link href="/" className="flex items-center gap-1.5 text-green-700 font-bold">
-              <TreePine size={20} /> CamperWatch
-            </Link>
-            <span className="bg-purple-100 text-purple-700 text-xs font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-              <Shield size={10} /> Admin
-            </span>
-          </div>
-          <Link href="/profile" className="text-sm text-gray-500 hover:text-gray-700">My Profile</Link>
-        </div>
-      </header>
+      <NavBar />
 
       <div className="max-w-6xl mx-auto px-4 py-6">
         {/* Stats bar */}

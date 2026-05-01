@@ -5,6 +5,7 @@ import { getSupabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import { Plus, Calendar, DollarSign, Users, Settings, ChevronRight, CheckCircle, Clock, XCircle, Tent } from 'lucide-react'
 import Link from 'next/link'
+import NavBar from '@/components/NavBar'
 
 type Booking = {
   id: string
@@ -152,17 +153,7 @@ export default function OwnerDashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white border-b border-gray-100">
-        <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div>
-            <Link href="/" className="text-green-700 font-bold text-lg">🏕 CamperWatch</Link>
-            <span className="text-gray-400 text-sm ml-2">Owner Dashboard</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-gray-500">{user?.email}</span>
-          </div>
-        </div>
-      </header>
+      <NavBar />
 
       <div className="max-w-5xl mx-auto px-4 py-6">
         {/* Stats */}

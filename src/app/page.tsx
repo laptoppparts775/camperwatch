@@ -1,9 +1,7 @@
-'use client'
 import Link from 'next/link'
 import HomeSearch from '@/components/HomeSearch'
 import { campgrounds } from '@/lib/data'
-import { useState, useEffect } from 'react'
-import { getSupabase } from '@/lib/supabase'
+import NavBar from '@/components/NavBar'
 
 const FEATURED = campgrounds.slice(0, 6)
 
@@ -45,46 +43,11 @@ const WHY = [
 ]
 
 export default function HomePage() {
-  const [user, setUser] = useState<any>(null)
-
-  useEffect(() => {
-    const supabase = getSupabase()
-    supabase.auth.getSession().then(({ data }: { data: any }) => setUser(data.session?.user || null))
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e: any, session: any) => {
-      setUser(session?.user || null)
-    })
-    return () => subscription.unsubscribe()
-  }, [])
-
   return (
     <main className="bg-[#0e1a13] min-h-screen" style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
 
-      {/* NAV */}
-      <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 py-3 sm:px-8 sm:py-4"
-        style={{ background: 'linear-gradient(to bottom, rgba(14,26,19,0.97) 0%, transparent 100%)' }}>
-        <Link href="/" className="flex items-center gap-2 min-w-0">
-          <svg viewBox="0 0 24 24" className="w-6 h-6 flex-shrink-0 text-amber-400 fill-current">
-            <path d="M12 2L4 20h16L12 2zm0 4l5.5 12H6.5L12 6z" opacity=".3"/>
-            <path d="M12 2L6.5 18h11L12 2z"/>
-          </svg>
-          <span className="font-display text-base sm:text-lg font-bold text-white tracking-tight truncate">CamperWatch</span>
-        </Link>
-        <div className="flex items-center gap-3 sm:gap-6 flex-shrink-0">
-          <Link href="/search" className="text-sm text-stone-300 hover:text-white transition-colors hidden sm:block">Browse</Link>
-          <Link href="/community" className="text-sm text-stone-300 hover:text-white transition-colors hidden md:block">Community</Link>
-          <Link href="/contact" className="text-sm text-stone-300 hover:text-white transition-colors hidden md:block">Contact</Link>
-          {user ? (
-            <Link href="/profile" className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-stone-950 bg-amber-400 hover:bg-amber-300 px-3 sm:px-4 py-1.5 rounded-full transition-colors whitespace-nowrap">
-              <div className="w-5 h-5 rounded-full bg-amber-600 flex items-center justify-center text-xs font-bold text-white">
-                {(user.user_metadata?.full_name || user.email || 'U')[0].toUpperCase()}
-              </div>
-              My Profile
-            </Link>
-          ) : (
-            <Link href="/auth/login" className="text-xs sm:text-sm font-semibold text-stone-950 bg-amber-400 hover:bg-amber-300 px-3 sm:px-4 py-1.5 rounded-full transition-colors whitespace-nowrap">Sign in</Link>
-          )}
-        </div>
-      </nav>
+      <NavBar dark />
+
 
       {/* HERO — inline SVG silhouette = zero LCP fetch */}
       <section className="relative flex flex-col justify-end" style={{ minHeight: '100svh', overflow: 'hidden' }}>

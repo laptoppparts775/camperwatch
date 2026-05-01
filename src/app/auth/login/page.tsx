@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { getSupabase } from '@/lib/supabase'
 import { supabase } from '@/lib/supabase'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -24,6 +24,14 @@ function LoginPageInner() {
       window.history.replaceState(null, '', window.location.pathname)
     }
   }
+  // If already logged in, redirect
+  useEffect(() => {
+    const supabase = getSupabase()
+    supabase.auth.getSession().then(({ data }: any) => {
+      if (data.session) router.push(redirect)
+    })
+  }, [])
+
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const [sent, setSent] = useState(false)
