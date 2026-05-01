@@ -22,6 +22,7 @@ const IntelligenceSection = dynamic(() => import('@/components/IntelligenceSecti
 const AvailabilityCalendar = dynamic(() => import('@/components/AvailabilityCalendar'), { ssr: false })
 const CampgroundChat = dynamic(() => import('@/components/community/CampgroundChat'), { ssr: false })
 const TripLogButton = dynamic(() => import('@/components/TripLogButton'), { ssr: false })
+const GearRecommendations = dynamic(() => import('@/components/GearRecommendations'), { ssr: false })
 
 export default function CampgroundClient({ camp }: { camp: Campground }) {
   const router = useRouter()
@@ -161,6 +162,9 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
                 </ul>
               </div>
             )}
+
+            {/* Gear Recommendations — contextual affiliate placements */}
+            <GearRecommendations camp={camp} />
 
             {/* Community Tips */}
             <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
