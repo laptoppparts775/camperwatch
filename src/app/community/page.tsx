@@ -12,6 +12,7 @@ import {
   Flame, Search, X, Check
 } from 'lucide-react'
 import dynamic from 'next/dynamic'
+import FollowButton from '@/components/FollowButton'
 
 type Post = {
   id: string
@@ -408,6 +409,9 @@ export default function CommunityPage() {
                         <Heart size={14} className={post.has_liked ? 'fill-red-500' : ''} />
                         {post.likes > 0 ? post.likes : 'Like'}
                       </button>
+                      {post.user_id !== user?.id && (
+                        <FollowButton targetUserId={post.user_id} size="sm" />
+                      )}
                       {post.campground_id && (
                         <Link href={`/campground/${post.campground_id}#chat`}
                           className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-green-600 font-medium transition-colors">

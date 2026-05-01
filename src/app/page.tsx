@@ -16,29 +16,29 @@ const WHY = [
   {
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.955 11.955 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
       </svg>
     ),
-    title: 'Verified Intel',
-    desc: 'Real issues, real solutions — sourced from Yelp, Reddit, The Dyrt, and Recreation.gov. Zero fabrication.',
+    title: 'Every campground. One search.',
+    desc: 'Federal parks (Recreation.gov), private campgrounds, RV resorts, state parks. Stop bouncing between apps — search them all here and get routed to the right booking system in one tap.',
   },
   {
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0zM19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
       </svg>
     ),
-    title: 'Loop & Site Guides',
-    desc: 'Best sites by number, loops ranked, what to avoid — normally scattered across 20 Reddit threads.',
+    title: 'A community, not a directory.',
+    desc: 'Real-time alerts from campers who were there last night. Honest trip reports. The site 14 is shaded question answered by someone at the campground right now. Not a star rating from 2019.',
   },
   {
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-6 h-6">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z" />
       </svg>
     ),
-    title: 'Booking Strategies',
-    desc: 'Exact times to book, which loop to request, insider hacks — not generic advice.',
+    title: 'Better deal for owners.',
+    desc: 'Hipcamp takes 15%. We take 10%. Owners keep their guest relationship, manage availability from their phone, and get their own booking page — no tech skills required. List in 5 minutes.',
   },
 ]
 
@@ -90,22 +90,20 @@ export default function HomePage() {
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full mb-5 sm:mb-7 max-w-full"
             style={{ background: 'rgba(251,191,36,0.12)', border: '1px solid rgba(251,191,36,0.2)' }}>
             <span className="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0" style={{ animation: 'pulse 2s infinite' }} />
-            <span className="text-[10px] sm:text-xs font-semibold tracking-widest uppercase text-amber-300 whitespace-nowrap">21 Campgrounds Nationwide</span>
+            <span className="text-[10px] sm:text-xs font-semibold tracking-widest uppercase text-amber-300 whitespace-nowrap">Federal + Private · All in one place</span>
           </div>
 
-          {/* Headline — clamp prevents overflow at any width */}
+          {/* Headline */}
           <h1 className="font-display font-bold text-white mb-4 sm:mb-6 max-w-3xl w-full"
             style={{ fontSize: 'clamp(1.9rem, 7vw, 5.5rem)', lineHeight: 1.05, wordBreak: 'break-word', overflowWrap: 'break-word' }}>
-            The campsite <span className="text-amber-400">intel</span> you
-            {' '}<em className="font-normal text-stone-300 not-italic" style={{ fontStyle: 'italic' }}>couldn't find</em>{' '}
-            anywhere else.
+            Search every campground.{' '}
+            <span className="text-amber-400">Book in one place.</span>
           </h1>
 
           {/* Subhead */}
-          <p className="text-stone-400 max-w-md w-full mb-8 sm:mb-10 leading-relaxed"
+          <p className="text-stone-400 max-w-lg w-full mb-8 sm:mb-10 leading-relaxed"
             style={{ fontSize: 'clamp(0.875rem, 3vw, 1.125rem)' }}>
-            Best sites by number. Loop guides. Real booking strategies.
-            Verified from Yelp, Reddit &amp; The Dyrt — in one place.
+            Federal parks, private campgrounds, RV resorts — real availability, honest community reviews, and direct booking without the runaround.
           </p>
 
           {/* Search — full width, constrained */}

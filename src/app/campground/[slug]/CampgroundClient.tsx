@@ -21,6 +21,7 @@ const PhotoUpload = dynamic(() => import('@/components/community/PhotoUpload'), 
 const IntelligenceSection = dynamic(() => import('@/components/IntelligenceSection'), { ssr: false })
 const AvailabilityCalendar = dynamic(() => import('@/components/AvailabilityCalendar'), { ssr: false })
 const CampgroundChat = dynamic(() => import('@/components/community/CampgroundChat'), { ssr: false })
+const TripLogButton = dynamic(() => import('@/components/TripLogButton'), { ssr: false })
 
 export default function CampgroundClient({ camp }: { camp: Campground }) {
   const router = useRouter()
@@ -148,6 +149,9 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
               </div>
             )}
 
+            <div className="flex flex-wrap gap-2 mb-6">
+              <TripLogButton slug={camp.slug} campName={camp.name} />
+            </div>
             {/* Pro Tips */}
             {proTips.length > 0 && (
               <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
