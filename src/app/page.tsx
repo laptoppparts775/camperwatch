@@ -1,6 +1,9 @@
+'use client'
 import Link from 'next/link'
 import HomeSearch from '@/components/HomeSearch'
 import { campgrounds } from '@/lib/data'
+import { useState, useEffect } from 'react'
+import { getSupabase } from '@/lib/supabase'
 
 const FEATURED = campgrounds.slice(0, 6)
 
@@ -42,6 +45,17 @@ const WHY = [
 ]
 
 export default function HomePage() {
+  const [user, setUser] = useState<any>(null)
+
+  useEffect(() => {
+    const supabase = getSupabase()
+    supabase.auth.getSession().then(({ data }: { data: any }) => setUser(data.session?.user || null))
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e: any, session: any) => {
+      setUser(session?.user || null)
+    })
+    return () => subscription.unsubscribe()
+  }, [])
+
   return (
     <main className="bg-[#0e1a13] min-h-screen" style={{ overflowX: 'hidden', maxWidth: '100vw' }}>
 
@@ -59,7 +73,16 @@ export default function HomePage() {
           <Link href="/search" className="text-sm text-stone-300 hover:text-white transition-colors hidden sm:block">Browse</Link>
           <Link href="/community" className="text-sm text-stone-300 hover:text-white transition-colors hidden md:block">Community</Link>
           <Link href="/contact" className="text-sm text-stone-300 hover:text-white transition-colors hidden md:block">Contact</Link>
-          <Link href="/auth/login" className="text-xs sm:text-sm font-semibold text-stone-950 bg-amber-400 hover:bg-amber-300 px-3 sm:px-4 py-1.5 rounded-full transition-colors whitespace-nowrap">Sign in</Link>
+          {user ? (
+            <Link href="/profile" className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-stone-950 bg-amber-400 hover:bg-amber-300 px-3 sm:px-4 py-1.5 rounded-full transition-colors whitespace-nowrap">
+              <div className="w-5 h-5 rounded-full bg-amber-600 flex items-center justify-center text-xs font-bold text-white">
+                {(user.user_metadata?.full_name || user.email || 'U')[0].toUpperCase()}
+              </div>
+              My Profile
+            </Link>
+          ) : (
+            <Link href="/auth/login" className="text-xs sm:text-sm font-semibold text-stone-950 bg-amber-400 hover:bg-amber-300 px-3 sm:px-4 py-1.5 rounded-full transition-colors whitespace-nowrap">Sign in</Link>
+          )}
         </div>
       </nav>
 
