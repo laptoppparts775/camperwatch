@@ -12,7 +12,7 @@ export default function TipsList({ campgroundId }: { campgroundId: string }) {
   const [upvotedIds, setUpvotedIds] = useState<Set<string>>(new Set())
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUser(data.user))
+    supabase.auth.getUser().then(({ data }: { data: any }) => setUser(data.user))
     fetchTips()
   }, [campgroundId])
 

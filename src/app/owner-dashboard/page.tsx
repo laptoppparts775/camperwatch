@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { createBrowserClient } from '@supabase/auth-helpers-nextjs'
+import { getSupabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import { Plus, Calendar, DollarSign, Users, Settings, ChevronRight, CheckCircle, Clock, XCircle, Tent } from 'lucide-react'
 import Link from 'next/link'
@@ -57,7 +57,7 @@ const STATUS_ICONS: Record<string, any> = {
 
 export default function OwnerDashboard() {
   const router = useRouter()
-  const supabase = createBrowserClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
+  const supabase = getSupabase()
   const [user, setUser] = useState<any>(null)
   const [campgrounds, setCampgrounds] = useState<OwnerCampground[]>([])
   const [bookings, setBookings] = useState<Booking[]>([])
@@ -81,7 +81,7 @@ export default function OwnerDashboard() {
   const [siteSuccess, setSiteSuccess] = useState(false)
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
+    supabase.auth.getUser().then(({ data }: { data: any }) => {
       if (!data.user) { router.push('/auth/login?redirect=/owner-dashboard'); return }
       setUser(data.user)
       loadData(data.user.id)

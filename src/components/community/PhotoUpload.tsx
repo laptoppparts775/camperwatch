@@ -21,7 +21,7 @@ export default function PhotoUpload({ campgroundId }: { campgroundId: string }) 
   const fileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUser(data.user))
+    supabase.auth.getUser().then(({ data }: { data: any }) => setUser(data.user))
     fetchApprovedPhotos()
   }, [campgroundId])
 

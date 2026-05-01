@@ -1,7 +1,7 @@
 'use client'
 import { useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { createBrowserClient } from '@supabase/auth-helpers-nextjs'
+import { getSupabase } from '@/lib/supabase'
 import { Suspense } from 'react'
 import { TreePine } from 'lucide-react'
 
@@ -12,12 +12,9 @@ function ConfirmInner() {
   const next = params.get('next') || '/'
 
   useEffect(() => {
-    const supabase = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    )
+    const supabase = getSupabase()
     if (code) {
-      supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
+      supabase.auth.exchangeCodeForSession(code).then(({ error }: { error: any }) => {
         if (error) {
           router.push(`/auth/login?error=${encodeURIComponent(error.message)}`)
         } else {
@@ -26,7 +23,7 @@ function ConfirmInner() {
       })
     } else {
       // Handle implicit flow (magic link token in hash — Supabase handles automatically)
-      supabase.auth.getSession().then(({ data }) => {
+      supabase.auth.getSession().then(({ data }: { data: any }) => {
         if (data.session) {
           router.push(next)
         } else {

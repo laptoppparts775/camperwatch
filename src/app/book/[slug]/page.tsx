@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { createBrowserClient } from '@supabase/auth-helpers-nextjs'
+import { getSupabase } from '@/lib/supabase'
 import { campgrounds } from '@/lib/data'
 import Link from 'next/link'
 import { ArrowLeft, Calendar, Users, CreditCard, CheckCircle, AlertCircle } from 'lucide-react'
@@ -46,11 +46,11 @@ export default function BookPage() {
   const [error, setError] = useState('')
   const [user, setUser] = useState<any>(null)
 
-  const supabase = createBrowserClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
+  const supabase = getSupabase()
   const today = new Date().toISOString().split('T')[0]
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
+    supabase.auth.getUser().then(({ data }: { data: any }) => {
       setUser(data.user)
       if (data.user?.email) setGuestEmail(data.user.email)
       if (data.user?.user_metadata?.full_name) setGuestName(data.user.user_metadata.full_name)
@@ -145,7 +145,7 @@ export default function BookPage() {
     }
 
     // Block those dates in site_availability
-    const blockedDates = []
+    const blockedDates: {site_id: string, blocked_date: string, reason: string}[] = []
     for (let i = 0; i < nights; i++) {
       const d = new Date(checkIn)
       d.setDate(d.getDate() + i)

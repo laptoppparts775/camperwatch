@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { MapPin, Star, ExternalLink, ChevronLeft, Check, TreePine, Clock, AlertCircle, Mountain, Users, Calendar, ChevronRight } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useState, useEffect, Suspense } from 'react'
-import { createBrowserClient } from '@supabase/auth-helpers-nextjs'
+import { getSupabase } from '@/lib/supabase'
 import ShareButtons from '@/components/community/ShareButtons'
 import SiteGuide from '@/components/SiteGuide'
 import { siteGuides } from '@/lib/siteGuides'
@@ -27,12 +27,9 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
   const [user, setUser] = useState<any>(null)
 
   useEffect(() => {
-    const supabase = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    )
-    supabase.auth.getSession().then(({ data }) => setUser(data.session?.user || null))
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+    const supabase = getSupabase()
+    supabase.auth.getSession().then(({ data }: { data: any }) => setUser(data.session?.user || null))
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e: any, session: any) => {
       setUser(session?.user || null)
     })
     return () => subscription.unsubscribe()

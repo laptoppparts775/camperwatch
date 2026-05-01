@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
-import { createBrowserClient } from '@supabase/auth-helpers-nextjs'
+import { getSupabase } from '@/lib/supabase'
+import { supabase } from '@/lib/supabase'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { TreePine, Mail, ArrowRight, CheckCircle, Sparkles } from 'lucide-react'
@@ -9,7 +10,7 @@ import { Suspense } from 'react'
 
 function LoginPageInner() {
   const router = useRouter()
-  const supabase = createBrowserClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
+  const supabase = getSupabase()
   const params = useSearchParams()
   const redirect = params.get('redirect') || '/'
   const urlError = params.get('error') || ''
@@ -53,9 +54,13 @@ function LoginPageInner() {
   }
 
   async function handleGoogle() {
-    await supabase.auth.signInWithOAuth({
+    const client = getSupabase()
+    await client.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(redirect)}` }
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback?redirect=${encodeURIComponent(redirect)}`,
+        queryParams: { access_type: 'offline', prompt: 'consent' }
+      }
     })
   }
 

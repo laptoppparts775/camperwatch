@@ -1,14 +1,32 @@
-import { createClient } from '@supabase/supabase-js'
-import { createBrowserClient } from '@supabase/auth-helpers-nextjs'
+import { createBrowserClient } from '@supabase/ssr'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder'
+// Single shared instance — prevents "Multiple GoTrueClient" warning
+let supabaseInstance: ReturnType<typeof createBrowserClient> | null = null
 
-// Standard client for non-auth operations
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export function getSupabase() {
+  if (typeof window === 'undefined') {
+    // Server-side: always create new
+    return createBrowserClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+  }
+  // Client-side: reuse single instance
+  if (!supabaseInstance) {
+    supabaseInstance = createBrowserClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+  }
+  return supabaseInstance
+}
 
-// Auth-aware client — use this in components that need session persistence
-export const createSupabaseClient = () => createBrowserClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
+// Backwards compat
+export const supabase = {
+  get auth() { return getSupabase().auth },
+  from: (table: string) => getSupabase().from(table),
+  storage: { from: (bucket: string) => getSupabase().storage.from(bucket) },
+}
 
 export type Profile = {
   id: string

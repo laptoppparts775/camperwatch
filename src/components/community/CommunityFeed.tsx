@@ -21,7 +21,7 @@ export default function CommunityFeed({ campgroundId }: { campgroundId?: string 
   const [likedIds, setLikedIds] = useState<Set<string>>(new Set())
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUser(data.user))
+    supabase.auth.getUser().then(({ data }: { data: any }) => setUser(data.user))
     fetchPosts()
   }, [campgroundId])
 

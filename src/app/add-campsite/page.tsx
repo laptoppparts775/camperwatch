@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { createBrowserClient } from '@supabase/auth-helpers-nextjs'
+import { getSupabase } from '@/lib/supabase'
 import { TreePine, MapPin, DollarSign, Info, Camera, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
 import Logo from '@/components/Logo'
@@ -8,7 +8,7 @@ import Logo from '@/components/Logo'
 const STATES = ['AK','AL','AR','AZ','CA','CO','CT','DE','FL','GA','HI','IA','ID','IL','IN','KS','KY','LA','MA','MD','ME','MI','MN','MO','MS','MT','NC','ND','NE','NH','NJ','NM','NV','NY','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VA','VT','WA','WI','WV','WY']
 
 export default function AddCampsitePage() {
-  const supabase = createBrowserClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
+  const supabase = getSupabase()
   const [user, setUser] = useState<any>(null)
   const [step, setStep] = useState(1)
   const [submitted, setSubmitted] = useState(false)
@@ -20,7 +20,7 @@ export default function AddCampsitePage() {
     cancellation_policy: '', known_issues: '', owner_name: '', owner_email: '',
   })
 
-  useEffect(() => { supabase.auth.getUser().then(({ data }) => setUser(data.user)) }, [])
+  useEffect(() => { supabase.auth.getUser().then(({ data }: { data: any }) => setUser(data.user)) }, [])
 
   const set = (k: string, v: any) => setForm(f => ({ ...f, [k]: v }))
   const toggleSiteType = (t: string) => setForm(f => ({
