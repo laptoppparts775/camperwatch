@@ -20,6 +20,7 @@ const CommunityFeed = dynamic(() => import('@/components/community/CommunityFeed
 const PhotoUpload = dynamic(() => import('@/components/community/PhotoUpload'), { ssr: false })
 const IntelligenceSection = dynamic(() => import('@/components/IntelligenceSection'), { ssr: false })
 const AvailabilityCalendar = dynamic(() => import('@/components/AvailabilityCalendar'), { ssr: false })
+const CampgroundChat = dynamic(() => import('@/components/community/CampgroundChat'), { ssr: false })
 
 export default function CampgroundClient({ camp }: { camp: Campground }) {
   const router = useRouter()
@@ -299,6 +300,12 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
             <div>
               <h2 className="font-semibold text-gray-900 mb-4">Camper Posts 🏕️</h2>
               <Suspense fallback={<p className="text-xs text-gray-400">Loading...</p>}>
+            {/* Live Camper Chat */}
+            <div className="mt-6 mb-6">
+              <h2 className="text-lg font-bold text-gray-900 mb-3">💬 Live Camper Chat</h2>
+              <CampgroundChat slug={camp.slug} />
+            </div>
+
                 <CommunityFeed campgroundId={camp.slug}/>
               </Suspense>
             </div>
