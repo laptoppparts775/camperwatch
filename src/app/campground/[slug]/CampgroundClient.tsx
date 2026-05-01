@@ -369,15 +369,24 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
         </div>
       </main>
 
-      {/* Mobile sticky CTA */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-3 z-40 shadow-lg">
+      {/* Mobile sticky CTA — psychology: urgency + clear price + trust */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 pt-3 pb-4 z-40 shadow-2xl">
         <div className="flex items-center gap-3">
-          <div><span className="font-bold text-gray-900">${camp.price_per_night}</span><span className="text-gray-400 text-xs">/night</span></div>
+          <div className="flex-shrink-0">
+            <div className="flex items-baseline gap-0.5">
+              <span className="font-black text-xl text-gray-900">${camp.price_per_night}</span>
+              <span className="text-gray-400 text-xs">/night</span>
+            </div>
+            <div className={`text-[10px] font-bold mt-0.5 ${camp.available ? 'text-green-600' : 'text-red-500'}`}>
+              {camp.available ? '✓ Sites open' : '✗ Fully booked'}
+            </div>
+          </div>
           <a href={`/book/${camp.slug}`}
-            className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm bg-green-700 text-white">
-            🏕 Book Now — No Fees
+            className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-2xl font-bold text-sm bg-green-700 text-white shadow-lg">
+            Reserve — No Fees
           </a>
         </div>
+        <p className="text-center text-[10px] text-gray-400 mt-1.5">Free cancellation · No booking fees · Official source</p>
       </div>
     </div>
   )

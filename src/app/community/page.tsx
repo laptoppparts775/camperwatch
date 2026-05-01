@@ -191,7 +191,7 @@ export default function CommunityPage() {
     <div className="min-h-screen bg-gray-50">
       <NavBar />
 
-      <div className="max-w-4xl mx-auto px-4 py-6 overflow-hidden">
+      <div className="max-w-4xl mx-auto px-4 py-6 overflow-hidden pb-24 sm:pb-6">
         <div className="grid lg:grid-cols-[1fr_280px] gap-6 w-full min-w-0 overflow-hidden">
 
           {/* Main feed */}
@@ -284,13 +284,28 @@ export default function CommunityPage() {
                 </div>
               </div>
             ) : (
-              <div className="bg-white rounded-2xl border border-gray-200 p-5 text-center">
-                <p className="text-gray-600 text-sm mb-3">Join the community — share trip reports, tips, alerts and questions with real campers</p>
-                <div className="flex gap-2 justify-center">
-                  <Link href="/auth/signup" className="px-5 py-2.5 bg-green-600 text-white rounded-xl text-sm font-semibold hover:bg-green-700">Join free</Link>
-                  <Link href="/auth/login" className="px-5 py-2.5 border border-gray-200 text-gray-700 rounded-xl text-sm font-semibold hover:bg-gray-50">Sign in</Link>
+              <>
+                {/* Desktop: inline join box */}
+                <div className="hidden sm:block bg-white rounded-2xl border border-gray-200 p-5 text-center">
+                  <p className="text-gray-600 text-sm mb-3">Join the community — share trip reports, tips, alerts and questions with real campers</p>
+                  <div className="flex gap-2 justify-center">
+                    <Link href="/auth/signup" className="px-5 py-2.5 bg-green-600 text-white rounded-xl text-sm font-semibold hover:bg-green-700">Join free</Link>
+                    <Link href="/auth/login" className="px-5 py-2.5 border border-gray-200 text-gray-700 rounded-xl text-sm font-semibold hover:bg-gray-50">Sign in</Link>
+                  </div>
                 </div>
-              </div>
+                {/* Mobile: sticky bottom post CTA — poster psychology */}
+                <div className="sm:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 pt-3 pb-5 z-40 shadow-2xl">
+                  <p className="text-xs text-gray-500 text-center mb-2">See something campers should know?</p>
+                  <div className="flex gap-2">
+                    <Link href="/auth/signup" className="flex-1 flex items-center justify-center gap-2 py-3 bg-green-600 text-white rounded-2xl text-sm font-bold">
+                      <Send size={14}/> Post an alert
+                    </Link>
+                    <Link href="/auth/login" className="px-4 py-3 border-2 border-gray-200 text-gray-600 rounded-2xl text-sm font-semibold">
+                      Sign in
+                    </Link>
+                  </div>
+                </div>
+              </>
             )}
 
             {/* Filter tabs */}
