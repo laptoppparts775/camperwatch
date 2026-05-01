@@ -47,6 +47,21 @@ export default function ProfilePage() {
   }, [])
 
   async function loadAll(userId: string) {
+    // Auto-create profile if missing
+    const supabase = getSupabase()
+    const { data: existingProfile } = await supabase.from('profiles').select('id').eq('id', userId).single()
+    if (!existingProfile) {
+      const { data: userData } = await supabase.auth.getUser()
+      await supabase.from('profiles').upsert({
+        id: userId,
+        username: (userData.user?.user_metadata?.full_name || userData.user?.email || 'camper').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 20) || 'camper',
+        full_name: userData.user?.user_metadata?.full_name || userData.user?.email?.split('@')[0] || 'Camper',
+        avatar_url: userData.user?.user_metadata?.avatar_url || null,
+        role: 'camper',
+        referral_code: Math.random().toString(36).substring(2, 10).toUpperCase(),
+      }, { onConflict: 'id' })
+    }
+
     const [profRes, bookRes, notifRes, tripRes, followerRes, followingRes, referralRes] = await Promise.all([
       supabase.from('profiles').select('*').eq('id', userId).single(),
       supabase.from('bookings').select('*').eq('guest_id', userId).order('check_in', { ascending: false }),
