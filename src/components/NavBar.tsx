@@ -34,6 +34,7 @@ export default function NavBar({ dark = false }: { dark?: boolean }) {
   const [searchQ, setSearchQ] = useState('')
   const [searchResults, setSearchResults] = useState<typeof campgrounds>([])
   const [nearMe, setNearMe] = useState<{name:string,slug:string,dist:number}[]>([])
+  const [locError, setLocError] = useState('')
   const [locating, setLocating] = useState(false)
   const megaRef = useRef<HTMLDivElement>(null)
   const userRef = useRef<HTMLDivElement>(null)
@@ -86,16 +87,33 @@ export default function NavBar({ dark = false }: { dark?: boolean }) {
 
   // Location — find nearest campgrounds
   function findNearMe() {
+    setLocError('')
+    if (!navigator.geolocation) {
+      setLocError('Location not supported in this browser')
+      return
+    }
     setLocating(true)
-    navigator.geolocation?.getCurrentPosition(pos => {
-      const { latitude: lat, longitude: lng } = pos.coords
-      const sorted = campgrounds.map(c => ({
-        name: c.name, slug: c.slug,
-        dist: Math.round(Math.sqrt(Math.pow((c.lat - lat) * 69, 2) + Math.pow((c.lng - lng) * 54, 2)))
-      })).sort((a, b) => a.dist - b.dist).slice(0, 4)
-      setNearMe(sorted)
-      setLocating(false)
-    }, () => setLocating(false))
+    // Open mega menu on desktop so results are visible
+    setMegaOpen(true)
+    setMobileOpen(true)
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const { latitude: lat, longitude: lng } = pos.coords
+        const sorted = campgrounds.map(c => ({
+          name: c.name, slug: c.slug,
+          dist: Math.round(Math.sqrt(Math.pow((c.lat - lat) * 69, 2) + Math.pow((c.lng - lng) * 54, 2)))
+        })).sort((a, b) => a.dist - b.dist).slice(0, 4)
+        setNearMe(sorted)
+        setLocating(false)
+      },
+      err => {
+        setLocating(false)
+        if (err.code === 1) setLocError('Location permission denied — please allow location in your browser settings')
+        else if (err.code === 2) setLocError('Location unavailable — try again')
+        else setLocError('Could not get location — try again')
+      },
+      { timeout: 10000, maximumAge: 60000 }
+    )
   }
 
   async function signOut() {
@@ -311,11 +329,14 @@ export default function NavBar({ dark = false }: { dark?: boolean }) {
                 <div>
                   <div className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">Near you now</div>
                   {nearMe.length === 0 ? (
-                    <button onClick={findNearMe}
-                      className="w-full flex items-center gap-2 p-3 bg-green-50 rounded-xl text-sm font-medium text-green-700 hover:bg-green-100 transition-colors">
-                      <Navigation size={15} className={locating ? 'animate-spin' : ''} />
-                      {locating ? 'Locating...' : 'Find campgrounds near me'}
-                    </button>
+                    <div className="space-y-2">
+                      <button onClick={findNearMe}
+                        className="w-full flex items-center gap-2 p-3 bg-green-50 rounded-xl text-sm font-medium text-green-700 hover:bg-green-100 transition-colors">
+                        <Navigation size={15} className={locating ? 'animate-spin' : ''} />
+                        {locating ? 'Getting your location...' : 'Find campgrounds near me'}
+                      </button>
+                      {locError && <p className="text-xs text-red-500 px-1">{locError}</p>}
+                    </div>
                   ) : (
                     <div className="space-y-1">
                       {nearMe.map(c => (
@@ -343,6 +364,25 @@ export default function NavBar({ dark = false }: { dark?: boolean }) {
           </div>
         )}
       </header>
+
+      {/* Near Me results strip — shows below nav when location is found */}
+      {nearMe.length > 0 && !megaOpen && (
+        <div className="bg-green-50 border-b border-green-100 px-4 py-2">
+          <div className="max-w-7xl mx-auto flex items-center gap-3 overflow-x-auto">
+            <span className="text-xs font-bold text-green-700 shrink-0 flex items-center gap-1">
+              <Navigation size={12} /> Near you:
+            </span>
+            {nearMe.map(c => (
+              <Link key={c.slug} href={`/campground/${c.slug}`}
+                className="shrink-0 flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-green-200 hover:border-green-400 transition-colors text-xs font-medium text-gray-800">
+                <span className="text-green-600">{c.dist}mi</span>
+                {c.name}
+              </Link>
+            ))}
+            <button onClick={() => setNearMe([])} className="shrink-0 text-xs text-gray-400 hover:text-gray-600 ml-auto">✕</button>
+          </div>
+        </div>
+      )}
 
       {/* Mobile drawer */}
       {mobileOpen && (
@@ -383,8 +423,9 @@ export default function NavBar({ dark = false }: { dark?: boolean }) {
               <button onClick={findNearMe}
                 className="w-full flex items-center justify-center gap-2 p-3 bg-green-50 rounded-xl text-sm font-semibold text-green-700">
                 <Navigation size={15} className={locating ? 'animate-spin' : ''} />
-                {locating ? 'Locating...' : nearMe.length ? `${nearMe[0].name} (${nearMe[0].dist}mi)` : 'Campgrounds near me'}
+                {locating ? 'Getting your location...' : nearMe.length ? `${nearMe[0].name} (${nearMe[0].dist}mi away)` : 'Find campgrounds near me'}
               </button>
+              {locError && <p className="text-xs text-red-500 text-center mt-1">{locError}</p>}
               {nearMe.length > 0 && (
                 <div className="mt-2 space-y-1">
                   {nearMe.map(c => (
