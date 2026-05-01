@@ -81,6 +81,16 @@ export default function CampgroundChat({ slug }: { slug: string }) {
   }, [slug, user?.id])
 
   const prevMessageCount = useRef(0)
+  const chatRef = useRef<HTMLDivElement>(null)
+
+  // Scroll to chat section if URL has #chat hash
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash === '#chat') {
+      setTimeout(() => {
+        chatRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }, 300)
+    }
+  }, [])
 
   useEffect(() => {
     // Only scroll when a genuinely new message arrives (count increases)
@@ -112,7 +122,7 @@ export default function CampgroundChat({ slug }: { slug: string }) {
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+    <div id="chat" ref={chatRef} className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
         <div className="flex items-center gap-2">

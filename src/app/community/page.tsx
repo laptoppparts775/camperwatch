@@ -428,7 +428,7 @@ export default function CommunityPage() {
                         <FollowButton targetUserId={post.user_id} size="sm" />
                       )}
                       {post.campground_id && (
-                        <Link href={`/campground/${post.campground_id}`}
+                        <Link href={`/campground/${post.campground_id}#chat`}
                           className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-green-600 font-medium transition-colors">
                           <MessageCircle size={14} /> Chat at {post.campground_name?.split(' ')[0]}
                         </Link>
@@ -477,7 +477,7 @@ export default function CommunityPage() {
               </h3>
               <div className="space-y-2">
                 {campgrounds.filter(c => c.available).slice(0, 6).map(c => (
-                  <Link key={c.slug} href={`/campground/${c.slug}`}
+                  <Link key={c.slug} href={`/campground/${c.slug}#chat`}
                     className="flex items-center gap-2.5 p-2 rounded-xl hover:bg-gray-50 transition-colors group">
                     <img src={c.images?.[0]?.url} className="w-8 h-8 rounded-lg object-cover shrink-0" alt="" />
                     <div className="flex-1 min-w-0">
