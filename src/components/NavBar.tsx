@@ -128,9 +128,9 @@ export default function NavBar({ dark = false }: { dark?: boolean }) {
 
   return (
     <>
-      <header className={`sticky top-0 z-50 ${navBg} overflow-hidden`}>
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center h-14 gap-3">
+      <header className={`sticky top-0 z-50 ${navBg}`}>
+        <div className="max-w-7xl mx-auto px-4 overflow-hidden">
+          <div className="flex items-center h-14 gap-3 min-w-0">
 
             {/* Logo */}
             <Link href="/" className="flex items-center gap-2 shrink-0 mr-2">
@@ -386,8 +386,8 @@ export default function NavBar({ dark = false }: { dark?: boolean }) {
 
       {/* Mobile drawer */}
       {mobileOpen && (
-        <div className="md:hidden fixed inset-0 z-40 bg-black/50" onClick={() => setMobileOpen(false)}>
-          <div className="absolute right-0 top-0 bottom-0 w-80 bg-white shadow-2xl overflow-y-auto" onClick={e => e.stopPropagation()}>
+        <div className="md:hidden fixed inset-0 z-40 bg-black/50 overflow-hidden" onClick={() => setMobileOpen(false)}>
+          <div className="absolute right-0 top-0 bottom-0 w-[min(320px,100vw)] max-w-full bg-white shadow-2xl overflow-y-auto overflow-x-hidden" onClick={e => e.stopPropagation()}>
             <div className="p-4 border-b border-gray-100 flex items-center justify-between">
               <span className="font-bold text-gray-900">Menu</span>
               <button onClick={() => setMobileOpen(false)}><X size={20} className="text-gray-500" /></button>
