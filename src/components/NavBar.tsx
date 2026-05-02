@@ -128,7 +128,7 @@ export default function NavBar({ dark = false }: { dark?: boolean }) {
 
   return (
     <>
-      <header className={`sticky top-0 z-50 ${navBg}`}>
+      <header className={`sticky top-0 z-50 ${navBg}`} ref={megaRef}>
         <div className="max-w-7xl mx-auto px-4 overflow-hidden">
           <div className="flex items-center h-14 gap-3 min-w-0">
 
@@ -169,7 +169,7 @@ export default function NavBar({ dark = false }: { dark?: boolean }) {
             </div>
 
             {/* Desktop: Mega menu trigger */}
-            <div className="hidden md:flex items-center gap-1 ml-1" ref={megaRef}>
+            <div className="hidden md:flex items-center gap-1 ml-1">
               <button onClick={() => setMegaOpen(!megaOpen)}
                 className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${megaOpen ? 'bg-green-50 text-green-700' : textMuted}`}>
                 <Map size={15} /> Explore <ChevronDown size={13} className={`transition-transform ${megaOpen ? 'rotate-180' : ''}`} />
