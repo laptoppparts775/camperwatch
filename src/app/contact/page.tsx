@@ -1,6 +1,5 @@
 'use client'
-import { useState } from 'react'
-import { supabase } from '@/lib/supabase'
+import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import NavBar from '@/components/NavBar'
 import { TreePine, Mail, MessageSquare, MapPin, AlertCircle, Lightbulb, Building2, CheckCircle2, ChevronDown } from 'lucide-react'
@@ -23,6 +22,8 @@ export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  // Record when the form first renders — used server-side to detect bots (too fast = bot)
+  const loadedAt = useRef<number>(Date.now())
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }))
 
@@ -33,19 +34,30 @@ export default function ContactPage() {
     }
     setLoading(true)
     setError('')
-    const { error: dbError } = await supabase.from('contact_messages').insert({
-      reason: form.reason,
-      campground_ref: form.campground || null,
-      name: form.name,
-      email: form.email,
-      message: form.message,
-    })
-    setLoading(false)
-    if (dbError) {
-      setError('Something went wrong. Please email us directly at hello@camperwatch.org')
-      return
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...form,
+          // Honeypot fields — always empty for real users, never shown in UI
+          website: '',
+          phone_alt: '',
+          // Timing token
+          _loaded_at: loadedAt.current,
+        }),
+      })
+      const data = await res.json()
+      if (!res.ok || !data.ok) {
+        setError(data.error || 'Something went wrong. Please email hello@camperwatch.org directly.')
+        setLoading(false)
+        return
+      }
+      setSubmitted(true)
+    } catch {
+      setError('Something went wrong. Please email hello@camperwatch.org directly.')
     }
-    setSubmitted(true)
+    setLoading(false)
   }
 
   const selectedReason = REASONS.find(r => r.value === form.reason)
