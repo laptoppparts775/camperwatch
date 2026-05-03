@@ -20,6 +20,9 @@ export default function AdminPage() {
   const [inviteRole, setInviteRole] = useState('camper')
   const [inviting, setInviting] = useState(false)
   const [inviteDone, setInviteDone] = useState(false)
+  const [emailTestTo, setEmailTestTo] = useState('')
+  const [emailTestSending, setEmailTestSending] = useState(false)
+  const [emailTestResult, setEmailTestResult] = useState<{ ok: boolean; msg: string } | null>(null)
   const [stats, setStats] = useState({ users: 0, bookings: 0, revenue: 0, pending: 0, owners: 0, campers: 0 })
   const [refreshing, setRefreshing] = useState(false)
 
@@ -79,6 +82,38 @@ export default function AdminPage() {
     setTimeout(() => setInviteDone(false), 3000)
   }
 
+  async function sendTestEmail() {
+    if (!emailTestTo || emailTestSending) return
+    setEmailTestSending(true)
+    setEmailTestResult(null)
+    try {
+      const { data: sessionData } = await getSupabase().auth.getSession()
+      const token = sessionData.session?.access_token
+      if (!token) {
+        setEmailTestResult({ ok: false, msg: 'No active session — please log in again.' })
+        setEmailTestSending(false)
+        return
+      }
+      const res = await fetch('/api/email/test', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ to: emailTestTo }),
+      })
+      const json = await res.json()
+      if (res.ok && json.ok) {
+        setEmailTestResult({ ok: true, msg: `Sent to ${emailTestTo} — check inbox in 30s. Resend ID: ${json.id}` })
+      } else {
+        setEmailTestResult({ ok: false, msg: json.error || `HTTP ${res.status}` })
+      }
+    } catch (err: any) {
+      setEmailTestResult({ ok: false, msg: err?.message || 'Request failed' })
+    }
+    setEmailTestSending(false)
+  }
+
   if (loading || !allowed) return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-6 h-6 border-2 border-purple-500 border-t-transparent rounded-full animate-spin" />
@@ -93,6 +128,7 @@ export default function AdminPage() {
     { key: 'users', label: 'Users', badge: null },
     { key: 'bookings', label: 'Bookings', badge: null },
     { key: 'invite', label: 'Invite', badge: null },
+    { key: 'email', label: 'Email', badge: null },
   ]
 
   return (
@@ -348,6 +384,38 @@ export default function AdminPage() {
                 className="w-full flex items-center justify-center gap-2 py-3 bg-green-600 text-white rounded-xl font-semibold text-sm hover:bg-green-700 disabled:opacity-40">
                 {inviting ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <><Send size={15} /> Send invite</>}
               </button>
+            </div>
+          </div>
+        )}
+
+        {tab === 'email' && (
+          <div className="max-w-md bg-white rounded-2xl border border-gray-200 p-6">
+            <h2 className="font-bold text-gray-900 mb-1 flex items-center gap-2"><Mail size={16} className="text-green-500" /> Send test email</h2>
+            <p className="text-gray-400 text-sm mb-5">Sends a branded test email through Resend to verify the pipeline. Use your own Gmail.</p>
+            <div className="space-y-3">
+              <input
+                type="email"
+                value={emailTestTo}
+                onChange={e => setEmailTestTo(e.target.value)}
+                placeholder="your-real-email@gmail.com"
+                className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+              />
+              {emailTestResult && (
+                <div className={`flex items-start gap-2 rounded-xl p-3 text-sm ${emailTestResult.ok ? 'bg-green-50 border border-green-200 text-green-700' : 'bg-red-50 border border-red-200 text-red-700'}`}>
+                  {emailTestResult.ok ? <CheckCircle size={15} className="mt-0.5 flex-shrink-0" /> : <XCircle size={15} className="mt-0.5 flex-shrink-0" />}
+                  <span className="break-all">{emailTestResult.msg}</span>
+                </div>
+              )}
+              <button
+                onClick={sendTestEmail}
+                disabled={emailTestSending || !emailTestTo}
+                className="w-full flex items-center justify-center gap-2 py-3 bg-green-600 text-white rounded-xl font-semibold text-sm hover:bg-green-700 disabled:opacity-40">
+                {emailTestSending
+                  ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  : <><Send size={15} /> Send test</>
+                }
+              </button>
+              <p className="text-xs text-gray-400">Sender: info@camperwatch.org &middot; Branded layout &middot; Logged to outbound_emails table</p>
             </div>
           </div>
         )}
