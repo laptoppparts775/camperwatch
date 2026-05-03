@@ -192,6 +192,47 @@ export default function SiteEditorPage() {
     setForm(f => ({ ...f, images: f.images.filter((_, i) => i !== index) }))
   }
 
+  // 1.7.5 + 1.7.6 — AI auto-fill
+  const [aiBusy, setAiBusy] = useState<null | 'description' | 'welcome_message'>(null)
+  const [aiError, setAiError] = useState('')
+
+  async function aiGenerate(mode: 'description' | 'welcome_message') {
+    setAiBusy(mode)
+    setAiError('')
+    try {
+      const res = await fetch('/api/ai-site-enhance', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mode,
+          site_name: form.name,
+          site_type: form.site_type,
+          parent_campground_name: parent?.name || '',
+          keywords: form.seo_keywords,
+          amenities: form.amenities,
+          check_in: inherits.check_in ? (parent?.check_in || '') : form.check_in_override,
+          check_out: inherits.check_out ? (parent?.check_out || '') : form.check_out_override,
+          house_rules: form.house_rules,
+          pet_policy: form.pet_policy,
+        }),
+      })
+      const data = await res.json()
+      if (!data.success) {
+        setAiError(data.error || 'AI generation failed')
+        return
+      }
+      if (mode === 'description') {
+        setForm(f => ({ ...f, description: data.text }))
+      } else {
+        setForm(f => ({ ...f, welcome_message: data.text }))
+      }
+    } catch {
+      setAiError('AI request failed')
+    } finally {
+      setAiBusy(null)
+    }
+  }
+
   async function save() {
     if (!form.name.trim() || !form.price_per_night) {
       setError('Site name and price per night are required.')
@@ -293,6 +334,12 @@ export default function SiteEditorPage() {
             <div className="text-sm text-red-700">{error}</div>
           </div>
         )}
+        {aiError && (
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-4 flex items-start gap-2">
+            <AlertCircle size={16} className="text-amber-600 shrink-0 mt-0.5" />
+            <div className="text-sm text-amber-700">{aiError}</div>
+          </div>
+        )}
         {saved && (
           <div className="bg-green-50 border border-green-200 rounded-xl p-3 mb-4 flex items-start gap-2">
             <CheckCircle size={16} className="text-green-600 shrink-0 mt-0.5" />
@@ -365,6 +412,13 @@ export default function SiteEditorPage() {
               rows={3}
               placeholder="Tent pad with morning sun and lake glimpse through pines. Closest site to the trailhead."
               className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 resize-y" />
+            <div className="mt-1.5">
+              <button type="button" onClick={() => aiGenerate('description')} disabled={aiBusy !== null || !form.name}
+                className="inline-flex items-center gap-1.5 text-xs text-green-700 hover:text-green-800 disabled:opacity-50 disabled:cursor-not-allowed font-medium">
+                <Sparkles size={12} />
+                {aiBusy === 'description' ? 'Generating…' : 'Generate with AI'}
+              </button>
+            </div>
           </Field>
           <Field label="Amenities" optional hint="Comma-separated list specific to this site (e.g. Picnic table, Fire ring, Electric hookup)">
             <input value={form.amenities} onChange={e => setForm({ ...form, amenities: e.target.value })}
@@ -441,6 +495,13 @@ export default function SiteEditorPage() {
               rows={3}
               placeholder="Welcome! Gate code is 1234. The site is on the right past the bathhouse — look for the wooden sign with site number."
               className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 resize-y" />
+            <div className="mt-1.5">
+              <button type="button" onClick={() => aiGenerate('welcome_message')} disabled={aiBusy !== null || !form.name}
+                className="inline-flex items-center gap-1.5 text-xs text-green-700 hover:text-green-800 disabled:opacity-50 disabled:cursor-not-allowed font-medium">
+                <Sparkles size={12} />
+                {aiBusy === 'welcome_message' ? 'Generating…' : 'Generate with AI'}
+              </button>
+            </div>
           </Field>
         </Section>
 
