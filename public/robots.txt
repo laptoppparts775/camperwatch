@@ -3,6 +3,11 @@ Allow: /
 Disallow: /api/
 Disallow: /admin/
 Disallow: /auth/
+Disallow: /messages
+Disallow: /profile
+Disallow: /settings
+Disallow: /owner-dashboard
+Disallow: /owner/
 
 # AI search crawlers — allow full access for AI overviews and citations
 User-agent: GPTBot
