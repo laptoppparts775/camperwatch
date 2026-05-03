@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { getSupabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
-import { Plus, Calendar, DollarSign, Users, Settings, ChevronRight, CheckCircle, Clock, XCircle, Tent } from 'lucide-react'
+import { Plus, Calendar, DollarSign, Users, Settings, ChevronRight, CheckCircle, Clock, XCircle, Tent, AlertCircle, Phone, Mail } from 'lucide-react'
 import Link from 'next/link'
 import NavBar from '@/components/NavBar'
 
@@ -81,6 +81,12 @@ export default function OwnerDashboard() {
   const [savingsite, setSavingSite] = useState(false)
   const [siteSuccess, setSiteSuccess] = useState(false)
 
+  // Owner profile (1.6 — completion check)
+  const [profile, setProfile] = useState<{ phone: string | null; payout_email: string | null; full_name: string | null; email: string | null } | null>(null)
+  const [profileForm, setProfileForm] = useState({ phone: '', payout_email: '' })
+  const [savingProfile, setSavingProfile] = useState(false)
+  const [profileSaved, setProfileSaved] = useState(false)
+
   useEffect(() => {
     supabase.auth.getUser().then(({ data }: { data: any }) => {
       if (!data.user) { router.push('/auth/login?redirect=/owner-dashboard'); return }
@@ -91,7 +97,7 @@ export default function OwnerDashboard() {
 
   async function loadData(userId: string) {
     setLoading(true)
-    const [campsRes, bookRes, sitesRes] = await Promise.all([
+    const [campsRes, bookRes, sitesRes, profileRes] = await Promise.all([
       supabase.from('campground_owners').select('*').eq('owner_id', userId).eq('active', true),
       supabase.from('bookings').select('*, campground_sites(name, site_type)').in(
         'campground_slug',
@@ -101,12 +107,43 @@ export default function OwnerDashboard() {
         'campground_slug',
         (await supabase.from('campground_owners').select('campground_slug').eq('owner_id', userId)).data?.map(r => r.campground_slug) || []
       ).order('created_at', { ascending: false }),
+      supabase.from('owner_profiles').select('phone, payout_email, full_name, email').eq('id', userId).maybeSingle(),
     ])
     setCampgrounds(campsRes.data || [])
     setBookings(bookRes.data || [])
     setSites(sitesRes.data || [])
     if (campsRes.data?.[0]) setNewSite(s => ({ ...s, campground_slug: campsRes.data![0].campground_slug }))
+    if (profileRes.data) {
+      setProfile(profileRes.data as any)
+      setProfileForm({
+        phone: (profileRes.data as any).phone || '',
+        payout_email: (profileRes.data as any).payout_email || '',
+      })
+    }
     setLoading(false)
+  }
+
+  async function saveProfile() {
+    if (!user) return
+    setSavingProfile(true)
+    setProfileSaved(false)
+    const phone = profileForm.phone.trim()
+    const payout_email = profileForm.payout_email.trim()
+    // Upsert against the auth user id (owner_profiles.id is FK to auth.users)
+    const { error } = await supabase.from('owner_profiles').upsert({
+      id: user.id,
+      full_name: profile?.full_name || user.user_metadata?.full_name || user.email,
+      email: profile?.email || user.email,
+      phone: phone || null,
+      payout_email: payout_email || null,
+    }, { onConflict: 'id' })
+    setSavingProfile(false)
+    if (!error) {
+      setProfileSaved(true)
+      setTimeout(() => setProfileSaved(false), 3000)
+      // Re-fetch so banner updates
+      loadData(user.id)
+    }
   }
 
   async function saveSite() {
@@ -171,6 +208,63 @@ export default function OwnerDashboard() {
             </div>
           ))}
         </div>
+
+        {/* 1.6 — Profile completion check */}
+        {profile && (!profile.phone || !profile.payout_email) && campgrounds.length > 0 && (
+          <div className="bg-amber-50 border-2 border-amber-300 rounded-2xl p-5 mb-6">
+            <div className="flex items-start gap-3 mb-4">
+              <AlertCircle size={22} className="text-amber-600 shrink-0 mt-0.5" />
+              <div>
+                <div className="font-bold text-amber-900 text-base mb-1">Complete your profile to start taking bookings</div>
+                <p className="text-amber-700 text-sm">
+                  Your campground listings are visible, but bookings are paused until your phone number and payout email are on file. Without these, campers can't reach you and we can't pay you out.
+                </p>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+              <div>
+                <label className="text-xs text-gray-600 font-medium block mb-1 flex items-center gap-1.5">
+                  <Phone size={12} /> Phone number
+                </label>
+                <input
+                  type="tel"
+                  value={profileForm.phone}
+                  onChange={e => setProfileForm(f => ({ ...f, phone: e.target.value }))}
+                  placeholder="(555) 555-1234"
+                  className="w-full px-3 py-2 bg-white border border-amber-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                />
+                <div className="text-xs text-gray-500 mt-1">Campers will see this to contact you</div>
+              </div>
+              <div>
+                <label className="text-xs text-gray-600 font-medium block mb-1 flex items-center gap-1.5">
+                  <Mail size={12} /> Payout email
+                </label>
+                <input
+                  type="email"
+                  value={profileForm.payout_email}
+                  onChange={e => setProfileForm(f => ({ ...f, payout_email: e.target.value }))}
+                  placeholder="payouts@yourcampground.com"
+                  className="w-full px-3 py-2 bg-white border border-amber-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-amber-400"
+                />
+                <div className="text-xs text-gray-500 mt-1">Where Stripe will deposit your money (only visible to you)</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={saveProfile}
+                disabled={savingProfile || !profileForm.phone.trim() || !profileForm.payout_email.trim()}
+                className="px-5 py-2 bg-amber-600 text-white rounded-lg text-sm font-semibold hover:bg-amber-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {savingProfile ? 'Saving…' : 'Save and enable bookings'}
+              </button>
+              {profileSaved && (
+                <span className="text-green-700 text-sm font-medium flex items-center gap-1.5">
+                  <CheckCircle size={14} /> Saved — bookings now enabled
+                </span>
+              )}
+            </div>
+          </div>
+        )}
 
         {/* No campground linked yet */}
         {campgrounds.length === 0 && (

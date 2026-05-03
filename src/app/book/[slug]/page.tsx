@@ -67,7 +67,7 @@ export default function BookPage() {
       if (u?.user_metadata?.full_name) setGuestName(u.user_metadata.full_name)
     })
     sb.from('campground_sites').select('*')
-      .eq('campground_slug', slug).eq('active', true)
+      .eq('campground_slug', slug).eq('active', true).eq('bookings_enabled', true)
       .order('price_per_night')
       .then(({ data }) => { setSites(data || []); setLoading(false) })
     setCheckIn(tomorrow)
