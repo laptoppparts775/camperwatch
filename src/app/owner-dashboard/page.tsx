@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react'
 import { getSupabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
-import { Plus, Calendar, DollarSign, Users, Settings, ChevronRight, CheckCircle, Clock, XCircle, Tent, AlertCircle, Phone, Mail } from 'lucide-react'
+import { Plus, Calendar, DollarSign, Users, Settings, ChevronRight, CheckCircle, Clock, XCircle, Tent, AlertCircle, Phone, Mail, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import NavBar from '@/components/NavBar'
+import { scoreSiteCompleteness, aggregateCompleteness } from '@/lib/completeness'
 
 type Booking = {
   id: string
@@ -35,6 +36,15 @@ type Site = {
   max_guests: number
   active: boolean
   campground_slug: string
+  // 1.7.7 fields used for completeness score
+  description?: string | null
+  amenities?: string[] | null
+  images?: string[] | null
+  house_rules?: string | null
+  pet_policy?: string | null
+  welcome_message?: string | null
+  seo_keywords?: string[] | null
+  bookings_enabled?: boolean
 }
 
 type OwnerCampground = {
@@ -351,29 +361,85 @@ export default function OwnerDashboard() {
                   Add First Site
                 </button>
               </div>
-            ) : sites.map(site => (
-              <div key={site.id} className="bg-white rounded-2xl border border-gray-200 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                <div>
-                  <div className="font-semibold text-gray-900">{site.name}</div>
-                  <div className="text-sm text-gray-500 capitalize">{site.site_type.replace('_', ' ')} · Up to {site.max_guests} guests · ${site.price_per_night}/night</div>
-                  <div className="text-xs text-gray-400 mt-0.5">{site.campground_slug}</div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Link href={`/owner-dashboard/sites/${site.id}/edit`}
-                    className="text-xs px-3 py-1.5 rounded-lg font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
-                    Edit
-                  </Link>
-                  <button
-                    onClick={() => toggleSite(site.id, site.active)}
-                    className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-colors ${
-                      site.active ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
-                    }`}
-                  >
-                    {site.active ? 'Active' : 'Inactive'}
-                  </button>
-                </div>
-              </div>
-            ))}
+            ) : (
+              <>
+                {/* 1.7.7 — Aggregate completeness banner */}
+                {(() => {
+                  const agg = aggregateCompleteness(sites)
+                  const tone =
+                    agg.averageScore >= 80 ? 'bg-green-50 border-green-200 text-green-800' :
+                    agg.averageScore >= 50 ? 'bg-amber-50 border-amber-200 text-amber-800' :
+                    'bg-rose-50 border-rose-200 text-rose-800'
+                  return (
+                    <div className={`rounded-2xl border p-4 mb-2 ${tone}`}>
+                      <div className="flex items-center gap-3">
+                        <Sparkles size={18} className="shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <div className="font-semibold text-sm">
+                            Average listing quality: {agg.averageScore}%
+                          </div>
+                          <div className="text-xs opacity-80 mt-0.5">
+                            {agg.excellentCount} excellent · {agg.needsWorkCount} need{agg.needsWorkCount === 1 ? 's' : ''} work · {agg.totalSites} total
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                })()}
+
+                {sites.map(site => {
+                  const score = scoreSiteCompleteness(site)
+                  const scoreColor =
+                    score.score >= 80 ? 'bg-green-100 text-green-700' :
+                    score.score >= 50 ? 'bg-amber-100 text-amber-700' :
+                    'bg-rose-100 text-rose-700'
+                  return (
+                    <div key={site.id} className="bg-white rounded-2xl border border-gray-200 p-4">
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <div className="font-semibold text-gray-900">{site.name}</div>
+                            <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${scoreColor}`}>
+                              {score.score}% · {score.tier}
+                            </span>
+                          </div>
+                          <div className="text-sm text-gray-500 capitalize mt-0.5">{site.site_type.replace('_', ' ')} · Up to {site.max_guests} guests · ${site.price_per_night}/night</div>
+                          <div className="text-xs text-gray-400 mt-0.5">{site.campground_slug}</div>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <Link href={`/owner-dashboard/sites/${site.id}/edit`}
+                            className="text-xs px-3 py-1.5 rounded-lg font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
+                            Edit
+                          </Link>
+                          <button
+                            onClick={() => toggleSite(site.id, site.active)}
+                            className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-colors ${
+                              site.active ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                            }`}
+                          >
+                            {site.active ? 'Active' : 'Inactive'}
+                          </button>
+                        </div>
+                      </div>
+                      {/* Top missing items — drives owner to Edit */}
+                      {score.topMissing.length > 0 && score.score < 90 && (
+                        <div className="mt-3 pt-3 border-t border-gray-100">
+                          <div className="text-xs font-medium text-gray-500 mb-1.5">To improve this listing:</div>
+                          <ul className="space-y-1">
+                            {score.topMissing.map(m => (
+                              <li key={m.key} className="text-xs text-gray-600 flex items-start gap-1.5">
+                                <span className="text-gray-300 mt-0.5">○</span>
+                                <span><span className="font-medium">{m.label}</span> <span className="text-gray-400">— {m.hint}</span></span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  )
+                })}
+              </>
+            )}
           </div>
         )}
 
