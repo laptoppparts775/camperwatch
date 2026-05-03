@@ -20,6 +20,18 @@ if (!ACCESS_KEY) {
   process.exit(1);
 }
 
+// Slugs already patched — skip them on resume
+const SKIP_SLUGS = new Set([
+  'tahoe-valley',
+  'lake-tahoe-koa',
+  'zephyr-cove',
+  'camp-richardson',
+  'nevada-beach',
+  'fallen-leaf',
+  'davis-creek',
+  'mount-rose',
+]);
+
 const CAMPGROUNDS = [
   {
     slug: 'tahoe-valley',
@@ -219,9 +231,10 @@ async function main() {
   const used = new Set();
   const fetched = {};
 
-  console.log(`\nFetching images for ${CAMPGROUNDS.length} campgrounds...\n`);
+  const toProcess = CAMPGROUNDS.filter(cg => !SKIP_SLUGS.has(cg.slug));
+  console.log(`\nFetching images for ${toProcess.length} campgrounds (skipping ${SKIP_SLUGS.size} already done)...\n`);
 
-  for (const cg of CAMPGROUNDS) {
+  for (const cg of toProcess) {
     const photoIds = [];
 
     for (let i = 0; i < 4; i++) {
@@ -245,16 +258,17 @@ async function main() {
 
       photoIds.push(picked);
       if (picked) console.log(`  ✓  ${cg.slug} [${i+1}/4] photo-${picked}`);
-      await sleep(300);
+      await sleep(1500); // ~40 req/hr — stays under 50/hr demo limit
     }
 
     fetched[cg.slug] = photoIds;
+    await sleep(2000); // extra pause between campgrounds
   }
 
   console.log('\nPatching src/lib/data.ts...\n');
   let content = fs.readFileSync(DATA_FILE, 'utf8');
 
-  for (const cg of CAMPGROUNDS) {
+  for (const cg of toProcess) {
     const ids = fetched[cg.slug];
     if (!ids || ids.filter(Boolean).length < 4) {
       console.warn(`  ⚠  Skipping ${cg.slug}`);
