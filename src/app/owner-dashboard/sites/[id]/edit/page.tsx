@@ -193,8 +193,55 @@ export default function SiteEditorPage() {
   }
 
   // 1.7.5 + 1.7.6 — AI auto-fill
-  const [aiBusy, setAiBusy] = useState<null | 'description' | 'welcome_message'>(null)
+  // 1.7.9 — AI vision: suggest amenity tags from uploaded photos (manual button)
+  const [aiBusy, setAiBusy] = useState<null | 'description' | 'welcome_message' | 'vision'>(null)
   const [aiError, setAiError] = useState('')
+  const [visionSuggestions, setVisionSuggestions] = useState<string[] | null>(null)
+
+  async function aiSuggestAmenities() {
+    if (form.images.length === 0) {
+      setAiError('Add at least one photo first.')
+      return
+    }
+    setAiBusy('vision')
+    setAiError('')
+    setVisionSuggestions(null)
+    try {
+      const res = await fetch('/api/ai-site-vision-amenities', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image_urls: form.images }),
+      })
+      const data = await res.json()
+      if (!data.success) {
+        setAiError(data.error || 'Vision request failed')
+        return
+      }
+      // Filter out tags already present in the form to avoid suggesting duplicates
+      const existing = new Set(
+        form.amenities.split(',').map(a => a.trim().toLowerCase()).filter(Boolean)
+      )
+      const novel = (data.tags as string[]).filter(t => !existing.has(t.toLowerCase()))
+      setVisionSuggestions(novel)
+    } catch {
+      setAiError('Vision request failed')
+    } finally {
+      setAiBusy(null)
+    }
+  }
+
+  function acceptSuggestion(tag: string) {
+    const current = form.amenities.split(',').map(a => a.trim()).filter(Boolean)
+    if (!current.some(c => c.toLowerCase() === tag.toLowerCase())) {
+      const next = [...current, tag].join(', ')
+      setForm(f => ({ ...f, amenities: next }))
+    }
+    setVisionSuggestions(prev => (prev ? prev.filter(t => t !== tag) : null))
+  }
+
+  function rejectSuggestion(tag: string) {
+    setVisionSuggestions(prev => (prev ? prev.filter(t => t !== tag) : null))
+  }
 
   async function aiGenerate(mode: 'description' | 'welcome_message') {
     setAiBusy(mode)
@@ -424,6 +471,42 @@ export default function SiteEditorPage() {
             <input value={form.amenities} onChange={e => setForm({ ...form, amenities: e.target.value })}
               placeholder="Picnic table, Fire ring, Shade trees"
               className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
+            <div className="mt-1.5">
+              <button type="button" onClick={aiSuggestAmenities}
+                disabled={aiBusy !== null || form.images.length === 0}
+                title={form.images.length === 0 ? 'Add a photo first' : 'Use AI to suggest amenities from your photos'}
+                className="inline-flex items-center gap-1.5 text-xs text-green-700 hover:text-green-800 disabled:opacity-50 disabled:cursor-not-allowed font-medium">
+                <Sparkles size={12} />
+                {aiBusy === 'vision' ? 'Looking at photos…' : 'Suggest from photos'}
+              </button>
+            </div>
+            {visionSuggestions !== null && (
+              <div className="mt-2 p-3 border border-green-100 bg-green-50/50 rounded-lg">
+                {visionSuggestions.length === 0 ? (
+                  <div className="text-xs text-gray-600">No new suggestions from your photos. Try clearer or more varied photos.</div>
+                ) : (
+                  <>
+                    <div className="text-xs text-gray-700 mb-2 font-medium">Tap to add to your amenities list:</div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {visionSuggestions.map(tag => (
+                        <span key={tag} className="inline-flex items-center gap-1 bg-white border border-green-200 rounded-full pl-2.5 pr-1 py-0.5 text-xs">
+                          <button type="button" onClick={() => acceptSuggestion(tag)}
+                            className="text-green-700 hover:text-green-800 font-medium"
+                            title="Add this tag">
+                            + {tag}
+                          </button>
+                          <button type="button" onClick={() => rejectSuggestion(tag)}
+                            className="text-gray-400 hover:text-gray-600 ml-0.5"
+                            title="Reject this suggestion">
+                            <X size={11} />
+                          </button>
+                        </span>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
           </Field>
         </Section>
 
