@@ -358,14 +358,20 @@ export default function OwnerDashboard() {
                   <div className="text-sm text-gray-500 capitalize">{site.site_type.replace('_', ' ')} · Up to {site.max_guests} guests · ${site.price_per_night}/night</div>
                   <div className="text-xs text-gray-400 mt-0.5">{site.campground_slug}</div>
                 </div>
-                <button
-                  onClick={() => toggleSite(site.id, site.active)}
-                  className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-colors ${
-                    site.active ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
-                  }`}
-                >
-                  {site.active ? 'Active' : 'Inactive'}
-                </button>
+                <div className="flex items-center gap-2">
+                  <Link href={`/owner-dashboard/sites/${site.id}/edit`}
+                    className="text-xs px-3 py-1.5 rounded-lg font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
+                    Edit
+                  </Link>
+                  <button
+                    onClick={() => toggleSite(site.id, site.active)}
+                    className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-colors ${
+                      site.active ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                    }`}
+                  >
+                    {site.active ? 'Active' : 'Inactive'}
+                  </button>
+                </div>
               </div>
             ))}
           </div>
