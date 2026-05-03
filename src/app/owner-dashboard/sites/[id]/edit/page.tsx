@@ -8,7 +8,7 @@ import { campgrounds as campgroundData } from '@/lib/data'
 import NavBar from '@/components/NavBar'
 import {
   ArrowLeft, Save, CheckCircle, AlertCircle, Tent, DollarSign,
-  Clock, FileText, PawPrint, ScrollText, Sparkles, Lock
+  Clock, FileText, PawPrint, ScrollText, Sparkles, Lock, Camera, X, Upload
 } from 'lucide-react'
 
 const SITE_TYPE_OPTIONS = [
@@ -61,7 +61,9 @@ export default function SiteEditorPage() {
     check_in_override: '',
     check_out_override: '',
     active: true,
+    images: [] as string[],
   })
+  const [uploadingPhoto, setUploadingPhoto] = useState(false)
 
   // Per-field inheritance toggles. true = inherit from parent (override is NULL)
   const [inherits, setInherits] = useState({
@@ -149,6 +151,7 @@ export default function SiteEditorPage() {
       check_in_override: site.check_in_override || '',
       check_out_override: site.check_out_override || '',
       active: !!site.active,
+      images: Array.isArray(site.images) ? site.images : [],
     })
 
     // Inheritance flags: NULL override = inherit from parent
@@ -159,6 +162,34 @@ export default function SiteEditorPage() {
     })
 
     setLoading(false)
+  }
+
+  async function uploadPhoto(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (!user) return
+    setUploadingPhoto(true)
+    const ext = file.name.split('.').pop() || 'jpg'
+    // Path namespaces by site id so all photos for a site are grouped together
+    const path = `sites/${siteId}/${Date.now()}.${ext}`
+    const { error: upErr } = await supabase.storage
+      .from('campground-images')
+      .upload(path, file, { upsert: false })
+    if (!upErr) {
+      const { data: { publicUrl } } = supabase.storage
+        .from('campground-images')
+        .getPublicUrl(path)
+      setForm(f => ({ ...f, images: [...f.images, publicUrl] }))
+    } else {
+      setError('Photo upload failed. Try a smaller file.')
+    }
+    setUploadingPhoto(false)
+    // Reset the file input so the same filename can be re-selected if needed
+    e.target.value = ''
+  }
+
+  function removePhoto(index: number) {
+    setForm(f => ({ ...f, images: f.images.filter((_, i) => i !== index) }))
   }
 
   async function save() {
@@ -194,6 +225,7 @@ export default function SiteEditorPage() {
         ? null
         : (form.check_out_override.trim() || null),
       active: form.active,
+      images: form.images,
     }
 
     const { error: updErr } = await supabase
@@ -267,6 +299,40 @@ export default function SiteEditorPage() {
             <div className="text-sm text-green-700">Saved.</div>
           </div>
         )}
+
+        {/* Section: Photos */}
+        <Section icon={<Camera size={16} />} title="Photos" subtitle="Show campers what to expect. Site-specific photos work better than generic ones.">
+          {form.images.length > 0 && (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-2">
+              {form.images.map((url, idx) => (
+                <div key={url} className="relative group aspect-[4/3] rounded-lg overflow-hidden border border-gray-200">
+                  <img src={url} alt={`Site photo ${idx + 1}`} className="w-full h-full object-cover" />
+                  <button
+                    onClick={() => removePhoto(idx)}
+                    className="absolute top-1.5 right-1.5 w-7 h-7 bg-black/60 hover:bg-black/80 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    title="Remove photo"
+                  >
+                    <X size={14} />
+                  </button>
+                  {idx === 0 && (
+                    <div className="absolute bottom-1.5 left-1.5 px-2 py-0.5 bg-green-600 text-white text-xs rounded-full font-medium">
+                      Cover
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+          <label className="flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-gray-200 rounded-lg cursor-pointer hover:border-green-500 hover:bg-green-50 transition-colors">
+            <Upload size={16} className="text-gray-500" />
+            <span className="text-sm text-gray-600">
+              {uploadingPhoto ? 'Uploading…' : form.images.length === 0 ? 'Add your first photo' : 'Add another photo'}
+            </span>
+            <input type="file" accept="image/*" className="hidden"
+              onChange={uploadPhoto} disabled={uploadingPhoto} />
+          </label>
+          <div className="text-xs text-gray-500">First photo becomes the cover. JPEG or PNG, up to 10MB.</div>
+        </Section>
 
         {/* Section: Basic info */}
         <Section icon={<Tent size={16} />} title="Basics" subtitle="Visible to campers on the booking page">
