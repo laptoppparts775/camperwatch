@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { campgrounds, Campground } from '@/lib/data'
+import { getSupabase } from '@/lib/supabase'
 import { Search, MapPin, SlidersHorizontal, Star, ExternalLink, TreePine, ChevronLeft } from 'lucide-react'
 import dynamic from 'next/dynamic'
 
@@ -48,6 +49,46 @@ function SearchResults() {
   const checkIn = searchParams.get('checkIn')
   const checkOut = searchParams.get('checkOut')
 
+  const [blockedSlugs, setBlockedSlugs] = useState<Set<string>>(new Set())
+
+  // Date-filtered search: find campgrounds where ALL sites are blocked for the date range
+  useEffect(() => {
+    if (!checkIn || !checkOut) { setBlockedSlugs(new Set()); return }
+    const sb = getSupabase()
+    async function fetchBlocked() {
+      // Get all site_ids that have ANY blocked date in the range
+      const { data } = await sb
+        .from('site_availability')
+        .select('site_id')
+        .gte('blocked_date', checkIn!)
+        .lt('blocked_date', checkOut!)
+      const blockedSiteIds = new Set((data || []).map((r: any) => r.site_id))
+      // Get all campground_sites to find which campground slugs have all sites blocked
+      const { data: allSites } = await sb
+        .from('campground_sites')
+        .select('id, campground_slug')
+        .eq('active', true)
+      if (!allSites) return
+      // Group by slug — if every site for a slug is blocked, mark the slug as blocked
+      const bySlug: Record<string, string[]> = {}
+      for (const s of allSites) {
+        if (!bySlug[s.campground_slug]) bySlug[s.campground_slug] = []
+        bySlug[s.campground_slug].push(s.id)
+      }
+      const fullyBlocked = new Set<string>()
+      for (const [slug, siteIds] of Object.entries(bySlug)) {
+        if (siteIds.every(id => blockedSiteIds.has(id))) fullyBlocked.add(slug)
+      }
+      setBlockedSlugs(fullyBlocked)
+    }
+    fetchBlocked()
+  }, [checkIn, checkOut])
+
+  // Apply date filter on top of other filters
+  const displayResults = blockedSlugs.size > 0
+    ? results.filter(c => !blockedSlugs.has(c.slug))
+    : results
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* ── DESKTOP header: research mode — logo + search bar + list/map toggle ── */}
@@ -74,7 +115,7 @@ function SearchResults() {
           </div>
           {/* Mobile: result count + map toggle only */}
           <div className="ml-auto flex md:hidden items-center gap-2">
-            <span className="text-xs text-gray-500 font-semibold">{results.length} found</span>
+            <span className="text-xs text-gray-500 font-semibold">{displayResults.length} found</span>
             <button onClick={() => setView(view === 'list' ? 'map' : 'list')}
               className="flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold bg-green-700 text-white">
               {view === 'list' ? <><MapPin size={12}/> Map</> : <><Search size={12}/> List</>}
@@ -168,15 +209,15 @@ function SearchResults() {
         {/* Main results */}
         <div className="flex-1 min-w-0">
           <div className="mb-3 hidden md:flex items-center justify-between">
-            <p className="text-sm text-gray-500"><span className="font-semibold text-gray-900">{results.length}</span> campgrounds found</p>
+            <p className="text-sm text-gray-500"><span className="font-semibold text-gray-900">{displayResults.length}</span> campgrounds found</p>
           </div>
 
           {view === 'list' ? (
             <div className="space-y-3 md:space-y-4">
-              {results.map((camp, i) => (
+              {displayResults.map((camp, i) => (
                 <CampgroundCard key={camp.id} camp={camp} priority={i === 0} />
               ))}
-              {results.length === 0 && (
+              {displayResults.length === 0 && (
                 <div className="text-center py-16 text-gray-400">
                   <TreePine size={48} className="mx-auto mb-4 opacity-30" />
                   <p className="font-semibold text-gray-600">No campgrounds match your filters</p>
@@ -186,7 +227,7 @@ function SearchResults() {
             </div>
           ) : (
             <div className="h-[calc(100svh-120px)] md:h-[600px] rounded-2xl overflow-hidden border border-gray-100">
-              <MapView campgrounds={results} selectedId={selectedId} onSelect={setSelectedId} />
+              <MapView campgrounds={displayResults} selectedId={selectedId} onSelect={setSelectedId} />
             </div>
           )}
         </div>

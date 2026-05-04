@@ -7,6 +7,7 @@ import { Plus, Calendar, DollarSign, Users, Settings, ChevronRight, CheckCircle,
 import Link from 'next/link'
 import NavBar from '@/components/NavBar'
 import { scoreSiteCompleteness, aggregateCompleteness } from '@/lib/completeness'
+import ICalTab from '@/components/ICalTab'
 
 type Booking = {
   id: string
@@ -441,6 +442,11 @@ export default function OwnerDashboard() {
               </>
             )}
           </div>
+        )}
+
+        {/* iCal Sync tab */}
+        {activeTab === 'ical' && user && (
+          <ICalTab userId={user.id} sites={sites.map(s => ({ id: s.id, name: s.name, campground_slug: s.campground_slug }))} />
         )}
 
         {/* Add site tab */}
