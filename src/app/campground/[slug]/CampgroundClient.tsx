@@ -20,6 +20,7 @@ const CommunityFeed = dynamic(() => import('@/components/community/CommunityFeed
 const PhotoUpload = dynamic(() => import('@/components/community/PhotoUpload'), { ssr: false })
 const IntelligenceSection = dynamic(() => import('@/components/IntelligenceSection'), { ssr: false })
 const AvailabilityCalendar = dynamic(() => import('@/components/AvailabilityCalendar'), { ssr: false })
+const ReferralPartners = dynamic(() => import('@/components/ReferralPartners'), { ssr: false })
 const CampgroundChat = dynamic(() => import('@/components/community/CampgroundChat'), { ssr: false })
 const TripLogButton = dynamic(() => import('@/components/TripLogButton'), { ssr: false })
 const GearRecommendations = dynamic(() => import('@/components/GearRecommendations'), { ssr: false })
@@ -324,12 +325,15 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
           <div>
             <div className="sticky top-20">
             {(camp as any).ridb_facility_id && camp.booking_url?.includes('recreation.gov') ? (
-              <AvailabilityCalendar
-                facilityId={(camp as any).ridb_facility_id}
-                bookingUrl={camp.booking_url}
-                campgroundName={camp.name}
-                campgroundSlug={camp.slug}
-              />
+              <>
+                <AvailabilityCalendar
+                  facilityId={(camp as any).ridb_facility_id}
+                  bookingUrl={camp.booking_url}
+                  campgroundName={camp.name}
+                  campgroundSlug={camp.slug}
+                />
+                <ReferralPartners campgroundSlug={camp.slug} />
+              </>
             ) : (
             <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
               <div className="mb-1">
@@ -361,6 +365,7 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
                 className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-sm bg-green-700 hover:bg-green-800 text-white transition-colors mb-2">
                 🏕 Book Directly — No Extra Fees
               </a>
+              <ReferralPartners campgroundSlug={camp.slug} />
               {camp.booking_url && (
                 <a href={camp.booking_url} target="_blank" rel="noopener noreferrer"
                   className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm text-gray-500 border border-gray-200 hover:bg-gray-50 transition-colors">

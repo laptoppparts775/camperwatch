@@ -8,6 +8,7 @@ import Link from 'next/link'
 import NavBar from '@/components/NavBar'
 import { scoreSiteCompleteness, aggregateCompleteness } from '@/lib/completeness'
 import ICalTab from '@/components/ICalTab'
+import CollaborationTab from '@/components/CollaborationTab'
 
 type Booking = {
   id: string
@@ -442,6 +443,11 @@ export default function OwnerDashboard() {
               </>
             )}
           </div>
+        )}
+
+        {/* Collaboration tab */}
+        {activeTab === 'collab' && user && (
+          <CollaborationTab userId={user.id} ownedCampgrounds={campgrounds} />
         )}
 
         {/* iCal Sync tab */}
