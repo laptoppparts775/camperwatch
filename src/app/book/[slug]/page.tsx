@@ -187,6 +187,13 @@ export default function BookPage() {
     }
     await sb.from('site_availability').upsert(blocked, { onConflict: 'site_id,blocked_date' })
 
+    // Fire confirmation emails (best-effort — failure never blocks booking)
+    fetch('/api/bookings/confirm', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ bookingRef: data.booking_ref }),
+    }).catch(() => {}) // silent — email failure must never break UX
+
     setBookingRef(data.booking_ref)
     setStep(3)
   }
