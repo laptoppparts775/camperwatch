@@ -125,6 +125,75 @@ export function contactFormAdminNotification(i: ContactFormInput) {
   }
 }
 
+
+// ---------- Availability alert: camper notification ----------
+
+export type AvailabilityAlertInput = {
+  campgroundName: string
+  campgroundSlug: string
+  checkIn: string   // YYYY-MM-DD
+  checkOut: string
+  recreationGovUrl: string
+  nearbyPrivate: Array<{ name: string; slug: string; pricePerNight: number }>
+}
+
+export function availabilityAlertEmail(i: AvailabilityAlertInput) {
+  const subject = `🏕️ Site opened: ${i.campgroundName} for ${fmtDate(i.checkIn)}`
+  const bookUrl = i.recreationGovUrl || `https://www.recreation.gov`
+  const alertsUrl = `${BRAND.url}/alerts`
+
+  const crossSell = i.nearbyPrivate.length > 0 ? `
+    <div style="margin:24px 0 0 0;padding:16px;background:#f0fdf4;border-radius:12px;border:1px solid #bbf7d0;">
+      <div style="font-size:12px;font-weight:700;color:#15803d;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">Meanwhile — private campgrounds nearby with availability</div>
+      ${i.nearbyPrivate.map(c => `
+        <div style="margin-bottom:8px;">
+          <a href="${BRAND.url}/campground/${c.slug}" style="color:#15803d;font-weight:600;font-size:14px;text-decoration:none;">${escapeHtml(c.name)}</a>
+          <span style="color:#6b7280;font-size:13px;"> · from $${c.pricePerNight}/night · Book instantly</span>
+        </div>
+      `).join('')}
+    </div>
+  ` : ''
+
+  const content = `
+    <h1 style="margin:0 0 12px 0;font-size:22px;font-weight:700;color:#111827;">A site just opened up! 🎉</h1>
+    <p style="margin:0 0 16px 0;color:#374151;">
+      Good news — <strong>${escapeHtml(i.campgroundName)}</strong> now has availability for your dates.
+      These go fast — book now before it's gone.
+    </p>
+
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin:0 0 20px 0;border-top:1px solid #f3f4f6;">
+      ${infoRow('Campground', i.campgroundName)}
+      ${infoRow('Check-in', fmtDate(i.checkIn))}
+      ${infoRow('Check-out', fmtDate(i.checkOut))}
+    </table>
+
+    <div style="margin:0 0 24px 0;">${button('Book on Recreation.gov →', bookUrl)}</div>
+
+    ${crossSell}
+
+    <p style="margin:20px 0 0 0;color:#9ca3af;font-size:12px;">
+      You set this alert at <a href="${alertsUrl}" style="color:#6b7280;">camperwatch.org/alerts</a>.
+      <a href="${alertsUrl}" style="color:#6b7280;">Manage or delete your alerts.</a>
+    </p>
+  `
+
+  return {
+    subject,
+    html: renderEmailLayout({
+      preheader: `${i.campgroundName} · ${fmtDate(i.checkIn)} → ${fmtDate(i.checkOut)} · Book now!`,
+      contentHtml: content,
+    }),
+    text: `A site opened up at ${i.campgroundName}!
+
+Check-in: ${fmtDate(i.checkIn)}
+Check-out: ${fmtDate(i.checkOut)}
+
+Book now: ${bookUrl}
+
+Manage alerts: ${alertsUrl}`,
+  }
+}
+
 // ---------- Test email (used by the smoke-test endpoint) ----------
 
 export function testEmail() {

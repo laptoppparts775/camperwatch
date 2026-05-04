@@ -82,6 +82,11 @@ export default function HomePage() {
                 <span className="flex items-center gap-1.5"><span className="text-amber-400">✓</span> Free, no booking fees</span>
                 <span className="flex items-center gap-1.5"><span className="text-amber-400">✓</span> Official sources only</span>
               </div>
+              <div className="mt-5">
+                <a href="/alerts" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold" style={{ background: 'rgba(251,191,36,0.12)', color: '#fbbf24', border: '1px solid rgba(251,191,36,0.2)' }}>
+                  🔔 Get notified when sold-out parks open up — free
+                </a>
+              </div>
             </div>
 
             {/* Right: live social proof — the "FOMO panel" */}
@@ -150,6 +155,9 @@ export default function HomePage() {
 
             {/* Search front and center */}
             <HomeSearch />
+            <a href="/alerts" className="mt-4 flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm font-semibold" style={{ background: 'rgba(251,191,36,0.1)', color: '#fbbf24', border: '1px solid rgba(251,191,36,0.15)' }}>
+              🔔 Get notified when sold-out parks open up — free
+            </a>
           </div>
         </div>
 

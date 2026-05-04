@@ -312,6 +312,7 @@ export default function BookPage() {
               facilityId={facilityId}
               bookingUrl={camp.booking_url || ''}
               campgroundName={camp.name}
+              campgroundSlug={camp.slug}
             />
           ) : (
             <div className="bg-white rounded-2xl border border-gray-200 p-6 text-center text-sm text-gray-500">

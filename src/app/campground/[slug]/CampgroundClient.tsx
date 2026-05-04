@@ -290,6 +290,7 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
                       facilityId={(camp as any).ridb_facility_id}
                       bookingUrl={camp.booking_url}
                       campgroundName={camp.name}
+                      campgroundSlug={camp.slug}
                     />
                   </div>
                 </div>
@@ -327,6 +328,7 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
                 facilityId={(camp as any).ridb_facility_id}
                 bookingUrl={camp.booking_url}
                 campgroundName={camp.name}
+                campgroundSlug={camp.slug}
               />
             ) : (
             <div className="bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">

@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import dynamic from 'next/dynamic'
+const AlertButton = dynamic(() => import('@/components/AlertButton'), { ssr: false })
 
 interface AvailabilityData {
   totalSites: number
@@ -15,6 +17,7 @@ interface Props {
   facilityId: string
   bookingUrl: string
   campgroundName: string
+  campgroundSlug: string
 }
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -48,7 +51,7 @@ function buildBookingUrl(baseUrl: string, arrivalDate: string): string {
   return baseUrl
 }
 
-export default function AvailabilityCalendar({ facilityId, bookingUrl, campgroundName }: Props) {
+export default function AvailabilityCalendar({ facilityId, bookingUrl, campgroundName, campgroundSlug }: Props) {
   const today = new Date()
   const [year, setYear] = useState(today.getFullYear())
   const [month, setMonth] = useState(today.getMonth())
@@ -246,10 +249,15 @@ export default function AvailabilityCalendar({ facilityId, bookingUrl, campgroun
 
       {/* Footer CTA when no date selected */}
       {!selectedDate && (
-        <div className="px-4 pb-4">
-          <p className="text-center text-sm text-gray-500 mb-3 leading-snug">
+        <div className="px-4 pb-4 space-y-3">
+          <p className="text-center text-sm text-gray-500 leading-snug">
             <span className="font-medium text-gray-700">Pick a green date</span> to see open sites,<br/>then book it with one click.
           </p>
+          <AlertButton
+            campgroundSlug={campgroundSlug}
+            campgroundName={campgroundName}
+            facilityId={facilityId}
+          />
         </div>
       )}
     </div>
