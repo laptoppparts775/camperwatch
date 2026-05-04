@@ -7,6 +7,7 @@ import { campgrounds } from '@/lib/data'
 import Link from 'next/link'
 import NavBar from '@/components/NavBar'
 import AvailabilityCalendar from '@/components/AvailabilityCalendar'
+import OutdoorsyRvCard from '@/components/affiliate/OutdoorsyRvCard'
 import {
   ArrowLeft, CheckCircle, AlertCircle, MapPin, Star, ExternalLink,
   Tent, Zap, Clock, Shield, Info, Phone
@@ -70,6 +71,15 @@ function platformLabel(mode: BookingMode): string {
     case 'reserve_america': return 'ReserveAmerica'
     default: return 'official site'
   }
+}
+
+/** Heuristic: does this campground welcome RVs? */
+function isRvFriendly(camp: any): boolean {
+  const types = (camp.site_types || []).join(' ').toLowerCase()
+  const hookups = (camp.hookups || '').toLowerCase()
+  if (types.includes('rv')) return true
+  if (hookups && !hookups.includes('none') && !hookups.includes('no hookup')) return true
+  return false
 }
 
 export default function BookPage() {
@@ -336,6 +346,12 @@ export default function BookPage() {
               </ul>
             </div>
           )}
+
+          <OutdoorsyRvCard
+            subId={`book-fed-${slug}`}
+            variant={isRvFriendly(camp) ? 'rv_friendly' : 'general'}
+            campgroundName={camp.name}
+          />
         </div>
       </div>
     )
@@ -391,6 +407,14 @@ export default function BookPage() {
                 {camp.pro_tips.slice(0, 4).map((t: string, i: number) => <li key={i}>{t}</li>)}
               </ul>
             </div>
+          )}
+
+          {isRvFriendly(camp) && (
+            <OutdoorsyRvCard
+              subId={`book-ext-${slug}`}
+              variant="rv_friendly"
+              campgroundName={camp.name}
+            />
           )}
 
           <div className="text-center">
