@@ -10,6 +10,7 @@ import {
   ArrowLeft, Save, CheckCircle, AlertCircle, Tent, DollarSign,
   Clock, FileText, PawPrint, ScrollText, Sparkles, Lock, Camera, X, Upload
 } from 'lucide-react'
+import SitePricingRules from '@/components/SitePricingRules'
 
 const SITE_TYPE_OPTIONS = [
   { value: 'tent', label: 'Tent Site' },
@@ -526,6 +527,7 @@ export default function SiteEditorPage() {
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500" />
             </Field>
           </div>
+          <SitePricingRules siteId={siteId} />
         </Section>
 
         {/* Section: Inheritable policies */}
