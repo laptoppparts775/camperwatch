@@ -294,6 +294,9 @@ export default function OwnerDashboard() {
           {[
             { key: 'bookings', label: 'Bookings' },
             { key: 'sites', label: 'My Sites' },
+            { key: 'calendar', label: '📅 Availability' },
+            { key: 'ical', label: '🔄 iCal Sync' },
+            { key: 'collab', label: '🤝 Network' },
             { key: 'add-site', label: '+ Add Site' },
           ].map(tab => (
             <button
