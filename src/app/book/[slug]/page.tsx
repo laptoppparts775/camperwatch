@@ -303,7 +303,7 @@ export default function BookPage() {
                 <p className="text-sm text-blue-800">
                   This is a federal site, so the actual reservation has to happen on Recreation.gov.
                   We&apos;re showing live availability here so you don&apos;t waste time hunting for an open date.
-                  When you find one, click through and we&apos;ll take you straight there.
+                  Pick a green date below — we pass your dates to Recreation.gov so you land straight on the site selection screen.
                 </p>
               </div>
             </div>

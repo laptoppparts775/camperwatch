@@ -252,7 +252,7 @@ export default function AvailabilityCalendar({ facilityId, bookingUrl, campgroun
               rel="noopener noreferrer"
               className="px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap"
             >
-              Book This Date →
+              See available sites on Recreation.gov →
             </a>
           </div>
         </div>
@@ -262,7 +262,7 @@ export default function AvailabilityCalendar({ facilityId, bookingUrl, campgroun
       {!selectedDate && (
         <div className="px-4 pb-4 space-y-3">
           <p className="text-center text-sm text-gray-500 leading-snug">
-            <span className="font-medium text-gray-700">Pick a green date</span> to see open sites,<br/>then book it with one click.
+            <span className="font-medium text-gray-700">Pick a green date</span> — we&apos;ll take you to Recreation.gov with your dates pre-filled to choose a site.
           </p>
           <AlertButton
             campgroundSlug={campgroundSlug}
