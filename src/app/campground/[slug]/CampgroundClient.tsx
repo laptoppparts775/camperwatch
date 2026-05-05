@@ -99,7 +99,12 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
               <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-3">
                 <span className="flex items-center gap-1"><MapPin size={13}/>{camp.location}</span>
                 <span className="flex items-center gap-1"><Star size={13} className="text-yellow-400 fill-yellow-400"/>{camp.rating} ({camp.review_count})</span>
-                {(camp as any).elevation && <span className="flex items-center gap-1"><Mountain size={13}/>{(camp as any).elevation}</span>}
+                {((camp as any).elevation_ft || (camp as any).elevation) && (
+                  <span className="flex items-center gap-1">
+                    <Mountain size={13}/>
+                    {(camp as any).elevation_ft ? `${((camp as any).elevation_ft as number).toLocaleString()} ft` : (camp as any).elevation}
+                  </span>
+                )}
               </div>
               <ShareButtons title={camp.name} url={`https://camperwatch.org/campground/${camp.slug}`} description={(camp as any).tagline || camp.description?.slice(0,120) || ''}/>
             </div>

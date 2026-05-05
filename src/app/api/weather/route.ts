@@ -10,17 +10,16 @@ function getSupabase() {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   )
 }
+
 async function fetchNWS(lat: number, lng: number) {
-  // Step 1: resolve NWS grid point
   const pointRes = await fetch(`${NWS}/points/${lat},${lng}`, {
     headers: { 'User-Agent': UA, 'Accept': 'application/geo+json' },
     signal: AbortSignal.timeout(8000),
   })
   if (!pointRes.ok) throw new Error(`NWS points ${pointRes.status}`)
   const point = await pointRes.json()
-  const { forecast: forecastUrl, forecastHourly } = point.properties
+  const { forecast: forecastUrl } = point.properties
 
-  // Step 2: 7-day forecast
   const forecastRes = await fetch(forecastUrl, {
     headers: { 'User-Agent': UA },
     signal: AbortSignal.timeout(8000),
@@ -41,7 +40,6 @@ async function fetchNWS(lat: number, lng: number) {
     precipProbability: p.probabilityOfPrecipitation?.value ?? null,
   }))
 
-  // Step 3: active alerts
   const alertsRes = await fetch(`${NWS}/alerts/active?point=${lat},${lng}`, {
     headers: { 'User-Agent': UA },
     signal: AbortSignal.timeout(6000),
@@ -55,7 +53,22 @@ async function fetchNWS(lat: number, lng: number) {
     expires: f.properties.expires,
   }))
 
-  return { periods, alerts, source: 'nws', fetchedAt: new Date().toISOString() }
+  return { periods, alerts }
+}
+
+async function fetchOpenMeteo(lat: number, lng: number) {
+  // UV index + wind gusts — not available in NWS API
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=uv_index_max,windgusts_10m_max,precipitation_probability_max&temperature_unit=fahrenheit&timezone=auto&forecast_days=7`
+  const res = await fetch(url, { signal: AbortSignal.timeout(6000) })
+  if (!res.ok) return null
+  const data = await res.json()
+  const daily = data.daily || {}
+  return {
+    dates: daily.time || [],
+    uvIndex: daily.uv_index_max || [],
+    windGusts: daily.windgusts_10m_max || [],
+    precipProb: daily.precipitation_probability_max || [],
+  }
 }
 
 export async function GET(req: NextRequest) {
@@ -70,7 +83,6 @@ export async function GET(req: NextRequest) {
   const latR = Math.round(lat * 1000) / 1000
   const lngR = Math.round(lng * 1000) / 1000
 
-  // Check cache — 1 hour TTL for weather
   const { data: cached } = await getSupabase()
     .from('weather_cache')
     .select('data, fetched_at')
@@ -80,24 +92,39 @@ export async function GET(req: NextRequest) {
 
   if (cached) {
     const ageMs = Date.now() - new Date(cached.fetched_at).getTime()
-    if (ageMs < 60 * 60 * 1000) { // < 1 hour
+    if (ageMs < 60 * 60 * 1000) {
       return NextResponse.json({ ...cached.data, cacheAgeMin: Math.round(ageMs / 60000) },
         { headers: { 'Cache-Control': 'public, max-age=900' } })
     }
   }
 
   try {
-    const data = await fetchNWS(lat, lng)
+    const [nws, openMeteo] = await Promise.allSettled([
+      fetchNWS(lat, lng),
+      fetchOpenMeteo(lat, lng),
+    ])
 
-    // Write to cache (upsert by coords)
+    const nwsData = nws.status === 'fulfilled' ? nws.value : { periods: [], alerts: [] }
+    const omData = openMeteo.status === 'fulfilled' ? openMeteo.value : null
+
+    const result = {
+      periods: nwsData.periods,
+      alerts: nwsData.alerts,
+      uvIndex: omData?.uvIndex ?? [],
+      windGusts: omData?.windGusts ?? [],
+      precipProb: omData?.precipProb ?? [],
+      uvDates: omData?.dates ?? [],
+      source: 'nws+openmeteo',
+      fetchedAt: new Date().toISOString(),
+    }
+
     await getSupabase().from('weather_cache').upsert(
-      { lat: latR, lng: lngR, data, fetched_at: new Date().toISOString() },
+      { lat: latR, lng: lngR, data: result, fetched_at: new Date().toISOString() },
       { onConflict: 'lat,lng' }
     )
 
-    return NextResponse.json(data, { headers: { 'Cache-Control': 'public, max-age=900' } })
+    return NextResponse.json(result, { headers: { 'Cache-Control': 'public, max-age=900' } })
   } catch (err: any) {
-    // Fall back to cached even if stale
     if (cached) return NextResponse.json({ ...cached.data, stale: true })
     return NextResponse.json({ error: err.message }, { status: 500 })
   }
