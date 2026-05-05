@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import HomeSearch from '@/components/HomeSearch'
+import EmailCapture from '@/components/EmailCapture'
 import { campgrounds } from '@/lib/data'
 import NavBar from '@/components/NavBar'
 
@@ -215,13 +216,13 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Mobile CTA */}
+        {/* Mobile CTA — email capture */}
         <div className="px-4 pb-8 pt-2">
-          <Link href="/auth/signup"
-            className="block text-center font-bold text-stone-950 bg-amber-400 py-3.5 rounded-2xl text-sm">
-            Join free — get campsite alerts
-          </Link>
-          <p className="text-center text-[11px] text-stone-600 mt-2">No spam. Only sites you care about.</p>
+          <p className="text-xs text-stone-500 font-semibold uppercase tracking-widest mb-3 text-center">
+            Get notified when sold-out parks open up
+          </p>
+          <EmailCapture source="homepage-mobile" placeholder="your@email.com" buttonText="Notify me" />
+          <p className="text-center text-[11px] text-stone-600 mt-2">Free. No spam. Unsubscribe any time.</p>
         </div>
       </section>
 
@@ -348,20 +349,31 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA — desktop version */}
-      <section className="hidden sm:block py-28 px-4 text-center">
-        <div className="max-w-xl mx-auto">
-          <div className="text-6xl mb-5" aria-hidden>🏕️</div>
-          <h2 className="font-display font-bold text-white mb-4 leading-tight"
-            style={{ fontSize: 'clamp(1.6rem, 3.5vw, 3rem)' }}>
-            Your next site is waiting.
+      {/* EMAIL CAPTURE — desktop, before footer */}
+      <section className="hidden sm:block py-24 px-4">
+        <div className="max-w-2xl mx-auto text-center">
+          <div className="text-5xl mb-5" aria-hidden>🏕️</div>
+          <h2 className="font-display font-bold text-white mb-3 leading-tight"
+            style={{ fontSize: 'clamp(1.6rem, 3.5vw, 2.75rem)' }}>
+            Get notified when sold-out parks open up.
           </h2>
-          <p className="text-stone-400 mb-8">31 campgrounds. 13 states. Zion to Glacier. Yosemite to Grand Canyon.</p>
-          <Link href="/search"
-            className="inline-flex items-center gap-2 font-bold text-stone-950 bg-amber-400 hover:bg-amber-300 px-8 py-4 rounded-full transition-colors"
-            style={{ boxShadow: '0 8px 32px rgba(251,191,36,0.25)' }}>
-            Browse all campgrounds →
-          </Link>
+          <p className="text-stone-400 mb-8 text-base">
+            Free alerts when cancellations hit Yosemite, Zion, Glacier, and 28 more.
+            Plus nearby private campground alternatives when they&apos;re full.
+          </p>
+          <EmailCapture
+            source="homepage-desktop"
+            placeholder="your@email.com"
+            buttonText="Get free alerts"
+            className="max-w-md mx-auto"
+          />
+          <p className="text-stone-600 text-xs mt-4">Free. No spam. Unsubscribe any time.</p>
+          <div className="mt-8">
+            <Link href="/search"
+              className="text-sm text-stone-500 hover:text-amber-400 transition-colors">
+              Or browse all 31 campgrounds →
+            </Link>
+          </div>
         </div>
       </section>
 

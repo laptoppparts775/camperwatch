@@ -7,7 +7,8 @@ Disallow: /messages
 Disallow: /profile
 Disallow: /settings
 Disallow: /owner-dashboard
-Disallow: /owner/
+Disallow: /owner/onboard/confirm
+Disallow: /owner/settings
 
 # AI search crawlers — allow full access for AI overviews and citations
 User-agent: GPTBot
