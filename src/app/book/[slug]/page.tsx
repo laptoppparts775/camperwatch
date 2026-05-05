@@ -8,6 +8,8 @@ import Link from 'next/link'
 import NavBar from '@/components/NavBar'
 import AvailabilityCalendar from '@/components/AvailabilityCalendar'
 import OutdoorsyRvCard from '@/components/affiliate/OutdoorsyRvCard'
+import dynamic from 'next/dynamic'
+const StripePaymentStep = dynamic(() => import('@/components/StripePaymentStep'), { ssr: false })
 import {
   ArrowLeft, CheckCircle, AlertCircle, MapPin, Star, ExternalLink,
   Tent, Zap, Clock, Shield, Info, Phone
@@ -99,7 +101,7 @@ export default function BookPage() {
   const [guestEmail, setGuestEmail] = useState('')
   const [guestPhone, setGuestPhone] = useState('')
   const [specialRequests, setSpecialRequests] = useState('')
-  const [step, setStep] = useState<1 | 2 | 3>(1)
+  const [step, setStep] = useState<1 | 2 | 'pay' | 3>(1)
   const [submitting, setSubmitting] = useState(false)
   const [bookingRef, setBookingRef] = useState('')
   const [error, setError] = useState('')
@@ -144,7 +146,7 @@ export default function BookPage() {
     return total
   }
 
-  async function submitBooking() {
+  function submitBooking() {
     if (!selectedSite || !checkIn || !checkOut || !guestName || !guestEmail) {
       setError('Please fill in all required fields.')
       return
@@ -152,50 +154,8 @@ export default function BookPage() {
     const nights = calcNights()
     if (nights <= 0) { setError('Check-out must be after check-in.'); return }
     if (!user) { router.push(`/auth/login?redirect=/book/${slug}`); return }
-
-    setSubmitting(true)
     setError('')
-    const total = calcTotal()
-    const commission = Math.round(total * 0.10 * 100) / 100
-    const sb = getSupabase()
-
-    const { data, error: err } = await sb.from('bookings').insert({
-      site_id: selectedSite.id,
-      campground_slug: slug,
-      guest_id: user.id,
-      guest_name: guestName,
-      guest_email: guestEmail,
-      guest_phone: guestPhone,
-      check_in: checkIn,
-      check_out: checkOut,
-      num_guests: guests,
-      total_price: total,
-      commission_amount: commission,
-      owner_payout: total - commission,
-      status: 'confirmed',
-      special_requests: specialRequests,
-    }).select('booking_ref').single()
-
-    setSubmitting(false)
-    if (err) { setError('Booking failed. Please try again.'); return }
-
-    const blocked: { site_id: string; blocked_date: string; reason: string }[] = []
-    for (let i = 0; i < nights; i++) {
-      const d = new Date(checkIn)
-      d.setDate(d.getDate() + i)
-      blocked.push({ site_id: selectedSite.id, blocked_date: d.toISOString().split('T')[0], reason: 'booked' })
-    }
-    await sb.from('site_availability').upsert(blocked, { onConflict: 'site_id,blocked_date' })
-
-    // Fire confirmation emails (best-effort — failure never blocks booking)
-    fetch('/api/bookings/confirm', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ bookingRef: data.booking_ref }),
-    }).catch(() => {}) // silent — email failure must never break UX
-
-    setBookingRef(data.booking_ref)
-    setStep(3)
+    setStep('pay')
   }
 
   // 404
@@ -221,6 +181,48 @@ export default function BookPage() {
   )
 
   const mode = detectBookingMode(camp, sites.length > 0)
+
+  // Payment step
+  if (step === 'pay' && selectedSite) {
+    const nights = calcNights()
+    const total = calcTotal()
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <NavBar />
+        <div className="max-w-lg mx-auto px-4 py-8">
+          <div className="bg-white rounded-3xl border border-gray-200 p-6 shadow-sm">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 rounded-xl overflow-hidden shrink-0">
+                <img src={camp.images?.[0]?.url} className="w-full h-full object-cover" alt="" />
+              </div>
+              <div>
+                <div className="font-bold text-gray-900 text-sm">{camp.name}</div>
+                <div className="text-xs text-gray-400">{checkIn} → {checkOut}</div>
+              </div>
+            </div>
+            <StripePaymentStep
+              booking={{
+                siteId: selectedSite.id,
+                siteName: selectedSite.name,
+                campgroundSlug: slug,
+                checkIn,
+                checkOut,
+                guests,
+                nights,
+                totalPrice: total,
+                guestName,
+                guestEmail,
+                guestPhone: guestPhone || undefined,
+                specialRequests: specialRequests || undefined,
+              }}
+              onSuccess={(ref) => { setBookingRef(ref); setStep(3) }}
+              onBack={() => setStep(2)}
+            />
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   // Confirmation (only via direct mode)
   if (step === 3) {

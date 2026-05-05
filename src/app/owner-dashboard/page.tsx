@@ -94,7 +94,8 @@ export default function OwnerDashboard() {
   const [siteSuccess, setSiteSuccess] = useState(false)
 
   // Owner profile (1.6 — completion check)
-  const [profile, setProfile] = useState<{ phone: string | null; payout_email: string | null; full_name: string | null; email: string | null } | null>(null)
+  const [profile, setProfile] = useState<{ phone: string | null; payout_email: string | null; full_name: string | null; email: string | null; stripe_account_id: string | null; verified: boolean | null } | null>(null)
+  const [connectingStripe, setConnectingStripe] = useState(false)
   const [profileForm, setProfileForm] = useState({ phone: '', payout_email: '' })
   const [savingProfile, setSavingProfile] = useState(false)
   const [profileSaved, setProfileSaved] = useState(false)
@@ -119,7 +120,7 @@ export default function OwnerDashboard() {
         'campground_slug',
         (await supabase.from('campground_owners').select('campground_slug').eq('owner_id', userId)).data?.map(r => r.campground_slug) || []
       ).order('created_at', { ascending: false }),
-      supabase.from('owner_profiles').select('phone, payout_email, full_name, email').eq('id', userId).maybeSingle(),
+      supabase.from('owner_profiles').select('phone, payout_email, full_name, email, stripe_account_id, verified').eq('id', userId).maybeSingle(),
     ])
     setCampgrounds(campsRes.data || [])
     setBookings(bookRes.data || [])
@@ -156,6 +157,22 @@ export default function OwnerDashboard() {
       // Re-fetch so banner updates
       loadData(user.id)
     }
+  }
+
+  async function connectStripe() {
+    setConnectingStripe(true)
+    const { data: { session } } = await supabase.auth.getSession()
+    const res = await fetch('/api/stripe/connect', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session?.access_token || ''}`,
+      },
+      body: JSON.stringify({ returnUrl: window.location.href }),
+    })
+    const data = await res.json()
+    setConnectingStripe(false)
+    if (data.url) window.location.href = data.url
   }
 
   async function saveSite() {
@@ -275,6 +292,48 @@ export default function OwnerDashboard() {
                 </span>
               )}
             </div>
+          </div>
+        )}
+
+
+        {/* Stripe Connect banner — show when profile complete but Stripe not connected */}
+        {profile && profile.phone && profile.payout_email && campgrounds.length > 0 && !profile.stripe_account_id && (
+          <div className="bg-blue-50 border border-blue-200 rounded-2xl p-5 mb-6">
+            <div className="flex items-start gap-3">
+              <DollarSign size={22} className="text-blue-600 shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <div className="font-bold text-blue-900 text-base mb-1">Connect Stripe to accept payments</div>
+                <p className="text-blue-700 text-sm mb-4">
+                  Your profile is complete. Connect your Stripe account to start accepting bookings and receiving payouts.
+                  CamperWatch takes 5% per booking — you keep 95%.
+                </p>
+                <button
+                  onClick={connectStripe}
+                  disabled={connectingStripe}
+                  className="px-5 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-semibold hover:bg-blue-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+                >
+                  {connectingStripe ? 'Redirecting…' : '→ Connect Stripe account'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Stripe verified banner */}
+        {profile?.stripe_account_id && profile?.verified && (
+          <div className="bg-green-50 border border-green-200 rounded-2xl px-5 py-3 mb-6 flex items-center gap-3">
+            <CheckCircle size={18} className="text-green-600 shrink-0" />
+            <div className="text-sm text-green-800 font-medium">Stripe connected — you can accept payments and receive payouts.</div>
+          </div>
+        )}
+
+        {/* Stripe connected but not verified */}
+        {profile?.stripe_account_id && !profile?.verified && (
+          <div className="bg-amber-50 border border-amber-200 rounded-2xl px-5 py-3 mb-6 flex items-center justify-between gap-3">
+            <div className="text-sm text-amber-800">Stripe account connected but verification incomplete.</div>
+            <button onClick={connectStripe} disabled={connectingStripe} className="text-xs px-3 py-1.5 bg-amber-600 text-white rounded-lg font-medium hover:bg-amber-700 transition-colors disabled:opacity-50">
+              {connectingStripe ? '…' : 'Complete setup'}
+            </button>
           </div>
         )}
 
