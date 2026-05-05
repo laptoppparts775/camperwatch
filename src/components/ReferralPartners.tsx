@@ -43,7 +43,7 @@ export default function ReferralPartners({ campgroundSlug }: Props) {
         .in('owner_id', ownerIds)
         .eq('enabled', true)
 
-      const slugs = [...new Set((refs || []).map((r: any) => r.partner_campground_slug))]
+      const slugs: string[] = Array.from(new Set((refs || []).map((r: any) => r.partner_campground_slug as string)))
       setPartners(slugs.slice(0, 3))
     }
     load()

@@ -76,7 +76,7 @@ function SearchResults() {
         bySlug[s.campground_slug].push(s.id)
       }
       const fullyBlocked = new Set<string>()
-      for (const [slug, siteIds] of Object.entries(bySlug)) {
+      for (const [slug, siteIds] of Array.from(Object.entries(bySlug))) {
         if (siteIds.every(id => blockedSiteIds.has(id))) fullyBlocked.add(slug)
       }
       setBlockedSlugs(fullyBlocked)

@@ -23,14 +23,6 @@ interface Props {
 
 function campgroundName(slug: string) {
   const found = allCampgrounds.find((c: any) => c.slug === slug)
-  async function copyWidget(slug: string) {
-    const siteUrl = typeof window !== 'undefined' ? window.location.origin : 'https://camperwatch.org'
-    const snippet = '<iframe src="' + siteUrl + '/widget/' + slug + '" width="420" height="520" frameborder="0" style="border-radius:16px;border:1px solid #e5e7eb;"></iframe>'
-    await navigator.clipboard.writeText(snippet)
-    setCopiedWidget(slug)
-    setTimeout(() => setCopiedWidget(null), 2000)
-  }
-
   return (found as any)?.name || slug.split('-').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
 }
 
@@ -42,8 +34,16 @@ export default function CollaborationTab({ userId, ownedCampgrounds }: Props) {
   const [saving, setSaving] = useState(false)
   const [saveOk, setSaveOk] = useState(false)
   const [error, setError] = useState('')
-  const [selectedSlug, setSelectedSlug] = useState('')
   const [copiedWidget, setCopiedWidget] = useState<string | null>(null)
+  const [selectedSlug, setSelectedSlug] = useState('')
+
+  async function copyWidget(widgetSlug: string) {
+    const siteUrl = typeof window !== 'undefined' ? window.location.origin : 'https://camperwatch.org'
+    const snippet = '<iframe src="' + siteUrl + '/widget/' + widgetSlug + '" width="420" height="520" frameborder="0" style="border-radius:16px;border:1px solid #e5e7eb;"></iframe>'
+    await navigator.clipboard.writeText(snippet)
+    setCopiedWidget(widgetSlug)
+    setTimeout(() => setCopiedWidget(null), 2000)
+  }
 
   // Campgrounds owner does NOT own — candidates for referral partners
   const ownedSlugs = new Set(ownedCampgrounds.map(c => c.campground_slug))

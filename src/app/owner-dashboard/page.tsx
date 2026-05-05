@@ -75,7 +75,7 @@ export default function OwnerDashboard() {
   const [campgrounds, setCampgrounds] = useState<OwnerCampground[]>([])
   const [bookings, setBookings] = useState<Booking[]>([])
   const [sites, setSites] = useState<Site[]>([])
-  const [activeTab, setActiveTab] = useState<'bookings' | 'sites' | 'add-site'>('bookings')
+  const [activeTab, setActiveTab] = useState<'bookings' | 'sites' | 'calendar' | 'ical' | 'collab' | 'add-site'>('bookings')
   const [loading, setLoading] = useState(true)
 
   // New site form

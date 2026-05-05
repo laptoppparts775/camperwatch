@@ -17,7 +17,7 @@
 
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
-import * as ical from 'node-ical'
+import ICAL from 'ical.js'
 
 const CRON_SECRET = process.env.CRON_SECRET
 
@@ -51,23 +51,23 @@ async function syncCalendar(
     return { ok: false, dates: 0, error: `Fetch failed: ${err.message}` }
   }
 
-  // Parse iCal
-  let events: Record<string, ical.CalendarComponent>
+  // Parse iCal using ical.js (pure JS, Vercel-compatible)
+  const blockedDates: string[] = []
   try {
-    events = ical.parseICS(rawText)
+    const jcalData = ICAL.parse(rawText)
+    const comp = new ICAL.Component(jcalData)
+    const vevents = comp.getAllSubcomponents('vevent')
+    for (const vevent of vevents) {
+      try {
+        const ev = new ICAL.Event(vevent)
+        const start = ev.startDate?.toJSDate()
+        const end = ev.endDate?.toJSDate()
+        if (!start || !end) continue
+        blockedDates.push(...dateRange(start, end))
+      } catch { continue }
+    }
   } catch (err: any) {
     return { ok: false, dates: 0, error: `Parse failed: ${err.message}` }
-  }
-
-  // Collect all blocked dates from VEVENT entries
-  const blockedDates: string[] = []
-  for (const event of Object.values(events)) {
-    if (event.type !== 'VEVENT') continue
-    if (!event.start || !event.end) continue
-    const start = new Date(event.start as Date)
-    const end = new Date(event.end as Date)
-    if (isNaN(start.getTime()) || isNaN(end.getTime())) continue
-    blockedDates.push(...dateRange(start, end))
   }
 
   if (blockedDates.length === 0) {
@@ -75,7 +75,7 @@ async function syncCalendar(
   }
 
   // Upsert into site_availability
-  const rows = [...new Set(blockedDates)].map(date => ({
+  const rows = Array.from(new Set(blockedDates)).map(date => ({
     site_id: cal.site_id,
     blocked_date: date,
     reason: 'external_ical',
@@ -83,7 +83,7 @@ async function syncCalendar(
 
   const { error: upsertErr } = await sb
     .from('site_availability')
-    .upsert(rows, { onConflict: 'site_id,blocked_date' })
+    .upsert(rows as any, { onConflict: 'site_id,blocked_date' })
 
   if (upsertErr) {
     return { ok: false, dates: 0, error: `DB upsert failed: ${upsertErr.message}` }
@@ -130,7 +130,7 @@ export async function POST(req: NextRequest) {
   const results = { synced: 0, failed: 0, totalDates: 0 }
 
   for (const cal of calendars) {
-    const result = await syncCalendar(sb, cal as any)
+    const result = await syncCalendar(sb as any, cal as any)
 
     // Update last_sync status on the calendar row
     await sb.from('external_calendars').update({
