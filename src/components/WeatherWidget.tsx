@@ -1,7 +1,40 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Cloud, Sun, CloudRain, CloudSnow, Wind, Thermometer } from 'lucide-react'
+import { Cloud, Sun, CloudRain, CloudSnow, Wind, CloudLightning, AlertTriangle, Droplets } from 'lucide-react'
+
+interface Period {
+  name: string
+  temp: number
+  unit: string
+  isDaytime: boolean
+  shortForecast: string
+  windSpeed: string
+  precipProbability: number | null
+}
+
+interface Alert {
+  event: string
+  severity: string
+  headline: string
+}
+
+interface WeatherData {
+  periods: Period[]
+  alerts: Alert[]
+  source: string
+  stale?: boolean
+}
+
+function WeatherIcon({ forecast, size = 18, className = '' }: { forecast: string; size?: number; className?: string }) {
+  const f = forecast.toLowerCase()
+  if (f.includes('thunder') || f.includes('storm')) return <CloudLightning size={size} className={`text-yellow-500 ${className}`} />
+  if (f.includes('snow') || f.includes('blizzard') || f.includes('flurr')) return <CloudSnow size={size} className={`text-blue-400 ${className}`} />
+  if (f.includes('rain') || f.includes('shower') || f.includes('drizzle')) return <CloudRain size={size} className={`text-blue-500 ${className}`} />
+  if (f.includes('cloud') || f.includes('overcast') || f.includes('fog') || f.includes('mist')) return <Cloud size={size} className={`text-gray-400 ${className}`} />
+  if (f.includes('wind')) return <Wind size={size} className={`text-gray-500 ${className}`} />
+  return <Sun size={size} className={`text-yellow-400 ${className}`} />
+}
 
 interface Props {
   lat: number
@@ -9,56 +42,17 @@ interface Props {
   campgroundName: string
 }
 
-interface WeatherData {
-  temp_f: number
-  temp_c: number
-  condition: string
-  wind_mph: number
-  humidity: number
-  icon: string
-}
-
-function WeatherIcon({ condition, size = 18 }: { condition: string; size?: number }) {
-  const c = condition.toLowerCase()
-  if (c.includes('snow') || c.includes('blizzard')) return <CloudSnow size={size} className="text-blue-400" />
-  if (c.includes('rain') || c.includes('drizzle') || c.includes('shower')) return <CloudRain size={size} className="text-blue-500" />
-  if (c.includes('cloud') || c.includes('overcast') || c.includes('fog') || c.includes('mist')) return <Cloud size={size} className="text-gray-400" />
-  if (c.includes('wind')) return <Wind size={size} className="text-gray-500" />
-  return <Sun size={size} className="text-yellow-400" />
-}
-
 export default function WeatherWidget({ lat, lng, campgroundName }: Props) {
   const [weather, setWeather] = useState<WeatherData | null>(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
+  const [expanded, setExpanded] = useState(false)
 
   useEffect(() => {
-    async function fetchWeather() {
-      try {
-        // wttr.in — free, no API key, returns JSON
-        const res = await fetch(
-          `https://wttr.in/${lat},${lng}?format=j1`,
-          { signal: AbortSignal.timeout(8000) }
-        )
-        if (!res.ok) throw new Error('fetch failed')
-        const data = await res.json()
-        const current = data.current_condition?.[0]
-        if (!current) throw new Error('no data')
-        setWeather({
-          temp_f: parseInt(current.temp_F),
-          temp_c: parseInt(current.temp_C),
-          condition: current.weatherDesc?.[0]?.value || 'Clear',
-          wind_mph: parseInt(current.windspeedMiles),
-          humidity: parseInt(current.humidity),
-          icon: current.weatherDesc?.[0]?.value || '',
-        })
-      } catch {
-        setError(true)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchWeather()
+    fetch(`/api/weather?lat=${lat}&lng=${lng}`)
+      .then(r => r.ok ? r.json() : null)
+      .then(d => { if (d?.periods?.length) setWeather(d) })
+      .catch(() => {})
+      .finally(() => setLoading(false))
   }, [lat, lng])
 
   if (loading) {
@@ -70,33 +64,77 @@ export default function WeatherWidget({ lat, lng, campgroundName }: Props) {
     )
   }
 
-  if (error || !weather) return null
+  if (!weather?.periods?.length) return null
+
+  const today = weather.periods[0]
+  const tonight = weather.periods[1]
+  const forecast = weather.periods.filter(p => p.isDaytime).slice(0, 5)
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-4">
-      <div className="flex items-center justify-between mb-2">
-        <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-          Weather at camp
+    <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+      {weather.alerts?.map((alert, i) => (
+        <div key={i} className={`flex items-start gap-2.5 px-4 py-3 border-b text-xs font-medium ${
+          alert.severity === 'Extreme' ? 'bg-red-50 border-red-300 text-red-800' :
+          alert.severity === 'Severe' ? 'bg-orange-50 border-orange-300 text-orange-800' :
+          'bg-amber-50 border-amber-200 text-amber-800'
+        }`}>
+          <AlertTriangle size={14} className="shrink-0 mt-0.5" />
+          <div><span className="font-bold">{alert.event}</span> — <span>{alert.headline?.replace(/^[^:]+:\s*/,'').slice(0,100)}</span></div>
         </div>
-        <div className="text-xs text-gray-400">Live</div>
-      </div>
-      <div className="flex items-center gap-3">
-        <WeatherIcon condition={weather.condition} size={28} />
-        <div>
-          <div className="text-2xl font-black text-gray-900">
-            {weather.temp_f}°F
-            <span className="text-sm font-normal text-gray-400 ml-1">/ {weather.temp_c}°C</span>
+      ))}
+
+      <div className="p-4">
+        <div className="flex items-center justify-between mb-3">
+          <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Weather at camp</div>
+          <div className="text-xs text-gray-400">{weather.source === 'nws' ? 'NWS Official' : 'Live'}</div>
+        </div>
+
+        <div className="flex items-start gap-4">
+          <div className="flex items-center gap-2.5 flex-1">
+            <WeatherIcon forecast={today.shortForecast} size={32} />
+            <div>
+              <div className="text-2xl font-black text-gray-900">{today.temp}°{today.unit}</div>
+              <div className="text-xs text-gray-500 capitalize">{today.shortForecast}</div>
+            </div>
           </div>
-          <div className="text-xs text-gray-500 capitalize">{weather.condition}</div>
+          {tonight && (
+            <div className="text-right text-xs text-gray-500">
+              <div className="font-semibold text-gray-700">Tonight</div>
+              <div>{tonight.temp}°{tonight.unit}</div>
+              <div className="text-[10px]">{tonight.shortForecast.split(' ').slice(0,3).join(' ')}</div>
+            </div>
+          )}
+        </div>
+
+        <div className="flex items-center gap-4 mt-3 pt-3 border-t border-gray-50 text-xs text-gray-500">
+          {today.windSpeed && <span className="flex items-center gap-1"><Wind size={11} /> {today.windSpeed}</span>}
+          {today.precipProbability !== null && today.precipProbability > 0 && (
+            <span className="flex items-center gap-1"><Droplets size={11} /> {today.precipProbability}% precip</span>
+          )}
         </div>
       </div>
-      <div className="flex items-center gap-4 mt-3 pt-3 border-t border-gray-50 text-xs text-gray-500">
-        <span className="flex items-center gap-1">
-          <Wind size={11} /> {weather.wind_mph} mph wind
-        </span>
-        <span className="flex items-center gap-1">
-          <Thermometer size={11} /> {weather.humidity}% humidity
-        </span>
+
+      <div className="border-t border-gray-100">
+        <button onClick={() => setExpanded(!expanded)}
+          className="w-full px-4 py-2.5 text-xs text-gray-500 hover:text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-between">
+          <span className="font-medium">5-day forecast</span>
+          <span>{expanded ? '▲' : '▼'}</span>
+        </button>
+        {expanded && (
+          <div className="divide-y divide-gray-50">
+            {forecast.map((p, i) => (
+              <div key={i} className="flex items-center gap-3 px-4 py-2.5">
+                <div className="w-16 text-xs font-medium text-gray-700 shrink-0">{p.name.split(' ')[0]}</div>
+                <WeatherIcon forecast={p.shortForecast} size={14} />
+                <div className="flex-1 text-xs text-gray-500 truncate">{p.shortForecast}</div>
+                <div className="text-xs font-bold text-gray-800 shrink-0">{p.temp}°</div>
+                {p.precipProbability !== null && p.precipProbability > 0 && (
+                  <div className="text-[10px] text-blue-500 w-8 text-right shrink-0">{p.precipProbability}%</div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

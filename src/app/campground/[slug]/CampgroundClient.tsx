@@ -22,6 +22,7 @@ const IntelligenceSection = dynamic(() => import('@/components/IntelligenceSecti
 const AvailabilityCalendar = dynamic(() => import('@/components/AvailabilityCalendar'), { ssr: false })
 const ReferralPartners = dynamic(() => import('@/components/ReferralPartners'), { ssr: false })
 const WeatherWidget = dynamic(() => import('@/components/WeatherWidget'), { ssr: false })
+const SiteIntelligencePanel = dynamic(() => import('@/components/SiteIntelligencePanel'), { ssr: false })
 const CampgroundChat = dynamic(() => import('@/components/community/CampgroundChat'), { ssr: false })
 const TripLogButton = dynamic(() => import('@/components/TripLogButton'), { ssr: false })
 const GearRecommendations = dynamic(() => import('@/components/GearRecommendations'), { ssr: false })
@@ -303,6 +304,14 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
 
             {/* Weather */}
             {camp.lat && camp.lng && <WeatherWidget lat={camp.lat} lng={camp.lng} campgroundName={camp.name} />}
+
+            {/* Site intelligence — official photos + per-site data from RIDB */}
+            {(camp as any).ridb_facility_id && (
+              <SiteIntelligencePanel
+                facilityId={(camp as any).ridb_facility_id}
+                campgroundName={camp.name}
+              />
+            )}
 
             {/* Map */}
             <div>
