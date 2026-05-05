@@ -109,247 +109,177 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
               <ShareButtons title={camp.name} url={`https://camperwatch.org/campground/${camp.slug}`} description={(camp as any).tagline || camp.description?.slice(0,120) || ''}/>
             </div>
 
-            {/* About */}
-            <div>
-              <h2 className="font-semibold text-gray-900 mb-2">About</h2>
-              <p className="text-gray-600 leading-relaxed text-sm" data-speakable="true">{camp.description}</p>
-            </div>
-
-            {/* Best For + Site Types */}
-            <div className="grid grid-cols-2 gap-4">
-              {(camp as any).best_for && (
-                <div>
-                  <h3 className="font-semibold text-gray-900 mb-2 text-sm">Best For</h3>
-                  <div className="flex flex-wrap gap-1.5">
-                    {(camp as any).best_for.map((b: string) => <span key={b} className="bg-green-50 text-green-800 text-xs px-2.5 py-1 rounded-full font-medium">{b}</span>)}
-                  </div>
-                </div>
-              )}
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-2 text-sm">Site Types</h3>
-                <div className="flex flex-wrap gap-1.5">
-                  {camp.site_types.map(t => <span key={t} className="bg-blue-50 text-blue-800 text-xs px-2.5 py-1 rounded-full font-medium">{t}</span>)}
-                </div>
-              </div>
-            </div>
-
-            {/* Amenities */}
-            <div>
-              <h2 className="font-semibold text-gray-900 mb-3">Amenities</h2>
-              <div className="grid grid-cols-2 gap-1.5">
-                {camp.amenities.map(a => (
-                  <div key={a} className="flex items-start gap-2 text-sm text-gray-700">
-                    <Check size={13} className="text-green-600 flex-shrink-0 mt-0.5"/>{a}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Intelligence Guide */}
-            {intel && (
-              <div>
-                <h2 className="font-semibold text-gray-900 mb-4">Complete Campground Guide 🧠</h2>
-                <IntelligenceSection intel={intel} name={camp.name}/>
-              </div>
-            )}
-
-            {/* Site Guide — loops, best sites, rules */}
-            {siteGuides[camp.slug] && (
-              <div>
-                <h2 className="font-semibold text-gray-900 mb-4">Site Guide — Pick the Right Spot 🗺️</h2>
-                <SiteGuide guide={siteGuides[camp.slug]} name={camp.name} />
-              </div>
-            )}
-
-            <div className="flex flex-wrap gap-2 mb-6">
-              <TripLogButton slug={camp.slug} campName={camp.name} />
-            </div>
-            {/* Pro Tips */}
-            {proTips.length > 0 && (
-              <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
-                <h2 className="font-semibold text-amber-900 mb-3">💡 Pro Tips from Real Campers</h2>
-                <ul className="space-y-2">
-                  {proTips.map((tip: string, i: number) => <li key={i} className="text-sm text-amber-800 leading-relaxed">{tip}</li>)}
-                </ul>
-              </div>
-            )}
-
-            {/* Gear Recommendations — contextual affiliate placements */}
-            <GearRecommendations camp={camp} />
-
-            {/* Community Tips */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
-              <Suspense fallback={<p className="text-xs text-gray-400">Loading tips...</p>}>
-                <TipsList campgroundId={camp.slug}/>
-              </Suspense>
-            </div>
-
-            {/* Camper Photos */}
-            <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
-              <Suspense fallback={<p className="text-xs text-gray-400">Loading photos...</p>}>
-                <PhotoUpload campgroundId={camp.slug}/>
-              </Suspense>
-            </div>
-
-            {/* Reviews */}
-            {allReviews[camp.slug] && (
-              <div>
-                <h2 className="font-semibold text-gray-900 mb-4">What Campers Are Saying 💬</h2>
-                <ReviewsSection campgroundId={camp.slug} reviews={allReviews[camp.slug]} sentiment={campaignInsights[camp.slug]?.sentiment || 70}/>
-              </div>
-            )}
-
-            {/* Known Issues */}
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-              <div className="flex items-start gap-2">
-                <AlertCircle size={15} className="text-red-500 mt-0.5 flex-shrink-0"/>
-                <div>
-                  <h3 className="font-semibold text-red-800 mb-1 text-sm">Known Issues</h3>
-                  <p className="text-sm text-red-700">{camp.known_issues}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Nearby */}
-            {(camp as any).nearby && (
-              <div>
-                <h2 className="font-semibold text-gray-900 mb-3">Nearby</h2>
-                <div className="grid grid-cols-2 gap-2">
-                  {(camp as any).nearby.map((n: string) => (
-                    <div key={n} className="flex items-center gap-2 text-sm text-gray-600 bg-white border border-gray-100 rounded-lg px-3 py-2">
-                      <MapPin size={12} className="text-green-600 flex-shrink-0"/>{n}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Cancellation */}
-            <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-              <div className="flex items-start gap-2">
-                <Calendar size={15} className="text-blue-600 mt-0.5 flex-shrink-0"/>
-                <div>
-                  <h3 className="font-semibold text-blue-800 mb-1 text-sm">Cancellation Policy</h3>
-                  <p className="text-sm text-blue-700">{camp.cancellation_policy}</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Quick facts */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {[
-                { icon: Clock, label: 'Check-in', value: camp.check_in },
-                { icon: Clock, label: 'Check-out', value: camp.check_out },
-                { icon: Calendar, label: 'Season', value: camp.season },
-                { icon: Users, label: 'Max/site', value: '6 people' },
-              ].map(({ icon: Icon, label, value }) => (
-                <div key={label} className="bg-white rounded-xl border border-gray-100 p-3">
-                  <div className="flex items-center gap-1.5 mb-1"><Icon size={12} className="text-green-700"/><span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{label}</span></div>
-                  <p className="font-semibold text-gray-900 text-sm">{value}</p>
-                </div>
-              ))}
-            </div>
-
-            {/* RIDB Data — federal campgrounds, sourced from official RIDB export */}
-            {(camp as any).ridb_facility_id && camp.booking_url?.includes('recreation.gov') && (() => {
-              const rd = ridbData[camp.slug]
-              if (!rd) return null
+            {/* Tabs */}
+            {(() => {
+              const tabs = [
+                { key: 'overview', label: 'Overview' },
+                { key: 'conditions', label: 'Conditions' },
+                { key: 'plan', label: 'Plan Your Trip' },
+                { key: 'community', label: 'Community' },
+              ]
+              const [activeTab, setActiveTab] = (useState as any)('overview')
               return (
-                <div className="rounded-2xl border border-green-100 bg-gradient-to-br from-green-50 to-emerald-50 p-5">
-                  <div className="flex items-center gap-2 mb-4">
-                    <div className="bg-green-700 text-white rounded-lg p-1.5">
-                      <TreePine size={16} />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-gray-900 text-sm">Federal Campground</h3>
-                      <p className="text-xs text-gray-500">Official data via Recreation.gov · RIDB #{rd.facilityId}</p>
-                    </div>
+                <div>
+                  {/* Tab bar */}
+                  <div className="flex gap-0 border-b border-gray-200 mb-5 -mx-1 overflow-x-auto">
+                    {tabs.map(t => (
+                      <button key={t.key} onClick={() => setActiveTab(t.key)}
+                        className={`px-4 py-2.5 text-sm font-semibold whitespace-nowrap border-b-2 transition-colors ${
+                          activeTab === t.key
+                            ? 'border-green-700 text-green-700'
+                            : 'border-transparent text-gray-400 hover:text-gray-600'
+                        }`}>
+                        {t.label}
+                      </button>
+                    ))}
                   </div>
-                  <div className="grid grid-cols-3 gap-2 mb-4">
-                    <div className="bg-white rounded-xl p-3 text-center">
-                      <div className="text-base font-bold text-green-700">{rd.totalSites}</div>
-                      <div className="text-xs text-gray-400 mt-0.5">Total Sites</div>
-                    </div>
-                    <div className="bg-white rounded-xl p-3 text-center">
-                      <div className="text-base font-bold text-purple-600">{rd.accessibleSites}</div>
-                      <div className="text-xs text-gray-400 mt-0.5">ADA Sites</div>
-                    </div>
-                    <div className="bg-white rounded-xl p-3 text-center">
-                      <div className="text-base font-bold text-blue-600">{rd.loops.length || '—'}</div>
-                      <div className="text-xs text-gray-400 mt-0.5">Loops</div>
-                    </div>
-                  </div>
-                  {rd.siteTypes.length > 0 && (
-                    <div className="space-y-1.5 mb-4">
-                      {rd.siteTypes.map(st => (
-                        <div key={st.type} className="flex items-center justify-between bg-white rounded-lg px-3 py-2">
-                          <span className="text-sm text-gray-700">{st.type}</span>
-                          <span className="text-sm font-semibold text-gray-900">{st.count}</span>
+
+                  {/* Tab: Overview */}
+                  {activeTab === 'overview' && (
+                    <div className="space-y-5">
+                      <p className="text-gray-600 leading-relaxed text-sm" data-speakable="true">{camp.description}</p>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        {(camp as any).best_for && (
+                          <div>
+                            <h3 className="font-semibold text-gray-900 mb-2 text-sm">Best For</h3>
+                            <div className="flex flex-wrap gap-1.5">
+                              {(camp as any).best_for.map((b: string) => <span key={b} className="bg-green-50 text-green-800 text-xs px-2.5 py-1 rounded-full font-medium">{b}</span>)}
+                            </div>
+                          </div>
+                        )}
+                        <div>
+                          <h3 className="font-semibold text-gray-900 mb-2 text-sm">Site Types</h3>
+                          <div className="flex flex-wrap gap-1.5">
+                            {camp.site_types.map(t => <span key={t} className="bg-blue-50 text-blue-800 text-xs px-2.5 py-1 rounded-full font-medium">{t}</span>)}
+                          </div>
                         </div>
-                      ))}
+                      </div>
+
+                      <div>
+                        <h3 className="font-semibold text-gray-900 mb-2 text-sm">Amenities</h3>
+                        <div className="grid grid-cols-2 gap-1.5">
+                          {camp.amenities.map(a => (
+                            <div key={a} className="flex items-start gap-2 text-sm text-gray-700">
+                              <Check size={13} className="text-green-600 flex-shrink-0 mt-0.5"/>{a}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        {[
+                          { icon: Clock, label: 'Check-in', value: camp.check_in },
+                          { icon: Clock, label: 'Check-out', value: camp.check_out },
+                          { icon: Calendar, label: 'Season', value: camp.season },
+                          { icon: Users, label: 'Max/site', value: '6 people' },
+                        ].map(({ icon: Icon, label, value }) => (
+                          <div key={label} className="bg-white rounded-xl border border-gray-100 p-3">
+                            <div className="flex items-center gap-1.5 mb-1"><Icon size={12} className="text-green-700"/><span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">{label}</span></div>
+                            <p className="font-semibold text-gray-900 text-sm">{value}</p>
+                          </div>
+                        ))}
+                      </div>
+
+                      {camp.known_issues && (
+                        <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+                          <div className="flex items-start gap-2">
+                            <AlertCircle size={15} className="text-red-500 mt-0.5 flex-shrink-0"/>
+                            <div>
+                              <h3 className="font-semibold text-red-800 mb-1 text-sm">Known Issues</h3>
+                              <p className="text-sm text-red-700">{camp.known_issues}</p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {camp.cancellation_policy && (
+                        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                          <div className="flex items-start gap-2">
+                            <Calendar size={15} className="text-blue-600 mt-0.5 flex-shrink-0"/>
+                            <div>
+                              <h3 className="font-semibold text-blue-800 mb-1 text-sm">Cancellation Policy</h3>
+                              <p className="text-sm text-blue-700">{camp.cancellation_policy}</p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="h-56 rounded-2xl overflow-hidden border border-gray-100">
+                        <MapView campgrounds={[camp]} selectedId={camp.id ?? null} onSelect={() => {}}/>
+                      </div>
                     </div>
                   )}
-                  {rd.loops.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5 mb-4">
-                      {rd.loops.map(l => (
-                        <span key={l} className="bg-white border border-gray-200 text-xs text-gray-600 px-2.5 py-1 rounded-full">{l}</span>
-                      ))}
+
+                  {/* Tab: Conditions */}
+                  {activeTab === 'conditions' && (
+                    <div className="space-y-4">
+                      {camp.lat && camp.lng && <WeatherWidget lat={camp.lat} lng={camp.lng} campgroundName={camp.name} />}
+                      {camp.lat && camp.lng && (
+                        <CampConditionsPanel
+                          lat={camp.lat}
+                          lng={camp.lng}
+                          npsCode={(camp as any).nps_park_code}
+                          campgroundName={camp.name}
+                        />
+                      )}
                     </div>
                   )}
-                  <div className="mt-2">
-                    <AvailabilityCalendar
-                      facilityId={(camp as any).ridb_facility_id}
-                      bookingUrl={camp.booking_url}
-                      campgroundName={camp.name}
-                      campgroundSlug={camp.slug}
-                    />
-                  </div>
+
+                  {/* Tab: Plan Your Trip */}
+                  {activeTab === 'plan' && (
+                    <div className="space-y-5">
+                      {intel && <IntelligenceSection intel={intel} name={camp.name}/>}
+                      {siteGuides[camp.slug] && <SiteGuide guide={siteGuides[camp.slug]} name={camp.name} />}
+                      {proTips.length > 0 && (
+                        <div className="bg-amber-50 border border-amber-200 rounded-xl p-5">
+                          <h3 className="font-semibold text-amber-900 mb-3 text-sm">💡 Pro Tips</h3>
+                          <ul className="space-y-2">
+                            {proTips.map((tip: string, i: number) => <li key={i} className="text-sm text-amber-800 leading-relaxed">{tip}</li>)}
+                          </ul>
+                        </div>
+                      )}
+                      {(camp as any).nearby && (
+                        <div>
+                          <h3 className="font-semibold text-gray-900 mb-2 text-sm">Nearby</h3>
+                          <div className="grid grid-cols-2 gap-2">
+                            {(camp as any).nearby.map((n: string) => (
+                              <div key={n} className="flex items-center gap-2 text-sm text-gray-600 bg-white border border-gray-100 rounded-lg px-3 py-2">
+                                <MapPin size={12} className="text-green-600 flex-shrink-0"/>{n}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      <GearRecommendations camp={camp} />
+                      {(camp as any).ridb_facility_id && (
+                        <SiteIntelligencePanel facilityId={(camp as any).ridb_facility_id} campgroundName={camp.name} />
+                      )}
+                      <TripLogButton slug={camp.slug} campName={camp.name} />
+                    </div>
+                  )}
+
+                  {/* Tab: Community */}
+                  {activeTab === 'community' && (
+                    <div className="space-y-5">
+                      {allReviews[camp.slug] && (
+                        <ReviewsSection campgroundId={camp.slug} reviews={allReviews[camp.slug]} sentiment={campaignInsights[camp.slug]?.sentiment || 70}/>
+                      )}
+                      <Suspense fallback={<p className="text-xs text-gray-400">Loading...</p>}>
+                        <TipsList campgroundId={camp.slug}/>
+                      </Suspense>
+                      <Suspense fallback={<p className="text-xs text-gray-400">Loading...</p>}>
+                        <PhotoUpload campgroundId={camp.slug}/>
+                      </Suspense>
+                      <CampgroundChat slug={camp.slug} />
+                      <Suspense fallback={<p className="text-xs text-gray-400">Loading...</p>}>
+                        <CommunityFeed campgroundId={camp.slug}/>
+                      </Suspense>
+                    </div>
+                  )}
                 </div>
               )
             })()}
-
-            {/* Weather */}
-            {camp.lat && camp.lng && <WeatherWidget lat={camp.lat} lng={camp.lng} campgroundName={camp.name} />}
-
-            {/* Park conditions — NPS alerts, air quality, sunrise, wildlife */}
-            {camp.lat && camp.lng && (
-              <CampConditionsPanel
-                lat={camp.lat}
-                lng={camp.lng}
-                npsCode={(camp as any).nps_park_code}
-                campgroundName={camp.name}
-              />
-            )}
-
-            {/* Site intelligence — official photos + per-site data from RIDB */}
-            {(camp as any).ridb_facility_id && (
-              <SiteIntelligencePanel
-                facilityId={(camp as any).ridb_facility_id}
-                campgroundName={camp.name}
-              />
-            )}
-
-            {/* Map */}
-            <div>
-              <h2 className="font-semibold text-gray-900 mb-3">Location</h2>
-              <div className="h-64 rounded-2xl overflow-hidden border border-gray-100">
-                <MapView campgrounds={[camp]} selectedId={camp.id ?? null} onSelect={() => {}}/>
-              </div>
-            </div>
-
-            {/* Community Feed */}
-            <div>
-              <h2 className="font-semibold text-gray-900 mb-4">Camper Posts 🏕️</h2>
-              <Suspense fallback={<p className="text-xs text-gray-400">Loading...</p>}>
-            {/* Live Camper Chat */}
-            <div className="mt-6 mb-6">
-              <h2 className="text-lg font-bold text-gray-900 mb-3">💬 Live Camper Chat</h2>
-              <CampgroundChat slug={camp.slug} />
-            </div>
-
-                <CommunityFeed campgroundId={camp.slug}/>
-              </Suspense>
-            </div>
           </div>
 
           {/* Right — booking card / availability */}
