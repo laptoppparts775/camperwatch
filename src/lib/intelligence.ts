@@ -764,4 +764,244 @@ export const campIntelligence: Record<string, CampIntelligence> = {
     cell_signal: 'Excellent — all major carriers have strong 4G/5G at this location on the I-80 corridor. WiFi also included at every site. One of the best-connected campgrounds in Nevada.',
     fire_rules: 'No open fires. Charcoal grills and propane only at sites. Nevada fire regulations apply — no wood fires on the property.',
   },
+
+  'south-campground-zion': {
+    why_its_good: 'Best location in Zion — shuttle stop two minutes away means you're first at Angels Landing and The Narrows before the crowds arrive. Sandstone cliffs glow orange at dusk from inside the campground itself.',
+    real_issues: [
+      { issue: 'Sells out in under 60 seconds at the 6-month mark', solution: 'Set a Recreation.gov cancellation alert — people cancel constantly. Also check 2-week availability windows.' },
+      { issue: 'Summer heat reaches 105°F in the canyon', solution: 'Hike before 10am or after 4pm. Narrows is cooler — wade the river mid-day.' },
+      { issue: '27ft rig limit strictly enforced', solution: 'Watchman Campground (1 mile south) accepts rigs up to 40ft with electric hookups.' },
+    ],
+    what_people_say: [
+      { quote: 'Woke up and the canyon walls were glowing orange. Nothing prepares you for it.', source: 'Google', sentiment: 'love' },
+      { quote: 'First shuttle at 6am — we were at Angels Landing before anyone else. Life-changing hike.', source: 'Campendium', sentiment: 'love' },
+      { quote: 'Summer heat is no joke. Narrows was the only comfortable place at noon.', source: 'The Dyrt', sentiment: 'warn' },
+    ],
+    rare_gem: 'The Canyon Overlook Trail (1.2 miles) at the east entrance tunnel — most visitors skip it because it's not on the shuttle. One of the best views in Zion with a fraction of the foot traffic.',
+    not_to_miss: ['Angels Landing sunrise run', 'Narrows bottom-up hike', 'Canyon Overlook Trail at dusk', 'Emerald Pools on a weekday morning'],
+    whats_new: '2025: Timed entry permits now required for the main canyon road (April–October) — book via Recreation.gov separately from your campsite. Shuttle free with permit.',
+    best_season: [
+      { season: 'Mar–May', why: 'Wildflowers, comfortable temps (60–80°F), fewer crowds. Spring runoff makes the Narrows powerful but manageable.' },
+      { season: 'Sep–Nov', why: 'Best weather, fall color on the cottonwoods, and significantly fewer crowds than summer.' },
+    ],
+    avoid_if: ['You need hookups (none available)', 'You have a rig over 27ft', 'You want to camp without a reservation 6 months out'],
+    insider_hacks: [
+      'Watchman Campground 1 mile south has electric hookups for larger rigs',
+      'Book Narrows water shoes from Zion Adventure Company in Springdale — much better than hiking boots',
+      'The free town shuttle runs between Springdale shops and the park entrance',
+    ],
+    wildlife_alert: 'Ringtail cats frequent the campsites at night — store food and scented items in the bear boxes provided. Rattlesnakes possible on rocky trails.',
+    cell_signal: 'Limited inside Zion Canyon. Verizon and T-Mobile get 1–2 bars at the campground. AT&T weaker. WiFi not available. Download offline maps before entering.',
+    fire_rules: 'Campfires allowed in designated fire rings only when not under fire restrictions. Restrictions common June–September. Check nps.gov/zion day-of.',
+  },
+
+  'blackwoods-acadia': {
+    why_its_good: 'Half a mile from the Atlantic Ocean in dense Maine spruce-fir forest. Bike to Sand Beach on the carriage roads, drive Cadillac Mountain for the first sunrise in America, and eat lobster rolls in Bar Harbor — all within 6 miles of camp.',
+    real_issues: [
+      { issue: 'Fog and rain common even in summer', solution: 'Pack rain layers for every hike. Fog often burns off by 10am. The forest smells incredible in the mist.' },
+      { issue: 'Bar Harbor crowds July–August are intense', solution: 'Visit Island Explorer bus stops — park and ride from campground. Or bike the carriage roads and skip town entirely.' },
+      { issue: 'No hookups, 35ft max', solution: 'Quietside Campground in Southwest Harbor has hookups and less crowding.' },
+    ],
+    what_people_say: [
+      { quote: 'Biked the carriage roads for three days. Best cycling in any national park, full stop.', source: 'Campendium', sentiment: 'love' },
+      { quote: 'Cadillac sunrise with pink fog below us. Worth every dollar and every mile.', source: 'Google', sentiment: 'love' },
+      { quote: 'September — crowds gone, foliage starting, perfect temps. Book it.', source: 'The Dyrt', sentiment: 'tip' },
+    ],
+    rare_gem: 'The Beehive Trail — exposed iron rung ladder climb to a 360° view of Frenchman Bay. Only 1.6 miles but feels like a Via Ferrata. Go on a weekday morning before 8am.',
+    not_to_miss: ['Cadillac Mountain sunrise (reservation required)', 'Carriage road bike loop', 'Jordan Pond House tea and popovers', 'Thunder Hole at high tide'],
+    whats_new: '2025: Cadillac Mountain sunrise reservations expanded to April 15–Oct 31. Book weeks in advance. Evening reservations also available and often easier to get.',
+    best_season: [
+      { season: 'Jun', why: 'Before summer crowds. Lupine wildflowers along the coast. Perfect 60–70°F temps.' },
+      { season: 'Sep–Oct', why: 'Fall foliage, empty trails, best coastal light for photography. October peak color.' },
+    ],
+    avoid_if: ['You want hookups', 'You hate fog and rain', 'You're coming in peak July–August without reservations 6 months out'],
+    insider_hacks: [
+      'Island Explorer bus is free with park pass — skip driving and parking entirely',
+      'Eagle Lake carriage loop (6 miles) is the best flat ride, perfect for families',
+      'MDI Ice Cream in Bar Harbor: best scoop on the East Coast. Get the wild blueberry.',
+    ],
+    wildlife_alert: 'Deer, fox, and the occasional black bear near the campground. Store food properly. Ticks are common in the forest — check daily.',
+    cell_signal: 'Weak inside the campground itself — 1 bar AT&T, better Verizon. Bar Harbor has full coverage. Download offline maps for trails.',
+    fire_rules: 'Campfires in fire rings only. Wood fires allowed unless fire restrictions active. Check nps.gov/acad for current restrictions. Firewood available at camp store.',
+  },
+
+  'elkmont-smoky-mountains': {
+    why_its_good: 'The iconic Smoky Mountains campground. Little River runs through it, fireflies pulse in synchrony in late May, and you're surrounded by the most biodiverse forest east of the Mississippi. No entry fee makes it one of the last free national parks.',
+    real_issues: [
+      { issue: 'Synchronous firefly lottery is intensely competitive', solution: 'Apply in April for late May dates. Check for cancellations daily in the weeks before.' },
+      { issue: 'Black bears are frequent campground visitors', solution: 'Use the bear boxes provided — no exceptions. NEVER leave food in your car. Rangers are strict.' },
+      { issue: 'Summer humidity and 90°F heat', solution: 'Hike early, swim at Abrams Creek or Little River mid-day. Higher elevation trails (Alum Cave) are 10°F cooler.' },
+    ],
+    what_people_say: [
+      { quote: 'Firefly show at dusk — hundreds of them blinking in unison across the whole meadow. We were speechless.', source: 'The Dyrt', sentiment: 'love' },
+      { quote: 'October foliage peak. Every color you can imagine. Most beautiful campground I've ever been to.', source: 'Campendium', sentiment: 'love' },
+      { quote: 'Bear came into camp at 3am. Put your food away. Park rules exist for a reason.', source: 'Google', sentiment: 'warn' },
+    ],
+    rare_gem: 'The abandoned Elkmont historic district — ghost town of 1920s vacation cabins hidden in the forest 0.5 miles from the campground. Completely free and almost no one goes.',
+    not_to_miss: ['Synchronous firefly display (late May)', 'Alum Cave Trail to Mt LeConte', 'Little River swimming holes', 'Cades Cove wildlife drive at dawn'],
+    whats_new: '2026: Timed entry required for Cades Cove (May–October). Laurel Falls trail paved — accessible year-round. New backcountry permit system launched.',
+    best_season: [
+      { season: 'Late May', why: 'Synchronous fireflies — a once-in-a-lifetime natural event. Lottery required.' },
+      { season: 'Oct', why: 'Peak fall color. The Smokies have the best autumn foliage in the Appalachians.' },
+    ],
+    avoid_if: ['You need hookups (none)', 'You won't follow bear safety rules', 'You want solitude in July–August'],
+    insider_hacks: [
+      'Sites A1–A9 are directly on the Little River — request these specifically',
+      'Hike Alum Cave at 6am — you'll be alone until the crowds arrive at 9am',
+      'The Abrams Falls swimming hole (Cades Cove, 4.5 mile round trip) is the best swim in the park',
+    ],
+    wildlife_alert: 'Black bears are actively managed in the campground — bear boxes mandatory. Wild hogs also present on some trails. Copperheads and timber rattlesnakes in rocky areas. Yellow jackets active August–October.',
+    cell_signal: 'Poor throughout the park. Verizon 1 bar near the campground entrance. AT&T and T-Mobile unreliable. Download Gaia GPS or AllTrails maps offline before arrival.',
+    fire_rules: 'Campfires in fire rings only. Wood fires common but check for seasonal restrictions. Smoky Mountains has some of the strictest fire management in the NPS system. Firewood sold at camp store.',
+  },
+  'assateague-island-oceanside': {
+    why_its_good: 'The only campground in the US where wild horses roam through your site and ocean waves put you to sleep. Assateague offers an experience impossible anywhere else — primitive island camping on a living barrier island with genuine wildlife.',
+    real_issues: [
+      { issue: 'Biting insects (greenhead flies, mosquitoes) are severe June–August', solution: 'Use strong DEET, long sleeves at dusk. Off-season (Sept–May) is dramatically more comfortable.' },
+      { issue: 'Wild ponies steal food and damage gear', solution: 'Use hard-sided coolers only. Never soft bags or food left out. Ponies are surprisingly fast and aggressive about food.' },
+      { issue: 'No shade at oceanside sites', solution: 'Bring a sun shelter/beach canopy. Sites are open beach — zero tree cover.' },
+    ],
+    what_people_say: [
+      { quote: 'Woke up with a wild pony literally standing over our tent. Nothing prepares you for that.', source: 'Campendium', sentiment: 'love' },
+      { quote: 'The greenhead flies in July are absolutely vicious. Go in September instead.', source: 'The Dyrt', sentiment: 'warn' },
+      { quote: 'Best sunrise of my life. East-facing beach, nobody around, coffee by the surf. Perfect.', source: 'Google', sentiment: 'love' },
+    ],
+    rare_gem: 'The bayside sites have warmer, calmer water than the ocean side — great for kayaking and are quieter. Almost nobody books them over the oceanside spots.',
+    not_to_miss: ['Sunrise from your tent (east-facing beach)', 'Wild pony spotting at dawn', 'Swimming in the Atlantic', 'Night sky over the ocean'],
+    whats_new: '2026: New solar-powered shower facilities installed. Beach restoration project near site 75–80 — some minor disruption possible.',
+    best_season: [
+      { season: 'May', why: 'Pony foaling season, mild temps, minimal insects.' },
+      { season: 'Sep–Oct', why: 'Best weather, insects mostly gone, uncrowded, ponies active.' },
+    ],
+    avoid_if: ['You hate insects (summer)', 'You need hookups', 'You need shade', 'You can't resist feeding wildlife'],
+    insider_hacks: [
+      'Sites 1–15 are closest to the ocean — request these specifically when booking',
+      'Arrive with more water than you think you need — faucets can be unreliable',
+      'The Pony Swim from Chincoteague happens in late July — spectacular but extremely crowded',
+    ],
+    wildlife_alert: 'Wild ponies are dangerous — do not approach, feed, or pet them. They bite and kick. Greenhead flies peak July–August. Jellyfish common in the surf July–September.',
+    cell_signal: 'Verizon and AT&T get 2–3 bars in most of the campground. T-Mobile weak. Download maps offline — island GPS can be inconsistent.',
+    fire_rules: 'Campfires permitted in designated fire rings only. No fires on the beach. Firewood available at visitor center. Campfires prohibited during high fire danger periods.',
+  },
+
+  'mazama-crater-lake': {
+    why_its_good: 'Crater Lake holds water of such impossible blue that first-time visitors genuinely stop and stare in disbelief. At 1,943 feet deep, it's the deepest lake in the US and the water filters itself into perfect clarity. The caldera walls rise 2,000 feet above the surface. Nothing looks real.',
+    real_issues: [
+      { issue: 'Short season — roads closed by snow October through June most years', solution: 'Visit July–September. Check NPS road status at nps.gov/crla before departure — late spring closures happen.' },
+      { issue: 'Cleetwood Cove is the ONLY water access — 1-mile steep trail with 700ft elevation gain back up', solution: 'Start early, bring water. The swim is worth the climb but it's strenuous going back up.' },
+      { issue: 'Campground is 3 miles below the Rim — no lake views from camp', solution: 'Drive to Rim Village (5 min) for sunrise/sunset views. Crater Lake's rim is the attraction, not the campground itself.' },
+    ],
+    what_people_say: [
+      { quote: 'I have camped in 38 states. Nothing has made me stop the car and cry from sheer beauty like Crater Lake.', source: 'Campendium', sentiment: 'love' },
+      { quote: 'July 4th at Rim Village is spectacular — the fireworks reflect off the lake. Book 6 months out to the day.', source: 'The Dyrt', sentiment: 'tip' },
+      { quote: 'Wizard Island boat tours are worth every dollar but book immediately — gone in minutes when reservations open.', source: 'Google', sentiment: 'warn' },
+    ],
+    rare_gem: 'The Pinnacles — a canyon of volcanic spires 10 miles east of camp, rarely visited and genuinely eerie. Most visitors never find it.',
+    not_to_miss: ['Sunrise at Rim Village', 'Cleetwood Cove swim', 'Wizard Island boat tour', 'The Pinnacles canyon', 'Pacific Crest Trail section'],
+    whats_new: '2026: Rim Drive vehicle reservation system continues. New interpretive center near Mazama Village. Wizard Island boat tours expanded capacity.',
+    best_season: [
+      { season: 'Jul–Aug', why: 'Full access, warm enough to swim at Cleetwood Cove, wildflowers on the rim.' },
+      { season: 'Sep', why: 'Crowds thin, fall color starting, cooler temps, boats still running.' },
+    ],
+    avoid_if: ['You need hookups (some available but limited)', 'You're claustrophobic on steep trails', 'You visit before July (snow likely)'],
+    insider_hacks: [
+      'Drive Rim Drive counterclockwise — you'll be on the lake side the entire way',
+      'Phantom Ship overlook at sunrise is the best photo in the park — usually empty at 5am',
+      'The PCT enters from the north — hike 3 miles northbound for complete solitude',
+    ],
+    wildlife_alert: 'Black bears present in the park — use food storage. Mountain lion sightings rare but documented. No dangerous wildlife at the rim. The lake has no fish-eating predators — it's one of the clearest ecosystems in the world.',
+    cell_signal: 'No cell signal in most of the park. Verizon gets 1 bar near Rim Village occasionally. Download offline maps before arrival. Park WiFi available at Crater Lake Lodge.',
+    fire_rules: 'Campfires in designated rings only at Mazama. Rim Village area is no-fire zone. Check for seasonal restrictions — fire danger high in late summer. Firewood sold at Mazama Village store.',
+  },
+
+  'jumbo-rocks-joshua-tree': {
+    why_its_good: 'Joshua Tree occupies a unique overlap zone between two deserts — the Mojave and Sonoran — creating landscapes found nowhere else. The granite boulder formations at Jumbo Rocks are geological sculptures that create natural campsite rooms. The dark sky here is among the best accessible by car in Southern California.',
+    real_issues: [
+      { issue: 'No water at Jumbo Rocks — must bring all water', solution: 'Minimum 1 gallon per person per day. Fill up in Twentynine Palms before entering. The park has water at Indian Cove and Cottonwood but not Jumbo Rocks.' },
+      { issue: 'Extreme summer heat — regularly 110°F+', solution: 'Visit October through April. Shoulder season (May, September) is borderline. June–August is genuinely dangerous for daytime activity.' },
+      { issue: 'Rattlesnakes and scorpions are common', solution: 'Shake out shoes before putting on. Don't reach into cracks without looking. Scorpions glow under UV light — a UV flashlight at night is useful.' },
+    ],
+    what_people_say: [
+      { quote: 'The Milky Way from Jumbo Rocks is the reason I bought a camera. Completely changed my life.', source: 'The Dyrt', sentiment: 'love' },
+      { quote: 'Bring every drop of water you need. This is not a suggestion. There is nothing at the campground.', source: 'Campendium', sentiment: 'warn' },
+      { quote: 'Scrambled up the boulder behind our site at sunrise. Most beautiful 20 minutes I've had camping.', source: 'Google', sentiment: 'love' },
+    ],
+    rare_gem: 'The Cholla Cactus Garden at sunset — the jumping cholla backlit by desert light looks like science fiction. 6 miles from Jumbo Rocks, almost nobody makes the trip.',
+    not_to_miss: ['Milky Way photography', 'Boulder scrambling from your site', 'Skull Rock Trail', 'Cholla Cactus Garden at sunset', 'Keys View at dawn'],
+    whats_new: '2026: Timed entry pilot program may be implemented for peak weekends. New shade structures at Cottonwood Campground (different area). Visitor center hours extended.',
+    best_season: [
+      { season: 'Nov–Feb', why: 'Cool temperatures, uncrowded, best for hiking. Occasional snow on boulders is surreal.' },
+      { season: 'Mar–Apr', why: 'Wildflower superbloom years (check forecasts). Spring is the most popular season.' },
+    ],
+    avoid_if: ['You visit June–September (dangerous heat)', 'You need water at camp', 'You need hookups', 'You need shade'],
+    insider_hacks: [
+      'Sites with boulders behind them (numbers 15–30) have natural wind protection and better scrambling',
+      'The park entrance gate has no cell signal — download maps and permits before arrival',
+      'For Milky Way photography, new moon weekends in winter/spring are ideal — plan 2 months ahead',
+    ],
+    wildlife_alert: 'Diamondback rattlesnakes are common in rocky areas — wear boots, watch where you step. Scorpions active at night — UV flashlight helpful. Coyotes regularly visit camp at night. Desert kit fox are harmless and curious.',
+    cell_signal: 'No cell signal throughout most of the park. Verizon gets 1 bar near the east entrance. Download Gaia GPS offline maps before arrival. No WiFi anywhere in the park.',
+    fire_rules: 'Campfires permitted in fire rings. Ground fires strictly prohibited. Gathering firewood prohibited — bring your own or purchase at visitor center. Fire restrictions common spring–fall. Check current conditions at nps.gov/jotr.',
+  },
+
+  'st-mary-glacier': {
+    why_its_good: 'Glacier National Park contains some of the most dramatic mountain scenery remaining in the continental US, and St. Mary sits at the east entrance where the plains meet the Rockies in a collision of geology. Going-to-the-Sun Road, considered the most scenic 50 miles of road in America, begins here.',
+    real_issues: [
+      { issue: 'Vehicle reservations required for Going-to-the-Sun Road May–October', solution: 'Book at recreation.gov — reserve at 8am MST when your entry date becomes available 60 days out.' },
+      { issue: 'Grizzly bear country requires constant food discipline', solution: 'Use the provided bear boxes religiously. Cook away from sleeping areas. Carry bear spray on every hike — available to rent at St. Mary Village.' },
+      { issue: 'Extremely short season — snow can close roads through June', solution: 'Mid-July through mid-September is the reliable window. Check NPS road status at nps.gov/glac.' },
+    ],
+    what_people_say: [
+      { quote: 'Saw a grizzly bear 50 yards from camp on my first morning. Absolutely terrifying and magnificent.', source: 'Campendium', sentiment: 'love' },
+      { quote: 'Going-to-the-Sun Road should not be legal — too beautiful for human eyes. I had to pull over every mile.', source: 'The Dyrt', sentiment: 'love' },
+      { quote: 'Get the vehicle permit AND book Logan Pass parking if you want to summit. Both sell out.', source: 'Google', sentiment: 'warn' },
+    ],
+    rare_gem: 'Two Medicine Lake — the least-visited major valley in Glacier, 30 miles south of St. Mary. Boat tours, dramatic peaks, almost no crowds compared to Logan Pass.',
+    not_to_miss: ['Going-to-the-Sun Road', 'St. Mary Lake sunrise', 'Grinnell Glacier hike (Many Glacier)', 'Baring Falls Trail', 'Logan Pass boardwalk'],
+    whats_new: '2026: New vehicle reservation system continues. Logan Pass visitor center renovations complete. Additional bear spray rental stations added at St. Mary.',
+    best_season: [
+      { season: 'Mid-Jul', why: 'Roads fully open, wildflowers peaking, best wildlife activity.' },
+      { season: 'Aug–Sep', why: 'Huckleberries ripe (grizzly prime time), clear weather, warm enough to hike.' },
+    ],
+    avoid_if: ['You can't deal with grizzly bear protocols', 'You need hookups (21ft RV limit)', 'You visit before July (road likely closed)', 'You want solitude — it's a busy park'],
+    insider_hacks: [
+      'Stay at the St. Mary KOA if the campground is full — it's adjacent and has hot showers',
+      'The Chief Mountain border crossing (seasonal) to Canada is 30 miles — do a day trip to Waterton Lakes NP',
+      'Hike Otokomi Lake Trail from Rose Creek (2 miles from camp) — almost nobody does it, spectacular views',
+    ],
+    wildlife_alert: 'Grizzly bears are common throughout the park — bear spray mandatory on all trails. Mountain goats at Logan Pass are habituated and will approach for salt. Moose often seen near St. Mary Lake. Mountain lions rare but present.',
+    cell_signal: 'No cell signal in most of the park. St. Mary Village gets weak Verizon signal. Download offline maps before arrival. Park WiFi at Apgar Visitor Center (west side only).',
+    fire_rules: 'Campfires in fire rings only. Fire restrictions common in late summer — check nps.gov/glac. Firewood available at camp store. Ground fires strictly prohibited. No campfires during dry periods.',
+  },
+
+  'big-meadows-shenandoah': {
+    why_its_good: 'Big Meadows sits atop the Blue Ridge at 3,510 feet with the Appalachian Trail running through the meadow and Skyline Drive offering 75 overlooks. The meadow itself hosts deer every evening without fail, and the fall foliage from the ridgeline is among the most spectacular drives in the eastern US.',
+    real_issues: [
+      { issue: 'October weekend reservations fill months in advance for peak foliage', solution: 'Book October weekends in April. Weekdays in foliage season are significantly more available and less crowded.' },
+      { issue: 'Bears are common and managed — strict food storage required', solution: 'Use the metal food storage boxes at every site. Bears in Shenandoah are habituated to campers and bold — non-negotiable compliance.' },
+      { issue: 'Skyline Drive 35mph speed limit means travel takes longer than expected', solution: 'Treat it as a scenic drive, not transportation. The drive itself IS the attraction — budget extra time.' },
+    ],
+    what_people_say: [
+      { quote: 'Seven deer in the meadow at sunset. My kids were speechless. Then an AT thru-hiker walked by. Perfect Shenandoah night.', source: 'The Dyrt', sentiment: 'love' },
+      { quote: 'Mid-October peak color on Skyline Drive is the most beautiful I've seen in 20 years of East Coast camping.', source: 'Campendium', sentiment: 'love' },
+      { quote: 'Dark Hollow Falls is 0.8 miles and worth every step. Go first thing in the morning.', source: 'Google', sentiment: 'tip' },
+    ],
+    rare_gem: 'The Limberlost Trail — a universally accessible boardwalk through an ancient hemlock forest. Magical in morning mist and completely overlooked by most visitors.',
+    not_to_miss: ['Meadow walk at dusk (deer guaranteed)', 'Dark Hollow Falls (0.8 mi)', 'Skyline Drive sunrise at Hawksbill overlook', 'Appalachian Trail section hike', 'Story of the Forest Trail (self-guided)'],
+    whats_new: '2026: Hemlock restoration project on Limberlost Trail ongoing. New amphitheater programming added. Skyline Drive reopened after storm damage repairs at MP 48.',
+    best_season: [
+      { season: 'Oct', why: 'Peak fall color — arguably the best foliage drive in the mid-Atlantic.' },
+      { season: 'May–Jun', why: 'Wildflowers, AT thru-hiker season, comfortable temps.' },
+    ],
+    avoid_if: ['You need hookups', 'You need fast travel (35mph limit throughout)', 'You visit peak October without reservations'],
+    insider_hacks: [
+      'Campsites D1–D20 are closest to the meadow — request these at check-in if available',
+      'The AT intersects Big Meadows — chat with thru-hikers who pass through May–June',
+      'Luray Caverns is 15 miles east — a rainy day option that is genuinely spectacular',
+    ],
+    wildlife_alert: 'Black bears are actively managed and bold — food storage boxes are mandatory. White-tailed deer are abundant and unafraid. Copperhead snakes in rocky areas — watch your step. Black bears in Shenandoah have learned to open car doors — lock your vehicle and never leave food inside.',
+    cell_signal: 'Varies significantly along Skyline Drive. Verizon gets 2 bars near Big Meadows. AT&T inconsistent. Download AllTrails maps offline. Park WiFi at Byrd Visitor Center (seasonal).',
+    fire_rules: 'Campfires in fire rings only. Firewood sold at Big Meadows camp store. No outside firewood — to prevent invasive insects. Fire restrictions may apply during dry periods — check nps.gov/shen on arrival.',
+  },
+
 }

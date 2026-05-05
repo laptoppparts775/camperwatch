@@ -21,6 +21,7 @@ const PhotoUpload = dynamic(() => import('@/components/community/PhotoUpload'), 
 const IntelligenceSection = dynamic(() => import('@/components/IntelligenceSection'), { ssr: false })
 const AvailabilityCalendar = dynamic(() => import('@/components/AvailabilityCalendar'), { ssr: false })
 const ReferralPartners = dynamic(() => import('@/components/ReferralPartners'), { ssr: false })
+const WeatherWidget = dynamic(() => import('@/components/WeatherWidget'), { ssr: false })
 const CampgroundChat = dynamic(() => import('@/components/community/CampgroundChat'), { ssr: false })
 const TripLogButton = dynamic(() => import('@/components/TripLogButton'), { ssr: false })
 const GearRecommendations = dynamic(() => import('@/components/GearRecommendations'), { ssr: false })
@@ -298,6 +299,9 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
               )
             })()}
 
+            {/* Weather */}
+            <WeatherWidget lat={camp.lat} lng={camp.lng} campgroundName={camp.name} />
+
             {/* Map */}
             <div>
               <h2 className="font-semibold text-gray-900 mb-3">Location</h2>
@@ -381,23 +385,34 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
       </main>
 
       {/* Mobile sticky CTA — psychology: urgency + clear price + trust */}
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 pt-3 pb-4 z-40 shadow-2xl">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 pt-3 pb-safe z-40 shadow-2xl" style={{paddingBottom: 'max(16px, env(safe-area-inset-bottom))'}}>
         <div className="flex items-center gap-3">
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 min-w-0">
             <div className="flex items-baseline gap-0.5">
               <span className="font-black text-xl text-gray-900">${camp.price_per_night}</span>
               <span className="text-gray-400 text-xs">/night</span>
             </div>
-            <div className={`text-[10px] font-bold mt-0.5 ${camp.available ? 'text-green-600' : 'text-red-500'}`}>
-              {camp.available ? '✓ Sites open' : '✗ Fully booked'}
+            <div className="flex items-center gap-1 mt-0.5">
+              <Star size={10} className="text-yellow-400 fill-yellow-400 shrink-0" />
+              <span className="text-[10px] font-bold text-gray-700">{camp.rating}</span>
+              <span className="text-[10px] text-gray-400">({camp.review_count})</span>
             </div>
           </div>
-          <a href={`/book/${camp.slug}`}
-            className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-2xl font-bold text-sm bg-green-700 text-white shadow-lg">
-            Reserve — No Fees
-          </a>
+          {camp.available ? (
+            <a href={`/book/${camp.slug}`}
+              className="flex-1 flex items-center justify-center gap-1.5 py-3.5 rounded-2xl font-bold text-sm bg-green-700 text-white shadow-lg active:bg-green-800 transition-colors">
+              🏕 Book Now — No Fees
+            </a>
+          ) : (
+            <a href={camp.booking_url || `#`} target={camp.booking_url ? '_blank' : undefined} rel="noopener noreferrer"
+              className="flex-1 flex items-center justify-center gap-1.5 py-3.5 rounded-2xl font-bold text-sm bg-amber-500 text-white shadow-lg active:bg-amber-600 transition-colors">
+              Check Recreation.gov →
+            </a>
+          )}
         </div>
-        <p className="text-center text-[10px] text-gray-400 mt-1.5">Free cancellation · No booking fees · Official source</p>
+        <p className="text-center text-[10px] text-gray-400 mt-1.5">
+          {camp.available ? 'Instant confirmation · No booking fees · Cancel free' : 'Sold out here · Set an alert above for cancellations'}
+        </p>
       </div>
     </div>
   )
