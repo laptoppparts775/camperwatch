@@ -144,7 +144,7 @@ export default function HomePage() {
             {/* Tight urgent headline */}
             <div className="flex items-center gap-2 mb-3">
               <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse flex-shrink-0" />
-              <span className="text-[10px] font-bold uppercase tracking-widest text-green-400">21 campgrounds · Live availability</span>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-green-400">31 campgrounds · Live availability</span>
             </div>
             <h1 className="font-display font-black text-white leading-[1.0] mb-2"
               style={{ fontSize: '2.1rem', letterSpacing: '-0.02em' }}>
@@ -234,8 +234,8 @@ export default function HomePage() {
       <section className="hidden sm:block bg-[#0e1a13] py-14 px-4">
         <div className="max-w-3xl mx-auto grid grid-cols-4 divide-x divide-stone-800">
           {[
-            { n: '21', label: 'Campgrounds' },
-            { n: '9', label: 'States' },
+            { n: '31', label: 'Campgrounds' },
+            { n: '13', label: 'States' },
             { n: '100+', label: 'Verified reviews' },
             { n: '0', label: 'Hidden fees' },
           ].map(s => (
@@ -273,7 +273,7 @@ export default function HomePage() {
               {
                 n: '03',
                 title: 'Better deal for owners.',
-                desc: 'Hipcamp takes 15%. We take 10%. Owners keep their guest relationship, manage from their phone, no tech required. List in 5 minutes.',
+                desc: 'Hipcamp takes 12.5%. We take 5%. Owners keep their guest relationship, manage from their phone, no tech required. List in 5 minutes.',
               },
             ].map(w => (
               <div key={w.n} className="p-6 rounded-2xl"
@@ -295,7 +295,7 @@ export default function HomePage() {
               <p className="text-xs uppercase tracking-widest text-amber-400 font-semibold mb-1.5">Featured</p>
               <h2 className="font-display font-bold text-white" style={{ fontSize: 'clamp(1.4rem, 3vw, 2.25rem)' }}>Top campgrounds</h2>
             </div>
-            <Link href="/search" className="text-sm text-stone-400 hover:text-amber-400 transition-colors font-medium">View all 21 →</Link>
+            <Link href="/search" className="text-sm text-stone-400 hover:text-amber-400 transition-colors font-medium">View all 31 →</Link>
           </div>
           <div className="grid grid-cols-3 gap-4">
             {FEATURED.map((c, i) => <CampCard key={c.slug} camp={c} priority={i === 0} />)}
@@ -356,7 +356,7 @@ export default function HomePage() {
             style={{ fontSize: 'clamp(1.6rem, 3.5vw, 3rem)' }}>
             Your next site is waiting.
           </h2>
-          <p className="text-stone-400 mb-8">21 campgrounds. 9 states. Zion to Glacier. Yosemite to Grand Canyon.</p>
+          <p className="text-stone-400 mb-8">31 campgrounds. 13 states. Zion to Glacier. Yosemite to Grand Canyon.</p>
           <Link href="/search"
             className="inline-flex items-center gap-2 font-bold text-stone-950 bg-amber-400 hover:bg-amber-300 px-8 py-4 rounded-full transition-colors"
             style={{ boxShadow: '0 8px 32px rgba(251,191,36,0.25)' }}>
