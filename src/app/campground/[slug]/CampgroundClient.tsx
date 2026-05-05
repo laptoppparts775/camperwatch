@@ -300,13 +300,13 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
             })()}
 
             {/* Weather */}
-            <WeatherWidget lat={camp.lat} lng={camp.lng} campgroundName={camp.name} />
+            {camp.lat && camp.lng && <WeatherWidget lat={camp.lat} lng={camp.lng} campgroundName={camp.name} />}
 
             {/* Map */}
             <div>
               <h2 className="font-semibold text-gray-900 mb-3">Location</h2>
               <div className="h-64 rounded-2xl overflow-hidden border border-gray-100">
-                <MapView campgrounds={[camp]} selectedId={camp.id} onSelect={() => {}}/>
+                <MapView campgrounds={[camp]} selectedId={camp.id ?? null} onSelect={() => {}}/>
               </div>
             </div>
 

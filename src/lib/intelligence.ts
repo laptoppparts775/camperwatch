@@ -766,7 +766,7 @@ export const campIntelligence: Record<string, CampIntelligence> = {
   },
 
   'south-campground-zion': {
-    why_its_good: 'Best location in Zion — shuttle stop two minutes away means you're first at Angels Landing and The Narrows before the crowds arrive. Sandstone cliffs glow orange at dusk from inside the campground itself.',
+    why_its_good: 'Best location in Zion — shuttle stop two minutes away means you’re first at Angels Landing and The Narrows before the crowds arrive. Sandstone cliffs glow orange at dusk from inside the campground itself.',
     real_issues: [
       { issue: 'Sells out in under 60 seconds at the 6-month mark', solution: 'Set a Recreation.gov cancellation alert — people cancel constantly. Also check 2-week availability windows.' },
       { issue: 'Summer heat reaches 105°F in the canyon', solution: 'Hike before 10am or after 4pm. Narrows is cooler — wade the river mid-day.' },
@@ -777,7 +777,7 @@ export const campIntelligence: Record<string, CampIntelligence> = {
       { quote: 'First shuttle at 6am — we were at Angels Landing before anyone else. Life-changing hike.', source: 'Campendium', sentiment: 'love' },
       { quote: 'Summer heat is no joke. Narrows was the only comfortable place at noon.', source: 'The Dyrt', sentiment: 'warn' },
     ],
-    rare_gem: 'The Canyon Overlook Trail (1.2 miles) at the east entrance tunnel — most visitors skip it because it's not on the shuttle. One of the best views in Zion with a fraction of the foot traffic.',
+    rare_gem: 'The Canyon Overlook Trail (1.2 miles) at the east entrance tunnel — most visitors skip it because it’s not on the shuttle. One of the best views in Zion with a fraction of the foot traffic.',
     not_to_miss: ['Angels Landing sunrise run', 'Narrows bottom-up hike', 'Canyon Overlook Trail at dusk', 'Emerald Pools on a weekday morning'],
     whats_new: '2025: Timed entry permits now required for the main canyon road (April–October) — book via Recreation.gov separately from your campsite. Shuttle free with permit.',
     best_season: [
@@ -814,7 +814,7 @@ export const campIntelligence: Record<string, CampIntelligence> = {
       { season: 'Jun', why: 'Before summer crowds. Lupine wildflowers along the coast. Perfect 60–70°F temps.' },
       { season: 'Sep–Oct', why: 'Fall foliage, empty trails, best coastal light for photography. October peak color.' },
     ],
-    avoid_if: ['You want hookups', 'You hate fog and rain', 'You're coming in peak July–August without reservations 6 months out'],
+    avoid_if: ['You want hookups', 'You hate fog and rain', 'You’re coming in peak July–August without reservations 6 months out'],
     insider_hacks: [
       'Island Explorer bus is free with park pass — skip driving and parking entirely',
       'Eagle Lake carriage loop (6 miles) is the best flat ride, perfect for families',
@@ -826,7 +826,7 @@ export const campIntelligence: Record<string, CampIntelligence> = {
   },
 
   'elkmont-smoky-mountains': {
-    why_its_good: 'The iconic Smoky Mountains campground. Little River runs through it, fireflies pulse in synchrony in late May, and you're surrounded by the most biodiverse forest east of the Mississippi. No entry fee makes it one of the last free national parks.',
+    why_its_good: 'The iconic Smoky Mountains campground. Little River runs through it, fireflies pulse in synchrony in late May, and you’re surrounded by the most biodiverse forest east of the Mississippi. No entry fee makes it one of the last free national parks.',
     real_issues: [
       { issue: 'Synchronous firefly lottery is intensely competitive', solution: 'Apply in April for late May dates. Check for cancellations daily in the weeks before.' },
       { issue: 'Black bears are frequent campground visitors', solution: 'Use the bear boxes provided — no exceptions. NEVER leave food in your car. Rangers are strict.' },
@@ -834,7 +834,7 @@ export const campIntelligence: Record<string, CampIntelligence> = {
     ],
     what_people_say: [
       { quote: 'Firefly show at dusk — hundreds of them blinking in unison across the whole meadow. We were speechless.', source: 'The Dyrt', sentiment: 'love' },
-      { quote: 'October foliage peak. Every color you can imagine. Most beautiful campground I've ever been to.', source: 'Campendium', sentiment: 'love' },
+      { quote: 'October foliage peak. Every color you can imagine. Most beautiful campground I’ve ever been to.', source: 'Campendium', sentiment: 'love' },
       { quote: 'Bear came into camp at 3am. Put your food away. Park rules exist for a reason.', source: 'Google', sentiment: 'warn' },
     ],
     rare_gem: 'The abandoned Elkmont historic district — ghost town of 1920s vacation cabins hidden in the forest 0.5 miles from the campground. Completely free and almost no one goes.',
@@ -844,10 +844,10 @@ export const campIntelligence: Record<string, CampIntelligence> = {
       { season: 'Late May', why: 'Synchronous fireflies — a once-in-a-lifetime natural event. Lottery required.' },
       { season: 'Oct', why: 'Peak fall color. The Smokies have the best autumn foliage in the Appalachians.' },
     ],
-    avoid_if: ['You need hookups (none)', 'You won't follow bear safety rules', 'You want solitude in July–August'],
+    avoid_if: ['You need hookups (none)', 'You won’t follow bear safety rules', 'You want solitude in July–August'],
     insider_hacks: [
       'Sites A1–A9 are directly on the Little River — request these specifically',
-      'Hike Alum Cave at 6am — you'll be alone until the crowds arrive at 9am',
+      'Hike Alum Cave at 6am — you’ll be alone until the crowds arrive at 9am',
       'The Abrams Falls swimming hole (Cades Cove, 4.5 mile round trip) is the best swim in the park',
     ],
     wildlife_alert: 'Black bears are actively managed in the campground — bear boxes mandatory. Wild hogs also present on some trails. Copperheads and timber rattlesnakes in rocky areas. Yellow jackets active August–October.',
@@ -873,7 +873,7 @@ export const campIntelligence: Record<string, CampIntelligence> = {
       { season: 'May', why: 'Pony foaling season, mild temps, minimal insects.' },
       { season: 'Sep–Oct', why: 'Best weather, insects mostly gone, uncrowded, ponies active.' },
     ],
-    avoid_if: ['You hate insects (summer)', 'You need hookups', 'You need shade', 'You can't resist feeding wildlife'],
+    avoid_if: ['You hate insects (summer)', 'You need hookups', 'You need shade', 'You can’t resist feeding wildlife'],
     insider_hacks: [
       'Sites 1–15 are closest to the ocean — request these specifically when booking',
       'Arrive with more water than you think you need — faucets can be unreliable',
@@ -885,11 +885,11 @@ export const campIntelligence: Record<string, CampIntelligence> = {
   },
 
   'mazama-crater-lake': {
-    why_its_good: 'Crater Lake holds water of such impossible blue that first-time visitors genuinely stop and stare in disbelief. At 1,943 feet deep, it's the deepest lake in the US and the water filters itself into perfect clarity. The caldera walls rise 2,000 feet above the surface. Nothing looks real.',
+    why_its_good: 'Crater Lake holds water of such impossible blue that first-time visitors genuinely stop and stare in disbelief. At 1,943 feet deep, it’s the deepest lake in the US and the water filters itself into perfect clarity. The caldera walls rise 2,000 feet above the surface. Nothing looks real.',
     real_issues: [
       { issue: 'Short season — roads closed by snow October through June most years', solution: 'Visit July–September. Check NPS road status at nps.gov/crla before departure — late spring closures happen.' },
-      { issue: 'Cleetwood Cove is the ONLY water access — 1-mile steep trail with 700ft elevation gain back up', solution: 'Start early, bring water. The swim is worth the climb but it's strenuous going back up.' },
-      { issue: 'Campground is 3 miles below the Rim — no lake views from camp', solution: 'Drive to Rim Village (5 min) for sunrise/sunset views. Crater Lake's rim is the attraction, not the campground itself.' },
+      { issue: 'Cleetwood Cove is the ONLY water access — 1-mile steep trail with 700ft elevation gain back up', solution: 'Start early, bring water. The swim is worth the climb but it’s strenuous going back up.' },
+      { issue: 'Campground is 3 miles below the Rim — no lake views from camp', solution: 'Drive to Rim Village (5 min) for sunrise/sunset views. Crater Lake’s rim is the attraction, not the campground itself.' },
     ],
     what_people_say: [
       { quote: 'I have camped in 38 states. Nothing has made me stop the car and cry from sheer beauty like Crater Lake.', source: 'Campendium', sentiment: 'love' },
@@ -903,13 +903,13 @@ export const campIntelligence: Record<string, CampIntelligence> = {
       { season: 'Jul–Aug', why: 'Full access, warm enough to swim at Cleetwood Cove, wildflowers on the rim.' },
       { season: 'Sep', why: 'Crowds thin, fall color starting, cooler temps, boats still running.' },
     ],
-    avoid_if: ['You need hookups (some available but limited)', 'You're claustrophobic on steep trails', 'You visit before July (snow likely)'],
+    avoid_if: ['You need hookups (some available but limited)', 'You’re claustrophobic on steep trails', 'You visit before July (snow likely)'],
     insider_hacks: [
-      'Drive Rim Drive counterclockwise — you'll be on the lake side the entire way',
+      'Drive Rim Drive counterclockwise — you’ll be on the lake side the entire way',
       'Phantom Ship overlook at sunrise is the best photo in the park — usually empty at 5am',
       'The PCT enters from the north — hike 3 miles northbound for complete solitude',
     ],
-    wildlife_alert: 'Black bears present in the park — use food storage. Mountain lion sightings rare but documented. No dangerous wildlife at the rim. The lake has no fish-eating predators — it's one of the clearest ecosystems in the world.',
+    wildlife_alert: 'Black bears present in the park — use food storage. Mountain lion sightings rare but documented. No dangerous wildlife at the rim. The lake has no fish-eating predators — it’s one of the clearest ecosystems in the world.',
     cell_signal: 'No cell signal in most of the park. Verizon gets 1 bar near Rim Village occasionally. Download offline maps before arrival. Park WiFi available at Crater Lake Lodge.',
     fire_rules: 'Campfires in designated rings only at Mazama. Rim Village area is no-fire zone. Check for seasonal restrictions — fire danger high in late summer. Firewood sold at Mazama Village store.',
   },
@@ -919,12 +919,12 @@ export const campIntelligence: Record<string, CampIntelligence> = {
     real_issues: [
       { issue: 'No water at Jumbo Rocks — must bring all water', solution: 'Minimum 1 gallon per person per day. Fill up in Twentynine Palms before entering. The park has water at Indian Cove and Cottonwood but not Jumbo Rocks.' },
       { issue: 'Extreme summer heat — regularly 110°F+', solution: 'Visit October through April. Shoulder season (May, September) is borderline. June–August is genuinely dangerous for daytime activity.' },
-      { issue: 'Rattlesnakes and scorpions are common', solution: 'Shake out shoes before putting on. Don't reach into cracks without looking. Scorpions glow under UV light — a UV flashlight at night is useful.' },
+      { issue: 'Rattlesnakes and scorpions are common', solution: 'Shake out shoes before putting on. Don’t reach into cracks without looking. Scorpions glow under UV light — a UV flashlight at night is useful.' },
     ],
     what_people_say: [
       { quote: 'The Milky Way from Jumbo Rocks is the reason I bought a camera. Completely changed my life.', source: 'The Dyrt', sentiment: 'love' },
       { quote: 'Bring every drop of water you need. This is not a suggestion. There is nothing at the campground.', source: 'Campendium', sentiment: 'warn' },
-      { quote: 'Scrambled up the boulder behind our site at sunrise. Most beautiful 20 minutes I've had camping.', source: 'Google', sentiment: 'love' },
+      { quote: 'Scrambled up the boulder behind our site at sunrise. Most beautiful 20 minutes I’ve had camping.', source: 'Google', sentiment: 'love' },
     ],
     rare_gem: 'The Cholla Cactus Garden at sunset — the jumping cholla backlit by desert light looks like science fiction. 6 miles from Jumbo Rocks, almost nobody makes the trip.',
     not_to_miss: ['Milky Way photography', 'Boulder scrambling from your site', 'Skull Rock Trail', 'Cholla Cactus Garden at sunset', 'Keys View at dawn'],
@@ -963,9 +963,9 @@ export const campIntelligence: Record<string, CampIntelligence> = {
       { season: 'Mid-Jul', why: 'Roads fully open, wildflowers peaking, best wildlife activity.' },
       { season: 'Aug–Sep', why: 'Huckleberries ripe (grizzly prime time), clear weather, warm enough to hike.' },
     ],
-    avoid_if: ['You can't deal with grizzly bear protocols', 'You need hookups (21ft RV limit)', 'You visit before July (road likely closed)', 'You want solitude — it's a busy park'],
+    avoid_if: ['You can’t deal with grizzly bear protocols', 'You need hookups (21ft RV limit)', 'You visit before July (road likely closed)', 'You want solitude — it’s a busy park'],
     insider_hacks: [
-      'Stay at the St. Mary KOA if the campground is full — it's adjacent and has hot showers',
+      'Stay at the St. Mary KOA if the campground is full — it’s adjacent and has hot showers',
       'The Chief Mountain border crossing (seasonal) to Canada is 30 miles — do a day trip to Waterton Lakes NP',
       'Hike Otokomi Lake Trail from Rose Creek (2 miles from camp) — almost nobody does it, spectacular views',
     ],
@@ -983,7 +983,7 @@ export const campIntelligence: Record<string, CampIntelligence> = {
     ],
     what_people_say: [
       { quote: 'Seven deer in the meadow at sunset. My kids were speechless. Then an AT thru-hiker walked by. Perfect Shenandoah night.', source: 'The Dyrt', sentiment: 'love' },
-      { quote: 'Mid-October peak color on Skyline Drive is the most beautiful I've seen in 20 years of East Coast camping.', source: 'Campendium', sentiment: 'love' },
+      { quote: 'Mid-October peak color on Skyline Drive is the most beautiful I’ve seen in 20 years of East Coast camping.', source: 'Campendium', sentiment: 'love' },
       { quote: 'Dark Hollow Falls is 0.8 miles and worth every step. Go first thing in the morning.', source: 'Google', sentiment: 'tip' },
     ],
     rare_gem: 'The Limberlost Trail — a universally accessible boardwalk through an ancient hemlock forest. Magical in morning mist and completely overlooked by most visitors.',

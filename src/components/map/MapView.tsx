@@ -47,7 +47,7 @@ export default function MapView({ campgrounds, selectedId, onSelect }: MapViewPr
           key={camp.id}
           position={[camp.lat, camp.lng]}
           icon={camp.available ? greenIcon : redIcon}
-          eventHandlers={{ click: () => onSelect(camp.id) }}
+          eventHandlers={{ click: () => onSelect(camp.id || '') }}
         >
           <Popup>
             <div className="min-w-[200px]">
