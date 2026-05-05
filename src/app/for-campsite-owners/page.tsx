@@ -233,26 +233,30 @@ export default function ForCampsiteOwners() {
             </p>
           </div>
 
-          {/* Mobile: stacked cards */}
-          <div className="lg:hidden space-y-3">
+          {/* Mobile: one card per row, label top, two badges below */}
+          <div className="lg:hidden space-y-2">
             {[
               { label: 'Commission rate', hipcamp: '10–12.5% per booking', cw: '5% per booking' },
-              { label: 'Guest service fee', hipcamp: 'Yes — added on top', cw: 'None. Ever.' },
+              { label: 'Guest service fee', hipcamp: 'Added on top of your price', cw: 'None. Ever.' },
               { label: 'Monthly fee', hipcamp: '$0', cw: '$0' },
-              { label: 'You keep (monthly)', hipcamp: `$${(monthly - hipcampFee).toFixed(0)}`, cw: `$${(monthly - cwFee).toFixed(0)}` },
+              { label: 'You keep (on $3k/mo)', hipcamp: `$${(monthly - hipcampFee).toFixed(0)}/mo`, cw: `$${(monthly - cwFee).toFixed(0)}/mo` },
               { label: 'You own guest data', hipcamp: 'No', cw: 'Yes' },
-              { label: 'Annual difference', hipcamp: `-$${(hipcampFee * 12).toLocaleString()}`, cw: `Save $${annualSaving.toLocaleString()}/yr` },
+              { label: 'Annual saving vs Hipcamp', hipcamp: `-$${(hipcampFee * 12).toLocaleString()}/yr`, cw: `+$${annualSaving.toLocaleString()}/yr` },
             ].map(({ label, hipcamp, cw }, i) => (
-              <div key={i} className="grid grid-cols-[1fr_auto_auto] items-center gap-3 p-4 bg-gray-50 rounded-2xl text-sm">
-                <span className="text-gray-600 font-medium text-xs">{label}</span>
-                <span className="text-red-500 font-semibold text-xs text-right">{hipcamp}</span>
-                <span className="text-green-700 font-bold text-xs text-right">{cw}</span>
+              <div key={i} className="bg-gray-50 rounded-2xl p-4 border border-gray-100">
+                <div className="text-xs font-semibold text-gray-500 mb-3">{label}</div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="bg-red-50 border border-red-100 rounded-xl px-3 py-2">
+                    <div className="text-[9px] uppercase tracking-widest text-red-400 font-bold mb-1">Hipcamp</div>
+                    <div className="text-sm font-bold text-red-600 leading-tight">{hipcamp}</div>
+                  </div>
+                  <div className="bg-green-50 border border-green-200 rounded-xl px-3 py-2">
+                    <div className="text-[9px] uppercase tracking-widest text-green-600 font-bold mb-1">CamperWatch</div>
+                    <div className="text-sm font-bold text-green-700 leading-tight">{cw}</div>
+                  </div>
+                </div>
               </div>
             ))}
-            <div className="flex gap-2 text-xs mt-2">
-              <span className="px-3 py-1 bg-red-50 text-red-500 rounded-full">Hipcamp →</span>
-              <span className="px-3 py-1 bg-green-50 text-green-700 rounded-full font-bold">CamperWatch →</span>
-            </div>
           </div>
 
           {/* Desktop: full table */}
