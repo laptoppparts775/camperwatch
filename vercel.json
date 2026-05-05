@@ -1,6 +1,10 @@
 {
   "crons": [
     {
+      "path": "/api/availability-sync",
+      "schedule": "* * * * *"
+    },
+    {
       "path": "/api/alerts/scan",
       "schedule": "*/10 * * * *"
     },
