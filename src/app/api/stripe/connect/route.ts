@@ -14,9 +14,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createClient } from '@supabase/supabase-js'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-04-22.dahlia',
-})
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: '2026-04-22.dahlia',
+  })
+}
 
 export async function POST(req: NextRequest) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
@@ -51,7 +53,7 @@ export async function POST(req: NextRequest) {
 
   // Create Connect account if not exists
   if (!accountId) {
-    const account = await stripe.accounts.create({
+    const account = await getStripe().accounts.create({
       type: 'express',
       email: profile?.email || user.email,
       capabilities: {
@@ -70,7 +72,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Create account link for onboarding
-  const accountLink = await stripe.accountLinks.create({
+  const accountLink = await getStripe().accountLinks.create({
     account: accountId,
     refresh_url: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://camperwatch.org'}/owner-dashboard?stripe=refresh`,
     return_url: returnUrl,

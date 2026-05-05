@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
-
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+}
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const lat = parseFloat(searchParams.get('lat') || '')
@@ -15,7 +16,7 @@ export async function GET(req: NextRequest) {
   const key = `${Math.round(lat * 100) / 100}_${Math.round(lng * 100) / 100}`
 
   // 24hr cache
-  const { data: cached } = await supabase
+  const { data: cached } = await getSupabase()
     .from('wildlife_cache')
     .select('data, fetched_at')
     .eq('id', key)
@@ -71,7 +72,7 @@ export async function GET(req: NextRequest) {
       fetchedAt: new Date().toISOString(),
     }
 
-    await supabase.from('wildlife_cache').upsert(
+    await getSupabase().from('wildlife_cache').upsert(
       { id: key, data, fetched_at: new Date().toISOString() },
       { onConflict: 'id' }
     )

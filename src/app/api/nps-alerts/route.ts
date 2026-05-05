@@ -1,18 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
-
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+}
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const parkCode = searchParams.get('parkCode')
   if (!parkCode) return NextResponse.json({ error: 'parkCode required' }, { status: 400 })
 
   // Check cache — 2hr TTL (NPS updates every 2hr)
-  const { data: cached } = await supabase
+  const { data: cached } = await getSupabase()
     .from('nps_alerts_cache')
     .select('data, fetched_at')
     .eq('park_code', parkCode)
@@ -60,7 +61,7 @@ export async function GET(req: NextRequest) {
 
     const data = { parkCode, alerts, news, fetchedAt: new Date().toISOString() }
 
-    await supabase.from('nps_alerts_cache').upsert(
+    await getSupabase().from('nps_alerts_cache').upsert(
       { park_code: parkCode, data, fetched_at: new Date().toISOString() },
       { onConflict: 'park_code' }
     )

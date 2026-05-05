@@ -4,11 +4,12 @@ import { createClient } from '@supabase/supabase-js'
 const NWS = 'https://api.weather.gov'
 const UA = 'CamperWatch/1.0 (camperwatch.org)'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
-
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+}
 async function fetchNWS(lat: number, lng: number) {
   // Step 1: resolve NWS grid point
   const pointRes = await fetch(`${NWS}/points/${lat},${lng}`, {
@@ -70,7 +71,7 @@ export async function GET(req: NextRequest) {
   const lngR = Math.round(lng * 1000) / 1000
 
   // Check cache — 1 hour TTL for weather
-  const { data: cached } = await supabase
+  const { data: cached } = await getSupabase()
     .from('weather_cache')
     .select('data, fetched_at')
     .eq('lat', latR)
@@ -89,7 +90,7 @@ export async function GET(req: NextRequest) {
     const data = await fetchNWS(lat, lng)
 
     // Write to cache (upsert by coords)
-    await supabase.from('weather_cache').upsert(
+    await getSupabase().from('weather_cache').upsert(
       { lat: latR, lng: lngR, data, fetched_at: new Date().toISOString() },
       { onConflict: 'lat,lng' }
     )

@@ -5,10 +5,12 @@ export const dynamic = 'force-dynamic'
 
 const REC_GOV = 'https://www.recreation.gov/api/camps/availability/campground'
 
-const supabase = createClient(
+function getSupabase() {
+  return createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+  )
+}
 
 async function fetchFromRecGov(facilityId: string, month: string) {
   const startDate = encodeURIComponent(`${month}T00:00:00.000Z`)
@@ -70,7 +72,7 @@ export async function GET(req: NextRequest) {
 
   try {
     // 1. Try Supabase cache first
-    const { data: cached } = await supabase
+    const { data: cached } = await getSupabase()
       .from('availability_cache')
       .select('data, fetched_at')
       .eq('facility_id', facilityId)

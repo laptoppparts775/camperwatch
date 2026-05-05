@@ -3,6 +3,13 @@ import { createClient } from '@supabase/supabase-js'
 
 export const dynamic = 'force-dynamic'
 
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+}
+
 // All federal campgrounds with RIDB facility IDs
 const FACILITIES = [
   { slug: 'zephyr-cove',              facilityId: '10300216' },
@@ -83,11 +90,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
-
   // Sync current month + next month
   const now = new Date()
   const months = [
@@ -105,7 +107,7 @@ export async function GET(req: NextRequest) {
       try {
         const processed = await fetchAndProcess(facilityId, month)
 
-        const { error } = await supabase
+        const { error } = await getSupabase()
           .from('availability_cache')
           .upsert({
             facility_id: facilityId,

@@ -14,9 +14,11 @@ import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 import { createClient } from '@supabase/supabase-js'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-04-22.dahlia',
-})
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: '2026-04-22.dahlia',
+  })
+}
 
 const COMMISSION_RATE = 0.05 // 5%
 
@@ -100,7 +102,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Create PaymentIntent
-  const paymentIntent = await stripe.paymentIntents.create({
+  const paymentIntent = await getStripe().paymentIntents.create({
     amount: totalCents,
     currency: 'usd',
     application_fee_amount: feeCents,

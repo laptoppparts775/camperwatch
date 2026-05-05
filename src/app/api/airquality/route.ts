@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
-
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+}
 const AQI_LEVELS = [
   { max: 50,  label: 'Good',            color: 'green',  desc: 'Air quality is satisfactory.' },
   { max: 100, label: 'Moderate',        color: 'yellow', desc: 'Acceptable. Some pollutants may affect very sensitive people.' },
@@ -28,7 +29,7 @@ export async function GET(req: NextRequest) {
   const key = `${Math.round(lat * 100) / 100}_${Math.round(lng * 100) / 100}`
 
   // 1hr cache
-  const { data: cached } = await supabase
+  const { data: cached } = await getSupabase()
     .from('airquality_cache')
     .select('data, fetched_at')
     .eq('id', key)
@@ -85,7 +86,7 @@ export async function GET(req: NextRequest) {
       fetchedAt: new Date().toISOString(),
     }
 
-    await supabase.from('airquality_cache').upsert(
+    await getSupabase().from('airquality_cache').upsert(
       { id: key, data, fetched_at: new Date().toISOString() },
       { onConflict: 'id' }
     )

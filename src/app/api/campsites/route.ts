@@ -1,18 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
-
+function getSupabase() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+}
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const facilityId = searchParams.get('facilityId')
   if (!facilityId) return NextResponse.json({ error: 'facilityId required' }, { status: 400 })
 
   // Check cache — 24hr TTL (site attributes rarely change)
-  const { data: cached } = await supabase
+  const { data: cached } = await getSupabase()
     .from('campsites_cache')
     .select('data, fetched_at')
     .eq('facility_id', facilityId)
@@ -85,7 +86,7 @@ export async function GET(req: NextRequest) {
       fetchedAt: new Date().toISOString(),
     }
 
-    await supabase.from('campsites_cache').upsert(
+    await getSupabase().from('campsites_cache').upsert(
       { facility_id: facilityId, data, fetched_at: new Date().toISOString() },
       { onConflict: 'facility_id' }
     )
