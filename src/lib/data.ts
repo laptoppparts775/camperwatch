@@ -1123,7 +1123,7 @@ export const campgrounds = [
     max_rig_length: 35,
     rating: 4.5,
     review_count: 1920,
-    ridb_facility_id: '232492',
+    ridb_facility_id: '232508',
     images: [
       { url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80', alt: 'Atlantic Ocean coastline sunrise Maine Bar Harbor Acadia National Park', title: 'Atlantic Sunrise from Acadia', caption: 'First sunrise in the continental US — Cadillac Mountain summit 15 minutes from camp' },
       { url: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200&q=80', alt: 'Spruce fir forest campsite Maine coast New England camping', title: 'Blackwoods Forest Sites', caption: 'Dense spruce-fir canopy provides shade and privacy — classic Maine coast forest' },
@@ -1167,7 +1167,7 @@ export const campgrounds = [
     max_rig_length: 32,
     rating: 4.6,
     review_count: 3210,
-    ridb_facility_id: '232492',
+    ridb_facility_id: '232487',
     images: [
       { url: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200&q=80', alt: 'Great Smoky Mountains fall foliage hardwood forest Tennessee North Carolina', title: 'Smoky Mountains Fall Colors', caption: 'Peak fall color mid-October — arguably the best foliage camping in America' },
       { url: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=1200&q=80', alt: 'Mountain stream river campsite Tennessee Smoky Mountains camping', title: 'Little River Campsites', caption: 'Sites along the Little River — sleep to the sound of the current' },
@@ -1211,14 +1211,14 @@ export const campgrounds = [
     max_rig_length: 36,
     rating: 4.8,
     review_count: 2140,
-    ridb_facility_id: '233063',
+    ridb_facility_id: '232507',
     images: [
       { url: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80', alt: 'Atlantic Ocean beach barrier island Maryland wild horses camping', title: 'Assateague Oceanside Beach', caption: 'Sites are literally on the beach — fall asleep to Atlantic surf' },
       { url: 'https://images.unsplash.com/photo-1553984840-b8cbc34f5215?w=1200&q=80', alt: 'Wild horses ponies beach Atlantic Ocean barrier island Maryland', title: 'Wild Chincoteague Ponies', caption: 'Wild ponies roam freely through camp — do not feed them' },
       { url: 'https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=1200&q=80', alt: 'Tent camping on beach ocean Atlantic East Coast sand dunes', title: 'Beach Camping at Assateague', caption: 'No campground in the East offers camping this close to wild ocean' },
       { url: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=1200&q=80', alt: 'Atlantic Ocean sunrise beach Maryland camping East Coast', title: 'Atlantic Sunrise', caption: 'East-facing beach means spectacular sunrises from your tent' },
     ],
-    booking_url: 'https://www.recreation.gov/camping/campgrounds/233063',
+    booking_url: 'https://www.recreation.gov/camping/campgrounds/232507',
     cancellation_policy: 'Recreation.gov standard policy applies.',
     check_in: '12:00 PM', check_out: '12:00 PM', available: false, season: 'Year-round',
     phone: '(410) 641-1441', elevation: 'Sea level', total_sites: '154 sites',
@@ -1255,7 +1255,7 @@ export const campgrounds = [
     max_rig_length: 50,
     rating: 4.7,
     review_count: 1890,
-    ridb_facility_id: '10065469',
+    ridb_facility_id: '10337002',
     images: [
       { url: 'https://images.unsplash.com/photo-1504701954957-2010ec3bcec1?w=1200&q=80', alt: 'Crater Lake Oregon deep blue volcanic caldera lake camping', title: 'Crater Lake Blue Water', caption: 'The most intensely blue water in North America — visible from Rim Drive minutes from camp' },
       { url: 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=1200&q=80', alt: 'Conifer pine forest Oregon Cascades camping Crater Lake', title: 'Mazama Campground Forest', caption: 'Old-growth Cascade pine and fir surround the campground' },
@@ -1299,7 +1299,7 @@ export const campgrounds = [
     max_rig_length: 35,
     rating: 4.8,
     review_count: 3450,
-    ridb_facility_id: '234093',
+    ridb_facility_id: '272300',
     images: [
       { url: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1200&q=80', alt: 'Joshua Tree National Park granite boulders desert California camping', title: 'Jumbo Rocks Boulder Camp', caption: 'Massive granite boulders create natural privacy and endless scrambling' },
       { url: 'https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=1200&q=80', alt: 'Joshua Tree yucca desert California night stars Milky Way', title: 'Joshua Trees at Dusk', caption: 'The namesake Joshua trees silhouetted against desert sunset' },
@@ -1343,7 +1343,7 @@ export const campgrounds = [
     max_rig_length: 21,
     rating: 4.7,
     review_count: 1560,
-    ridb_facility_id: '232476',
+    ridb_facility_id: '232492',
     images: [
       { url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200&q=80', alt: 'Glacier National Park mountain lake St Mary Montana camping', title: 'St. Mary Lake at Dawn', caption: 'Morning light on the Continental Divide from St. Mary Campground' },
       { url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80', alt: 'Going to the Sun Road Glacier National Park Montana mountains', title: 'Going-to-the-Sun Road', caption: 'The most scenic drive in America begins minutes from this campground' },
@@ -1387,7 +1387,7 @@ export const campgrounds = [
     max_rig_length: 35,
     rating: 4.6,
     review_count: 2870,
-    ridb_facility_id: '10072082',
+    ridb_facility_id: '232459',
     images: [
       { url: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200&q=80', alt: 'Shenandoah National Park fall foliage Skyline Drive Virginia Appalachian', title: 'Shenandoah Fall Colors', caption: 'Peak fall color mid-October — among the best foliage drives in America' },
       { url: 'https://images.unsplash.com/photo-1448375240586-882707db888b?w=1200&q=80', alt: 'Big Meadows deer wildlife Shenandoah Virginia camping', title: 'Big Meadows Wildlife', caption: 'White-tailed deer graze the meadow every evening — bring binoculars' },
