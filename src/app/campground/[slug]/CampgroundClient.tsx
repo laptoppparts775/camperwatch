@@ -87,9 +87,11 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
             <div>
               <div className="flex items-start justify-between mb-1 flex-wrap gap-2">
                 <h1 className="font-display text-2xl md:text-3xl font-bold text-gray-900">{camp.name}</h1>
-                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${camp.available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                  {camp.available ? '✓ Sites Available' : '✗ Fully Booked'}
-                </span>
+                {!(camp as any).ridb_facility_id && (
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${camp.available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                    {camp.available ? '✓ Sites Available' : '✗ Fully Booked'}
+                  </span>
+                )}
               </div>
               {(camp as any).tagline && <p className="text-green-700 font-medium text-sm mb-2" data-speakable="true">{(camp as any).tagline}</p>}
               <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500 mb-3">
