@@ -10,6 +10,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/community`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.7 },
     { url: `${base}/add-campsite`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
     { url: `${base}/contact`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
+    { url: `${base}/hipcamp-alternative`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
   ]
 
   const campgroundPages: MetadataRoute.Sitemap = campgrounds.map(c => ({
