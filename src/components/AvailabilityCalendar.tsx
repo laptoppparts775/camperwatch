@@ -46,8 +46,19 @@ function getDotColor(available: number, total: number, isPast: boolean) {
 }
 
 function buildBookingUrl(baseUrl: string, arrivalDate: string): string {
-  // Recreation.gov is a SPA — date params cause it to land on the wrong tab (seasons/rates).
-  // Just send to the campground page directly; the user already knows which date to pick.
+  if (!baseUrl) return baseUrl
+  try {
+    // Recreation.gov reads checkin/checkout from the URL when the SPA loads.
+    // Format: YYYY-MM-DD. Checkout defaults to arrival + 1 night.
+    if (baseUrl.includes('recreation.gov')) {
+      const arrival = new Date(arrivalDate + 'T12:00:00')
+      const departure = new Date(arrival)
+      departure.setDate(departure.getDate() + 1)
+      const fmt = (d: Date) => d.toISOString().slice(0, 10)
+      const base = baseUrl.split('?')[0]
+      return `${base}?checkin=${fmt(arrival)}&checkout=${fmt(departure)}`
+    }
+  } catch {}
   return baseUrl
 }
 
