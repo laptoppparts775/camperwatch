@@ -23,6 +23,7 @@ const AvailabilityCalendar = dynamic(() => import('@/components/AvailabilityCale
 const ReferralPartners = dynamic(() => import('@/components/ReferralPartners'), { ssr: false })
 const WeatherWidget = dynamic(() => import('@/components/WeatherWidget'), { ssr: false })
 const SiteIntelligencePanel = dynamic(() => import('@/components/SiteIntelligencePanel'), { ssr: false })
+const CampConditionsPanel = dynamic(() => import('@/components/CampConditionsPanel'), { ssr: false })
 const CampgroundChat = dynamic(() => import('@/components/community/CampgroundChat'), { ssr: false })
 const TripLogButton = dynamic(() => import('@/components/TripLogButton'), { ssr: false })
 const GearRecommendations = dynamic(() => import('@/components/GearRecommendations'), { ssr: false })
@@ -304,6 +305,16 @@ export default function CampgroundClient({ camp }: { camp: Campground }) {
 
             {/* Weather */}
             {camp.lat && camp.lng && <WeatherWidget lat={camp.lat} lng={camp.lng} campgroundName={camp.name} />}
+
+            {/* Park conditions — NPS alerts, air quality, sunrise, wildlife */}
+            {camp.lat && camp.lng && (
+              <CampConditionsPanel
+                lat={camp.lat}
+                lng={camp.lng}
+                npsCode={(camp as any).nps_park_code}
+                campgroundName={camp.name}
+              />
+            )}
 
             {/* Site intelligence — official photos + per-site data from RIDB */}
             {(camp as any).ridb_facility_id && (
