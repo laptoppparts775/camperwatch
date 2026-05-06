@@ -107,6 +107,11 @@ export default function ReferralPartners({ campgroundSlug }: Props) {
       <p className="text-xs text-amber-600 mt-2">
         {isPlpt ? 'Tribal parks — book directly, owner keeps 95%.' : 'Recommended by the host — book directly, no fees.'}
       </p>
+      {isPlpt && (
+        <Link href="/pyramid-lake-paiute-tribe" className="mt-3 flex items-center justify-center gap-1.5 text-xs font-semibold text-amber-800 hover:text-amber-900 transition-colors">
+          View all tribal parks <ArrowRight size={11} />
+        </Link>
+      )}
     </div>
   )
 }

@@ -15,6 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${base}/list-campground-free`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/campground-booking-software`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${base}/national-park-campgrounds`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${base}/pyramid-lake-paiute-tribe`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
   ]
 
   const campgroundPages: MetadataRoute.Sitemap = campgrounds.map(c => ({
