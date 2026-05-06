@@ -403,6 +403,80 @@ export const campIntelligence: Record<string, CampIntelligence> = {
     fire_rules: 'Tribal regulations apply. Campfires in designated rings only. No fires during windy conditions. Tribal permit covers fire ring use.',
   },
 
+  'big-bend-rv-park': {
+    why_its_good: 'Big Bend is the rare Reno-area RV park that actually has shade. The Truckee River runs alongside, the sites are paved and level, and the grass and trees make it feel like a real campground rather than a desert parking lot. Operated by the Pyramid Lake Paiute Tribe, it\u2019s priced fairly and sits right off I-80 — easy in, easy out. For big rig drivers hauling toward Burning Man or heading to Pyramid Lake, it\u2019s the best-positioned overnight stop in the corridor.',
+    real_issues: [
+      { issue: 'I-80 traffic noise audible from some sites', solution: 'Request a site on the river side of the park, away from the highway. The sound drops significantly with trees as a buffer.' },
+      { issue: 'No tent camping or long-term stays available', solution: 'For dispersed camping or longer stays, Pyramid Lake tribal land (28 miles north) allows beach camping with a permit.' },
+      { issue: 'Cell signal can be spotty in Wadsworth', solution: 'Verizon and AT&T generally work. Download offline maps before arrival. The I-80 corridor is more reliable than the lake.' },
+    ],
+    what_people_say: [
+      { quote: 'Paved, level, shady, right off the highway. Exactly what I needed for an overnight before Burning Man. Staff were friendly and helpful.', source: 'Google Apr 2025', sentiment: 'love' },
+      { quote: 'The shade trees are the big selling point. Most Nevada RV parks are exposed desert lots. This one actually has grass and trees.', source: 'Campendium Mar 2025', sentiment: 'love' },
+      { quote: 'Easy to find right off I-80 Wadsworth exit. Full hookups, clean laundry, good showers. Would stay again.', source: 'RV Life Feb 2025', sentiment: 'love' },
+      { quote: 'Some highway noise but nothing terrible. The river walk in the morning makes up for it. Good value for the area.', source: 'Google Jan 2025', sentiment: 'tip' },
+    ],
+    rare_gem: 'The Truckee River at Big Bend is one of the few spots in the Reno corridor where you can walk along a river with mature cottonwood trees. The same river flows through downtown Reno — here it\u2019s quiet, undeveloped, and yours alone on most mornings.',
+    not_to_miss: [
+      'Morning walk along the Truckee River trail — cottonwood shade, birds, and silence',
+      'Horse boarding option — one of very few RV parks in Nevada that accommodates equestrians',
+      'Quick drive to I-80 Smokeshop (2 miles) for fireworks, permits, and Paiute crafts',
+    ],
+    whats_new: 'Weekly rates now available at $270/week ($313.95 with tax and fees) as of 2025. Good value for Burning Man staging stays.',
+    best_season: [
+      { season: 'Year-round', why: 'I-80 corridor stays mild. No extreme heat like the lake. Good winter stopover.' },
+      { season: 'Aug (Burning Man)', why: 'Heavy demand as a staging ground. Book ahead for the last week of August.' },
+    ],
+    avoid_if: ['You need tent camping', 'You want a destination experience (this is a transit park)', 'You need cell signal reliability'],
+    insider_hacks: [
+      'Wadsworth exit off I-80 — westbound exit 43, eastbound exit 46',
+      'Book ahead for Burning Man week — fills up completely',
+      'The river side sites have the best morning light and least highway noise',
+      'Horse boarding available — call (775) 575-2185 ahead to arrange',
+    ],
+    wildlife_alert: 'Occasional coyotes along the river at dawn and dusk. Keep pets on leash and food secured.',
+    cell_signal: 'Moderate — Verizon works in Wadsworth. Download maps and permits before leaving Reno.',
+    fire_rules: 'Tribal land regulations apply. Campfires in designated rings only. No open fires during windy conditions.',
+  },
+
+  'i80-smokeshop-campground': {
+    why_its_good: 'The I-80 Smokeshop is one of the highest-rated stops on the entire I-80 Nevada corridor — 4.7 stars across 480+ reviews. It\u2019s a tribal enterprise that sells fireworks legally (a Nevada road trip bucket list item), Pyramid Lake fishing and camping permits, propane, gas, groceries, and authentic Native American crafts and jewelry. The campground is attached to the store, making it the most convenient permit-and-stay combo on the way to Pyramid Lake. Extended hours during Burning Man make it the primary staging store for the playa.',
+    real_issues: [
+      { issue: 'Primarily a convenience stop, not a destination campground', solution: 'Use it as an overnight or permit stop, then continue to Pyramid Lake Marina or Big Bend for a full campground experience.' },
+      { issue: 'I-80 noise — it\u2019s right on the interstate', solution: 'Earplugs or a white noise app. Sites further from the on-ramp are quieter.' },
+      { issue: 'Basic facilities compared to full-service parks', solution: 'Stock up here (propane, fireworks, permits, groceries) then head 2 miles to Big Bend for proper hookups and showers.' },
+    ],
+    what_people_say: [
+      { quote: 'Best fireworks selection I\u2019ve seen in Nevada. Great staff, great prices. A must-stop on any Nevada road trip.', source: 'Google May 2025', sentiment: 'love' },
+      { quote: 'Bought my Pyramid Lake fishing permit here. Staff knew everything about the lake — opening dates, best spots, what tackle to use. Incredibly helpful.', source: 'Google Mar 2025', sentiment: 'love' },
+      { quote: 'Verdell helped me pick out fireworks and answered every question I had. Drove from Northern California just for this stop. Worth it.', source: 'Google Jun 2025', sentiment: 'love' },
+      { quote: 'Perfect Burning Man supply stop. Propane exchange, food, fireworks, fuel. Everything you need before heading to the playa.', source: 'Reddit Aug 2024', sentiment: 'tip' },
+    ],
+    rare_gem: 'The I-80 Smokeshop is one of the few places in Nevada where you can legally buy serious consumer fireworks year-round — tribal land exempts it from Nevada\u2019s fireworks restrictions. The selection is genuinely impressive and the prices are fair.',
+    not_to_miss: [
+      'Pyramid Lake permits — fishing, boating, jet ski, day use, camping all available here',
+      'Native American crafts and jewelry — authentic Paiute artisan pieces',
+      'Fireworks — legal, well-priced, and a Nevada road trip tradition',
+      'Propane refill and exchange — essential for Burning Man and extended camping trips',
+    ],
+    whats_new: 'Extended hours during Burning Man 2025 were a major hit — open until 11pm during Burning Man week. Expect the same for 2026.',
+    best_season: [
+      { season: 'Year-round', why: 'Open 7 days, 6am\u20139pm. Essential stop regardless of season.' },
+      { season: 'Aug\u2013Sep (Burning Man)', why: 'Extended hours, massive traffic. Best fireworks selection of the year.' },
+      { season: 'Oct\u2013Mar (fishing season)', why: 'Pyramid Lake trout season opens October 1. This is where you buy the permit.' },
+    ],
+    avoid_if: ['You need full hookups and showers (go to Big Bend 2 miles away)', 'You\u2019re not stopping for permits, propane, or fireworks'],
+    insider_hacks: [
+      'Buy Pyramid Lake permits here — open earlier and later than the tribal ranger station',
+      'Ask staff about current lake conditions and fishing regulations — they know everything',
+      'Propane exchange and refill both available — refill is cheaper if your tank fits',
+      'Big Bend RV Park is 2 miles east for full hookups after you\u2019ve stocked up here',
+    ],
+    wildlife_alert: 'Desert wildlife in the surrounding area. Store\u2019s lighting attracts insects at night.',
+    cell_signal: 'Good — I-80 corridor has solid coverage from all major carriers.',
+    fire_rules: 'Tribal land. Fireworks permitted on tribal property. Follow all posted rules and Burning Man guidelines if heading to the playa.',
+  },
+
   'watchman-campground': {
     why_its_good: 'The only campground inside Zion Canyon as of 2026. South Campground is indefinitely closed and BLM dispersed camping around the park was banned in March 2026 — making Watchman the sole option for camping in the canyon. The shuttle stop inside the campground means you park once and ride to every trailhead without moving your car. The Virgin River flows alongside camp and the canyon walls glow red-orange at sunrise and sunset from every site.',
     real_issues: [

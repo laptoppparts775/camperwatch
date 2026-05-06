@@ -103,6 +103,22 @@ export const reviews: Record<string, Review[]> = {
     { id: 'pl5', author: 'TribeRespect', source: 'Reddit', rating: 4, date: '2025-06', text: 'Important: this is Paiute tribal land. Buy your permit online at plpt.nsn.us before arriving. Don\'t try to sneak in — rangers do patrol. With permit in hand, you\'re welcomed warmly. The tribe has done an incredible job preserving the lake. Respect the rules and you\'ll have an unforgettable trip.', helpful: 201, verified: false, type: 'positive' },
   ],
 
+  'big-bend-rv-park': [
+    { id: 'bb1', author: 'BurningManPrep', source: 'Google', rating: 5, date: '2025-08', text: 'Perfect staging ground before heading to Burning Man. Paved sites, full hookups, real shade trees. Not many RV parks in Nevada have actual trees. Staff were great and gave us tips on the Wadsworth area.', helpful: 67, verified: true, type: 'positive' },
+    { id: 'bb2', author: 'I80RoadTripper', source: 'Campendium', rating: 5, date: '2025-06', text: 'Best RV park on the I-80 Nevada corridor. Shady, grassy, level paved sites with full hookups. Easy highway access. Clean laundry and showers. Would stay again without hesitation.', helpful: 45, verified: true, type: 'positive' },
+    { id: 'bb3', author: 'TruckeeWalker', source: 'Google', rating: 4, date: '2025-04', text: 'The morning Truckee River walk made the stay. Some highway noise from I-80 but the river side sites are much quieter. Full hookups worked perfectly, laundry was clean. Good value for the area.', helpful: 38, verified: true, type: 'positive' },
+    { id: 'bb4', author: 'PyramidLakeBound', source: 'RVLife', rating: 4, date: '2025-03', text: 'Used this as a base before heading to Pyramid Lake. Two miles from the I-80 Smokeshop where we got our tribal permits. Great setup — stock up and stage here, then 30 min north to the lake. Smart combo.', helpful: 52, verified: true, type: 'positive' },
+    { id: 'bb5', author: 'HorseTrailer_NV', source: 'Google', rating: 5, date: '2025-05', text: 'Only RV park in the area with horse boarding. Called ahead, they were ready for us. Sites are large enough for the trailer plus tow vehicle. Grass and shade for the horses too. Highly recommend.', helpful: 71, verified: true, type: 'positive' },
+  ],
+
+  'i80-smokeshop-campground': [
+    { id: 'is1', author: 'FireworksFan_NV', source: 'Google', rating: 5, date: '2025-07', text: 'Best fireworks selection I\u2019ve ever seen in Nevada. Staff know their stuff and helped us pick out the perfect show. Bought our Pyramid Lake permits here too while we were at it. Amazing tribal store.', helpful: 89, verified: true, type: 'positive' },
+    { id: 'is2', author: 'VerdellFan', source: 'Google', rating: 5, date: '2025-06', text: 'Verdell at the smokeshop answered every question about Pyramid Lake fishing I could think of. Drove from Northern California just for this stop. He hooked us up perfectly. Worth the trip just for the service.', helpful: 134, verified: true, type: 'positive' },
+    { id: 'is3', author: 'BurningMan2025', source: 'Reddit', rating: 5, date: '2025-08', text: 'The only stop you need before Burning Man. Propane exchange, groceries, fireworks, fuel, ice. Open late during Burning Man week. The tribal staff are genuinely friendly and helpful. Legendary stop on the playa road.', helpful: 201, verified: false, type: 'positive' },
+    { id: 'is4', author: 'FishingPermit_NV', source: 'Google', rating: 5, date: '2025-10', text: 'Pyramid Lake trout season opens October 1 and this is where you get the permit. Staff updated me on current lake conditions, water levels, and best fishing spots. Better info than any website. Essential stop.', helpful: 78, verified: true, type: 'positive' },
+    { id: 'is5', author: 'HighwayStop_CA', source: 'Google', rating: 4, date: '2025-09', text: 'Great store with authentic Paiute crafts and jewelry. Picked up a beautiful piece for my mom. The fireworks section is genuinely impressive — legal on tribal land when they\u2019d be illegal elsewhere. Unique stop.', helpful: 56, verified: true, type: 'positive' },
+  ],
+
   'watchman-campground': [
     { id: 'wz1', author: 'ZionHiker_UT', source: 'Recreation.gov', rating: 5, date: '2026-03', text: 'Clean campground, great bathroom facilities. Walking bridge to Springdale restaurants. Shuttle stop inside camp — never needed my car. This is the only way to do Zion.', helpful: 89, verified: true, type: 'positive' },
     { id: 'wz2', author: 'SandstoneViews', source: 'The Dyrt', rating: 5, date: '2025-11', text: 'Woke up, stepped on the shuttle, hiked Angels Landing before 8am with nobody ahead of me. Perfect base camp — park once, never move again.', helpful: 134, verified: true, type: 'positive' },
@@ -345,6 +361,23 @@ export const campaignInsights: Record<string, {
     hashtags: ['#PyramidLake', '#NevadaHidden', '#PaiuteTribe', '#DesertCamping', '#FlyFishing'],
   },
 
+
+  'big-bend-rv-park': {
+    sentiment: 88,
+    topPositives: ['Real shade trees and grass', 'Paved full-hookup sites', 'Truckee River access', 'Big rig friendly', 'Horse boarding available'],
+    topNegatives: ['I-80 noise on highway-side sites', 'No tent camping', 'No long-term stays'],
+    campaignAngle: 'The Reno corridor\u2019s only shady full-hookup RV park — paved sites, Truckee River trails, 30 min from the city',
+    targetAudience: 'I-80 road trippers, big rig travelers, Burning Man attendees, horse owners, Pyramid Lake-bound campers',
+    hashtags: ['#BigBendRV', '#WadsworthNV', '#TruckeeRiver', '#NevadaRVPark', '#I80Camping'],
+  },
+  'i80-smokeshop-campground': {
+    sentiment: 94,
+    topPositives: ['4.7 stars from 480+ reviews', 'Best fireworks in Nevada', 'Pyramid Lake permits on-site', 'Burning Man essential stop', 'Authentic Paiute crafts'],
+    topNegatives: ['Highway noise', 'Basic campground facilities', 'Convenience stop not destination'],
+    campaignAngle: 'The highest-rated stop on I-80 Nevada — permits, fireworks, Paiute crafts, and a gateway to Pyramid Lake',
+    targetAudience: 'Pyramid Lake fishermen, Burning Man attendees, I-80 road trippers, fireworks enthusiasts',
+    hashtags: ['#I80Smokeshop', '#PyramidLakePermits', '#BurningMan', '#NevadaFireworks', '#PaiuteTribe'],
+  },
 
   'watchman-campground': { sentiment: 88, topPositives: ['Only canyon campground in 2026', 'Shuttle at campsite', 'Virgin River access', 'Year-round'], topNegatives: ['No showers on-site', 'Sites close together', 'Caterpillars April-May'], campaignAngle: 'The last campground inside Zion Canyon — park once, hike everything', targetAudience: 'Hikers, families, first-time Zion visitors', hashtags: ['#Zion', '#WatchmanCampground', '#ZionNationalPark', '#NationalParkCamping'] },
   'rubys-inn-bryce': { sentiment: 78, topPositives: ['Free shuttle to Bryce', 'Full hookups up to 65ft', 'Dark sky stargazing', 'Bikeable to hoodoos'], topNegatives: ['No discounts', 'Dusty close sites', 'Pricey'], campaignAngle: 'Ride the shuttle to Bryce hoodoos, bike back under the Milky Way', targetAudience: 'Bryce Canyon visitors, families, full hookup RVers', hashtags: ['#BryceCanyon', '#RubysInn', '#DarkSkyPark', '#UtahCamping'] },
