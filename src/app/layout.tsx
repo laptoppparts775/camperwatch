@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import Script from 'next/script'
 import './globals.css'
+import Footer from '@/components/Footer'
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -66,6 +67,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body style={{overflowX:"hidden"}}>
         {children}
+        <Footer />
       </body>
     </html>
   )

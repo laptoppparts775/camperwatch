@@ -377,25 +377,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="border-t border-stone-900 py-8 px-4">
-        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <svg viewBox="0 0 24 24" className="w-4 h-4 text-amber-400 fill-current flex-shrink-0">
-              <path d="M12 2L6.5 18h11L12 2z"/>
-            </svg>
-            <span className="font-display font-bold text-white text-sm">CamperWatch</span>
-          </div>
-          <p className="text-[11px] text-stone-700 max-w-xs sm:max-w-sm">
-            © 2026 CamperWatch · Data from official operator websites · No affiliation with Recreation.gov or NPS
-          </p>
-          <div className="flex gap-5 text-xs text-stone-500 flex-shrink-0">
-            <Link href="/community" className="hover:text-white transition-colors">Community</Link>
-            <Link href="/add-campsite" className="hover:text-white transition-colors">Add campsite</Link>
-            <Link href="/auth/signup" className="hover:text-white transition-colors">Sign up</Link>
-          </div>
-        </div>
-      </footer>
     </main>
   )
 }

@@ -358,6 +358,28 @@ export default function NavBar({ dark = false }: { dark?: boolean }) {
                     className="block text-center text-xs font-semibold bg-amber-500 text-white py-2 rounded-lg hover:bg-amber-600 transition-colors">
                     List my campground →
                   </Link>
+                  <div className="mt-2 space-y-1">
+                    {[
+                      { label: 'Hipcamp alternative', href: '/hipcamp-alternative' },
+                      { label: 'Campspot alternative', href: '/campspot-alternative' },
+                      { label: 'Booking software comparison', href: '/campground-booking-software' },
+                    ].map(l => (
+                      <Link key={l.href} href={l.href} onClick={() => setMegaOpen(false)}
+                        className="block text-xs text-amber-700/70 hover:text-amber-800 transition-colors px-1 py-0.5">
+                        → {l.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Tribal parks feature */}
+                <div className="rounded-xl p-4 border" style={{ background: 'linear-gradient(135deg,#f0fdf4,#dcfce7)', borderColor: '#bbf7d0' }}>
+                  <div className="text-sm font-bold text-emerald-900 mb-1">🏞 Tribal Parks — Book Direct</div>
+                  <p className="text-xs text-emerald-700 mb-2">Pyramid Lake Paiute Tribe operates 3 RV parks near Reno. No middleman. From $30/night.</p>
+                  <Link href="/pyramid-lake-paiute-tribe" onClick={() => setMegaOpen(false)}
+                    className="block text-center text-xs font-semibold bg-emerald-600 text-white py-2 rounded-lg hover:bg-emerald-700 transition-colors">
+                    View tribal parks →
+                  </Link>
                 </div>
               </div>
             </div>
